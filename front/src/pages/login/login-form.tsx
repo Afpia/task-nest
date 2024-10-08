@@ -3,7 +3,7 @@ import { Button, PasswordInput, TextInput } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
 import { postUser } from '@utils/api/requests/user'
 import { schema } from '@utils/schemes/schemes-login'
-import { setupAxiosInterceptors } from '@utils/api/instance'
+import { AuthInterceptors } from '@utils/api/auth-interceptors'
 
 export const LoginForm = () => {
 	const [loading, setLoading] = useState(false)
@@ -15,7 +15,7 @@ export const LoginForm = () => {
 	})
 
 	const submit = async (values: { email: string; password: string }) => {
-		setupAxiosInterceptors(setLoading, form)
+		AuthInterceptors(setLoading, form)
 		const data = await postUser({ data: { email: values.email, password: values.password } })
 	}
 
