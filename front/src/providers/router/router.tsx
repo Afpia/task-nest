@@ -1,9 +1,11 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { ROUTES } from '@utils/constants/ROUTES'
-import { NotFound } from '@pages/not-found'
+import { NotFound } from '@pages/not-found/not-found'
 import { PrivateRouter } from './router-private'
 import { Login } from '@pages/login/login'
+import { Home } from '@pages/home/home'
+import { Layout } from '@components/layouts/layout'
 
 const router = createBrowserRouter([
 	{
@@ -23,7 +25,8 @@ const router = createBrowserRouter([
 		element: <PrivateRouter />,
 		children: [
 			{
-				path: ROUTES.MAIN
+				element: <Layout />,
+				children: [{ path: ROUTES.MAIN, element: <Home /> }]
 			}
 		]
 	}

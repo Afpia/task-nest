@@ -7,6 +7,7 @@ export const AuthInterceptors = <T extends Record<string, string>>(
 	loadingSetter: Dispatch<SetStateAction<boolean>>,
 	form?: UseFormReturnType<T>
 ) => {
+	// TODO: mb axios вместо api
 	api.interceptors.request.use(
 		config => {
 			loadingSetter(true)

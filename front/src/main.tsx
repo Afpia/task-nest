@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { Notifications } from '@mantine/notifications'
 import { ModalsProvider } from '@mantine/modals'
 import { createTheme, Input, type MantineColorsTuple, MantineProvider } from '@mantine/core'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import { Router } from '@providers/router/router'
 
 import '@mantine/notifications/styles.css'
@@ -38,11 +39,13 @@ const theme = createTheme({
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<MantineProvider theme={theme} defaultColorScheme='auto'>
-			<ModalsProvider>
-				<Notifications />
-				<Router />
-			</ModalsProvider>
-		</MantineProvider>
+		<GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
+			<MantineProvider theme={theme} defaultColorScheme='auto'>
+				<ModalsProvider>
+					<Notifications />
+					<Router />
+				</ModalsProvider>
+			</MantineProvider>
+		</GoogleOAuthProvider>
 	</StrictMode>
 )
