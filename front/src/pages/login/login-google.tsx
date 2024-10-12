@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
+import axios from 'axios'
+
 import { Google } from '@assets/svg/google'
 import { Button } from '@mantine/core'
-import axios from 'axios'
 
 export const LoginGoogle = () => {
 	const [loading, setLoading] = useState(false)

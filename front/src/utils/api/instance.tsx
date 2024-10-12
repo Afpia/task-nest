@@ -5,7 +5,7 @@ export const api = axios.create({
 	withCredentials: true
 })
 
-api.interceptors.request.use(config => {
+api.interceptors.request.use((config) => {
 	config.headers.Authorization = `Bearer 123131312`
 	return config
 })

@@ -1,9 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Notifications } from '@mantine/notifications'
-import { ModalsProvider } from '@mantine/modals'
-import { createTheme, Input, type MantineColorsTuple, MantineProvider } from '@mantine/core'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+
+import { createTheme, Input, type MantineColorsTuple, MantineProvider } from '@mantine/core'
+import { ModalsProvider } from '@mantine/modals'
+import { Notifications } from '@mantine/notifications'
 import { Router } from '@providers/router/router'
 
 import '@mantine/notifications/styles.css'
@@ -28,9 +29,9 @@ const theme = createTheme({
 	},
 	components: {
 		Input: Input.extend({
-			styles: theme => ({
+			styles: (style) => ({
 				input: {
-					borderColor: theme.colors.pink[3]
+					borderColor: style.colors.pink[3]
 				}
 			})
 		})

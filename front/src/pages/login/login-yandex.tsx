@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Button } from '@mantine/core'
+
 import { Yandex } from '@assets/svg/yandex'
+import { Button } from '@mantine/core'
 
 export const LoginYandex = () => {
 	const [loading, setLoading] = useState(false)

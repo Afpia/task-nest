@@ -1,7 +1,8 @@
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+
 import { Github } from '@assets/svg/github'
 import { Button } from '@mantine/core'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
 
 export const LoginGithub = () => {
 	const [loading, setLoading] = useState(false)

@@ -1,5 +1,6 @@
-import { ROUTES } from '@utils/constants/ROUTES'
 import { Navigate, Outlet } from 'react-router-dom'
+
+import { ROUTES } from '@utils/constants/ROUTES'
 
 export const PrivateRouter = () => {
 	// const { session } = useAuth();

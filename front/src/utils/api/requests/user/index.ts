@@ -1,11 +1,11 @@
 import { api } from '@utils/api/instance'
 
-interface UserRequest {
+export interface UserRequest {
 	email: string
 	password: string
 }
 
-interface UserResponse {
+export interface UserResponse {
 	id: number
 	name: string
 	email: string

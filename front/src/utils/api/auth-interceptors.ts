@@ -1,31 +1,33 @@
+import type { Dispatch, SetStateAction } from 'react'
 import { isAxiosError } from 'axios'
-import { Dispatch, SetStateAction } from 'react'
+
+import type { UseFormReturnType } from '@mantine/form'
+
 import { api } from './instance'
-import { UseFormReturnType } from '@mantine/form'
 
 export const AuthInterceptors = <T extends Record<string, string>>(
 	loadingSetter: Dispatch<SetStateAction<boolean>>,
 	form?: UseFormReturnType<T>
 ) => {
-	// TODO: mb axios вместо api
+	// MB: axios вместо api
 	api.interceptors.request.use(
-		config => {
+		(config) => {
 			loadingSetter(true)
 			return config
 		},
-		error => {
+		(error) => {
 			loadingSetter(false)
 			return Promise.reject(error)
 		}
 	)
 
 	api.interceptors.response.use(
-		response => {
+		(response) => {
 			loadingSetter(false)
 			console.log(response)
 			return response
 		},
-		error => {
+		(error) => {
 			loadingSetter(false)
 			if (isAxiosError(error)) {
 				console.log(error.config, 'error Axios')
