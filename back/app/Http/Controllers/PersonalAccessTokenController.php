@@ -23,6 +23,5 @@ class PersonalAccessTokenController extends Controller
         }
 
         return ['token' => $user->createToken($request->email)->plainTextToken];
-
     }
 }
