@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Button, PasswordInput, TextInput } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
 import { AuthInterceptors } from '@utils/api/auth-interceptors'
-import { postUser, type UserRequest } from '@utils/api/requests/user'
+import { postUser, type UserRequest } from '@utils/api/requests/auth'
 import { schema } from '@utils/schemes/schemes-login'
 
 export const LoginForm = () => {

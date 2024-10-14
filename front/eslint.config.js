@@ -1,3 +1,3 @@
 import { eslint } from '@afpia/eslint'
 
-export default eslint({ jsxA11y: true, typescript: true, jsx: true, react: true })
+export default eslint({ typescript: true, jsx: true, jsxA11y: true, react: true })

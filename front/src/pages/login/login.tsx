@@ -1,10 +1,8 @@
 import video from '@assets/video/login.mp4'
 import { Container, Divider, Flex, Title } from '@mantine/core'
 
+import { LoginButton } from './login-button'
 import { LoginForm } from './login-form'
-import { LoginGithub } from './login-github'
-import { LoginGoogle } from './login-google'
-import { LoginYandex } from './login-yandex'
 
 export const Login = () => (
 	<Flex>
@@ -14,15 +12,12 @@ export const Login = () => (
 					Регистрация в TaskNest
 				</Title>
 				<Flex justify='space-between'>
-					<LoginGithub />
-					<LoginYandex />
-					<LoginGoogle />
+					<LoginButton type='github' />
+					<LoginButton type='yandex' />
+					<LoginButton type='google' />
 				</Flex>
 				<Divider my='lg' label='или войти с помощью аккаунта' labelPosition='center' />
 				<LoginForm />
-				{/* <Text ta='center' pt={12}>
-						Ещё нет аккаунта? <Link to={ROUTES.SIGNUP}>Регистрация</Link>
-					</Text> */}
 			</Container>
 		</Flex>
 		<video style={{ width: '50vw', height: '100vh', objectFit: 'cover' }} playsInline src={video} autoPlay loop muted />
