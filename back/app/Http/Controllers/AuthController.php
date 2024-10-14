@@ -43,6 +43,6 @@ class AuthController extends Controller
             return response()->json(['access_token' => $token, 'user' => $user]);
         }
 
-        return response()->json(['message' => 'Invalid credentials'], 401);
+        return response()->json(['message' => 'неверный логин или пароль'], 401);
     }
 }
