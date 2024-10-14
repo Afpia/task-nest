@@ -1,9 +1,10 @@
 import { useState } from 'react'
+
 import { Button, PasswordInput, TextInput } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
-import { postUser } from '@utils/api/requests/user'
-import { schema } from '@utils/schemes/schemes-login'
 import { AuthInterceptors } from '@utils/api/auth-interceptors'
+import { postUser, type UserRequest } from '@utils/api/requests/auth'
+import { schema } from '@utils/schemes/schemes-login'
 
 export const LoginForm = () => {
 	const [loading, setLoading] = useState(false)
@@ -14,13 +15,13 @@ export const LoginForm = () => {
 		validate: zodResolver(schema)
 	})
 
-	const submit = async (values: { email: string; password: string }) => {
+	const submit = async (values: UserRequest) => {
 		AuthInterceptors(setLoading, form)
-		const data = await postUser({ data: { email: values.email, password: values.password } })
+		await postUser({ data: { email: values.email, password: values.password } })
 	}
 
 	return (
-		<form onSubmit={form.onSubmit(values => submit(values))}>
+		<form onSubmit={form.onSubmit((values) => submit(values))}>
 			<TextInput {...form.getInputProps('email')} label='Почта' size='lg' radius='md' mb={14} disabled={loading} />
 			<PasswordInput {...form.getInputProps('password')} label='Пароль' radius='md' size='lg' disabled={loading} />
 			<Button type='submit' mt={28} w={400} variant='filled' color='pink' size='lg' radius='xl' h={50} loading={loading}>
