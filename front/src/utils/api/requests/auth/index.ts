@@ -20,12 +20,12 @@ export type GetLoginConfig = AxiosRequestConfig<undefined, undefined>
 export type PostUserConfig = AxiosRequestConfig<undefined, UserRequest>
 
 export const getGithubToken = async (requestConfig?: GetLoginConfig) =>
-	api.post<UserResponse>('auth/github/redirect', requestConfig)
+	api.get<UserResponse>('auth/github/redirect', requestConfig)
 
 export const getGoogleToken = async (requestConfig?: GetLoginConfig) =>
-	api.post<UserResponse>('auth/google/redirect', requestConfig)
+	api.get<UserResponse>('auth/google/redirect', requestConfig)
 
 export const getYandexToken = async (requestConfig?: GetLoginConfig) =>
-	api.post<UserResponse>('auth/yandex/redirect', requestConfig)
+	api.get<UserResponse>('auth/yandex/redirect', requestConfig)
 
 export const postUser = async (requestConfig?: PostUserConfig) => api.post<UserResponse>('login', requestConfig)
