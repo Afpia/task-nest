@@ -47,4 +47,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserProvider::class);
     }
+
+    public function managedProjects()
+    {
+        return $this->hasMany(Project::class); // Предполагаем, что поле user_id в projects связывает пользователя с проектом как руководителя
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }
