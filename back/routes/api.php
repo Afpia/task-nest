@@ -19,9 +19,9 @@ Route::get('auth/{provider}/redirect', [AuthController::class, 'redirectToProvid
 Route::get('auth/{provider}/callback', [AuthController::class, 'handleProviderCallback']);
 
 Route::get('/projects', [ProjectController::class, 'index']);
+Route::post('/project/add', [ProjectController::class, 'store']);
 Route::get('/project/{project}', [ProjectController::class, 'view']);
 Route::get('/user/{user}/projects', [ProjectController::class, 'userProjects']);
-Route::post('/project/add', [ProjectController::class, 'store']);
 Route::put('/project/update', [ProjectController::class, 'update']);
 
 

@@ -9,6 +9,16 @@ class Project extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'description',
+        'start_date',
+        'end_date',
+        'status',
+        'remaining_days',
+        'user_id'
+    ];
+
     public function tasks()
     {
         return $this->hasMany(Task::class);

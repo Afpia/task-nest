@@ -21,10 +21,7 @@ class AuthController extends Controller
         $user = User::where('email', $socialUser->getEmail())->first();
 
         if (!$user) {
-            $user = User::create([
-                'name' => $socialUser->getName(),
-                'email' => $socialUser->getEmail(),
-            ]);
+            return response()->json(['massage' => 'такого пользователя не существует']);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;

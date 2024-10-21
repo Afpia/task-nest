@@ -46,7 +46,9 @@ class ProjectController extends Controller
         $validated = $request->validate(self::PROJECT_VALIDATOR);
 
         $endDate = Carbon::parse($request->end_date);
-        $remainingDays = $endDate->diffInDays(Carbon::now(), 1);
+        $remainingDays = $endDate->diffInDays(Carbon::now(), 1) + 1;
+
+
 
         $project = Project::create([
             'title' => $validated['title'],
