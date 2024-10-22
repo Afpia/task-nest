@@ -1,0 +1,30 @@
+.root {
+	border-radius: 8px;
+}
+
+.title {
+	text-align: center;
+}
+
+.search {
+	text-align: left;
+}
+
+.borderRight {
+	border-right: 1px solid #424242;
+}
+
+.switch {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.switchText {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.switchButton {
+	cursor: pointer !important;
+}

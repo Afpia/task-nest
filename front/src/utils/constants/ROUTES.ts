@@ -1,6 +1,6 @@
 export const ROUTES = {
 	MAIN: '/',
 	LOGIN: '/login',
-	SIGNUP: '/signup',
-	PROFILE: '/profile'
+	PROFILE: '/profile',
+	ANALYTICS: '/analytics'
 }
