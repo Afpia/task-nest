@@ -1,13 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { GoogleOAuthProvider } from '@react-oauth/google'
 
-import { createTheme, Input, type MantineColorsTuple, MantineProvider } from '@mantine/core'
+import { createTheme, Input, type MantineColorsTuple, MantineProvider, NavLink } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
 import { Router } from '@providers/router/router'
 
 import '@mantine/notifications/styles.css'
+import '@mantine/spotlight/styles.css'
 import '@mantine/core/styles.css'
 
 const myColor: MantineColorsTuple = [
@@ -27,11 +27,23 @@ const theme = createTheme({
 	colors: {
 		pink: myColor
 	},
+	primaryColor: 'pink',
 	components: {
 		Input: Input.extend({
 			styles: (style) => ({
 				input: {
 					borderColor: style.colors.pink[3]
+				}
+			})
+		}),
+		NavLink: NavLink.extend({
+			styles: (style, { active }) => ({
+				root: {
+					// eslint-disable-next-line style/quote-props
+					backgroundColor: active ? style.colors.pink[5] : undefined,
+					'&:hover': {
+						backgroundColor: style.colors.gray[2]
+					}
 				}
 			})
 		})
@@ -40,13 +52,11 @@ const theme = createTheme({
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
-			<MantineProvider theme={theme} defaultColorScheme='auto'>
-				<ModalsProvider>
-					<Notifications />
-					<Router />
-				</ModalsProvider>
-			</MantineProvider>
-		</GoogleOAuthProvider>
+		<MantineProvider theme={theme} defaultColorScheme='auto'>
+			<ModalsProvider>
+				<Notifications />
+				<Router />
+			</ModalsProvider>
+		</MantineProvider>
 	</StrictMode>
 )
