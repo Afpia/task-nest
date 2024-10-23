@@ -8,7 +8,7 @@ export const Header = () => {
 	return (
 		<Flex w='100%' h={70} p={10} style={{ borderBottom: `1px solid ${theme.colors.pink[4]}` }} align='center'>
 			<Title pl={10} order={1} c={theme.colors.pink[4]}>
-				TaskNest
+				{/* TaskNest */}
 			</Title>
 		</Flex>
 	)
