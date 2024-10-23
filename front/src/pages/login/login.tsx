@@ -9,7 +9,7 @@ export const Login = () => (
 		<Flex gap='xs' h='100vh' w='50vw' justify='center' align='center' direction='column'>
 			<Container size='xs'>
 				<Title order={1} pb={26}>
-					Регистрация в TaskNest
+					Вход в TaskNest
 				</Title>
 				<Flex justify='space-between'>
 					<LoginButton type='github' />

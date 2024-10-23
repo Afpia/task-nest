@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import { Search } from 'lucide-react'
 
-import { Button, Kbd, NavLink, Text } from '@mantine/core'
+import { Button, Kbd, Text } from '@mantine/core'
 import { Spotlight, spotlight } from '@mantine/spotlight'
 
 import styles from './sidebar.module.css'
@@ -27,53 +26,31 @@ const actions = [
 	}
 ]
 
-export const SidebarSearch = () => {
-	const [active, setActive] = useState(false)
-
-	const spotlightOpen = () => {
-		spotlight.open()
-		setActive(true)
-	}
-
-	return (
-		<>
-			<Button
-				fullWidth
-				variant='outline'
-				leftSection={<Search />}
-				styles={() => ({
-					root: {
-						'&:hover': {
-							backgroundColor: 'none'
-						}
-					}
-				})}
-				justify='left'
-				className={styles.root}
-				radius='md'
-				onClick={spotlightOpen}
-				rightSection={<Kbd size='xs'>Ctrl + P</Kbd>}
-			>
-				<Text w={80} className={styles.search}>
-					Поиск
-				</Text>
-			</Button>
-			<Spotlight
-				actions={actions}
-				nothingFound='Ничего не найдено...'
-				highlightQuery
-				searchProps={{
-					leftSection: <Search />,
-					placeholder: 'Поиск...'
-				}}
-				shortcut={['mod + K', 'mod + P', '/']}
-				onSpotlightClose={() => {
-					setActive(false)
-				}}
-				onSpotlightOpen={() => {
-					setActive(true)
-				}}
-			/>
-		</>
-	)
-}
+export const SidebarSearch = () => (
+	<>
+		<Button
+			fullWidth
+			variant='outline'
+			leftSection={<Search />}
+			justify='left'
+			className={styles.searchInput}
+			radius='md'
+			onClick={spotlight.open}
+			rightSection={<Kbd size='xs'>Ctrl + K</Kbd>}
+		>
+			<Text w={80} className={styles.search}>
+				Поиск
+			</Text>
+		</Button>
+		<Spotlight
+			actions={actions}
+			nothingFound='Ничего не найдено...'
+			highlightQuery
+			searchProps={{
+				leftSection: <Search />,
+				placeholder: 'Поиск...'
+			}}
+			shortcut={['mod + K', 'mod + P']}
+		/>
+	</>
+)
