@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PersonalAccessTokenController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -23,6 +24,8 @@ Route::post('/project/add', [ProjectController::class, 'store']);
 Route::get('/project/{project}', [ProjectController::class, 'view']);
 Route::get('/user/{user}/projects', [ProjectController::class, 'userProjects']);
 Route::put('/project/update', [ProjectController::class, 'update']);
+
+Route::get('/task/{task}', [TaskController::class, 'view']);
 
 
 
