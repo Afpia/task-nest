@@ -21,12 +21,12 @@ class AuthController extends Controller
         $user = User::where('email', $socialUser->getEmail())->first();
 
         if (!$user) {
-            return response()->json(['massage' => 'такого пользователя не существует']);
+            redirect('http://localhost:5173/login', 401, ['massage' => 'такого пользователя не существует']);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['access_token' => $token, 'user' => $user]);
+        redirect('http://localhost:5173/login', 200, ['access_token' => $token, 'user' => $user]);
     }
 
     public function login(Request $request)
