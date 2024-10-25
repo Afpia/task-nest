@@ -1,0 +1,9 @@
+.search {
+	text-align: left;
+}
+
+.search__input {
+	border-radius: 8px;
+	background: none;
+	color: white;
+}
