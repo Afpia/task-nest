@@ -2,6 +2,8 @@ import type { FC } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import { Flex } from '@mantine/core'
+import { Header } from '@widgets/header'
+import { Sidebar } from '@widgets/sidebar'
 
 import styles from './ui.module.css'
 

@@ -15,7 +15,6 @@
 			"@shared/*": ["src/shared/*"],
 			"@widgets/*": ["src/widgets/*"],
 			"@features/*": ["src/features/*"],
-			"@providers/*": ["src/app/providers/*"],
 			"@pages/*": ["src/pages/*"],
 			"@assets/*": ["src/app/assets/*"]
 		},

@@ -1,6 +1,6 @@
-import { Flex, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Flex, useMantineTheme } from '@mantine/core'
 
-import styles from './home.module.css'
+import styles from './ui.module.css'
 
 export const Home = () => {
 	const theme = useMantineTheme()

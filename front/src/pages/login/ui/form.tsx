@@ -2,10 +2,10 @@ import { useState } from 'react'
 
 import { Button, PasswordInput, TextInput } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
-import { auth } from '@shared/schemes'
 
 import { postUser } from '../api'
 import type { UserRequest } from '../api/types'
+import { auth } from '../model'
 
 export const LoginForm = () => {
 	const [loading, setLoading] = useState(false)
@@ -17,7 +17,7 @@ export const LoginForm = () => {
 	})
 
 	const submit = async (values: UserRequest) => {
-		AuthInterceptors(setLoading, form)
+		// AuthInterceptors(setLoading, form)
 		await postUser({ data: { email: values.email, password: values.password } })
 	}
 

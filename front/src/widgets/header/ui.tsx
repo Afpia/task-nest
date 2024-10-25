@@ -5,7 +5,7 @@ import { SidebarSearch } from '@features/search'
 import { Avatar, Divider, Flex, Text, Title, useMantineTheme } from '@mantine/core'
 import { routes } from '@shared/config'
 
-import styles from './header.module.css'
+import styles from './ui.module.css'
 
 export const Header = () => {
 	const theme = useMantineTheme()

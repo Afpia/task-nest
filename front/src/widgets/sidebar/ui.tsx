@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { ChartNoAxesCombined, CircleCheck, CirclePlus, CircleUserRound, House, Moon, Settings, Sun } from 'lucide-react'
-import { Loading } from 'src/app/assets/svg'
+import { ChartNoAxesCombined, CircleCheck, CirclePlus, House, Moon, Sun } from 'lucide-react'
 
 import { Box, Divider, Flex, NavLink, Switch, Text, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { AuthInterceptors } from '@utils/api/auth-interceptors'
-import { getUserProjects, type ProjectsResponse } from '@utils/api/requests'
 
-import styles from './sidebar.module.css'
+import { getUserProjectsModel } from './model'
+
+import styles from './ui.module.css'
+import { Loading } from '@app/assets/svg'
 
 // const data = [
 // 	{
@@ -75,20 +75,16 @@ import styles from './sidebar.module.css'
 
 export const Sidebar = () => {
 	const { colorScheme, toggleColorScheme } = useMantineColorScheme()
-	const [loading, setLoading] = useState(false)
-	const [data, setData] = useState([])
 	const isDark = colorScheme === 'dark'
 	const pathname = useLocation().pathname
 	const theme = useMantineTheme()
+	// const { favorites, pending } = useUnit({
+	// 	favorites: getUserProjectsModel.$data,
+	// 	pending: getUserProjectsModel.$pending
+	// })
 
 	useEffect(() => {
-		AuthInterceptors(setLoading)
-		const fetchData = async () => {
-			const response = await getUserProjects({ params: { user_id: 1 } })
-			console.log(response.data)
-			setData(response.data)
-		}
-		fetchData()
+		// AuthInterceptors(setLoading)
 	}, [])
 
 	const openModal = () =>
@@ -143,7 +139,7 @@ export const Sidebar = () => {
 					<CirclePlus size='16' className={styles.addProject} onClick={openModal} />
 				</Flex>
 				<Flex direction='column' gap='xs' h='100%' wrap='wrap' align='center' justify='center'>
-					{data
+					{/* {data
 						?.slice(0, 11)
 						?.map((item: ProjectsResponse) => (
 							<NavLink
@@ -155,19 +151,13 @@ export const Sidebar = () => {
 								className={styles.item}
 								active={pathname === `/${item.id}`}
 							/>
-						))}
+						))} */}
 				</Flex>
 			</Flex>
 			<Flex align='center' justify='center'>
-				{loading && <Loading />}
+				{/* {loading && <Loading />} */}
 			</Flex>
 			<Box mb={10}>
-				{/* <Text className={styles.settings} ml={10}>
-					<Link to='settings' className={styles.switchText}>
-						<Settings />
-						Настройки
-					</Link>
-				</Text> */}
 				<Divider my='lg' variant='dashed' />
 				<Box className={styles.switch}>
 					<Text className={styles.switchText} ml={10}>

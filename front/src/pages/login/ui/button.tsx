@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Github, Google, Yandex } from 'src/app/assets/svg'
 
+import { Github, Google, Yandex } from '@app/assets/svg'
 import { Button } from '@mantine/core'
 
 import { redirect } from '../config'
