@@ -17,6 +17,10 @@ Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
 
+Route::get('/login', function () {
+    return response()->json(['message' => 'не верный токен авторизации'], 401);
+});
+
 // Route::view('/', 'welcome');
 
 require __DIR__ . '/auth.php';

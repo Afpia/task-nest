@@ -2,26 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DisposableToken;
 use App\Models\User;
 use Dotenv\Exception\ValidationException;
 use Hash;
 use Illuminate\Http\Request;
+use Str;
 
 class PersonalAccessTokenController extends Controller
 {
-    public function store(Request $request)
+    public function createToken($user_id)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+        $token = Str::random(32);
+
+        DisposableToken::create([
+            'user' => $user_id,
+            'token' => Hash::make($token)
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        return $token;
+    }
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return json_encode('неверныый логин или пароль');
+    public function checkToken(Request $request)
+    {
+        $token = $request->token;
+        $users = User::all();
+
+        foreach ($users as $user) {
+            if (Hash::check($token, $user->token)) {
+                $token = $user->createToken('auth_token')->plainTextToken;
+
+                return response()->json(['access_token' => $token, 'user' => $user], 200);
+            }
         }
 
-        return ['token' => $user->createToken($request->email)->plainTextToken];
+        return response()->json(['message' => 'Токен устарел'], 401);
+    }
+
+    public function destroy(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
     }
 }

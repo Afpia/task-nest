@@ -30,8 +30,10 @@ class ProjectController extends Controller
         return response()->json($project);
     }
 
-    public function userProjects(User $user)
+    public function userProjects(Request $request)
     {
+        $user = $request->user();
+
         $projects = $user->role === 'Исполнитель'
             ? Project::whereHas('tasks', function ($query) use ($user) {
                 $query->where('user_id', $user->id);

@@ -23,7 +23,6 @@ return new class extends Migration {
             $table->enum('priority', ['Низкий', 'Средний', 'Высокий']);
             $table->date('start_date');
             $table->date('end_date');
-            $table->integer('remaining_days');
             $table->enum('status', ['Назначена', 'Выполняется', 'Завершена']);
             $table->timestamps();
         });

@@ -16,12 +16,10 @@ return new class extends Migration {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->date('start_date');
             $table->date('end_date');
             $table->enum('status', ['Создан', 'В процессе', 'Завершён']);
-            $table->integer('remaining_days');
-            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -34,7 +34,7 @@ export const LoginButton = ({ type }: LoginButtonProps) => {
 	}
 
 	useEffect(() => {
-		const queryHash = window.location.hash
+		const queryHash = window.location.search
 		const params = new URLSearchParams(queryHash.substring(1))
 
 		// if (type === 'yandex') {
@@ -42,6 +42,7 @@ export const LoginButton = ({ type }: LoginButtonProps) => {
 		// window.history.replaceState({}, document.title, window.location.pathname)
 
 		// TODO: вынести в requests
+		console.log(queryHash)
 		const postData = async () => {
 			const { data } = await api.post(`accessUser`, {
 				data: {
