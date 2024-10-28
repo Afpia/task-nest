@@ -19,8 +19,18 @@ export const Header = () => {
 	}
 
 	return (
-		<Flex w='100%' h={80} p={10} mt={10} align='center' justify='space-between' bg={theme.white} className={styles.header}>
-			<Flex direction='column' pl={10}>
+		<Flex
+			w='100%'
+			h={80}
+			px={20}
+			py={10}
+			mt={10}
+			align='center'
+			justify='space-between'
+			bg={theme.white}
+			className={styles.header}
+		>
+			<Flex direction='column'>
 				<Title order={1} size={28} c={theme.colors.dark[6]}>
 					{pageInfo[location.pathname].title}
 				</Title>

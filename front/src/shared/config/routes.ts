@@ -3,5 +3,6 @@ export const routes = {
 	LOGIN: '/login',
 	PROFILE: '/profile',
 	ANALYTICS: '/analytics',
-	SETTINGS: '/settings'
+	SETTINGS: '/settings',
+	NOTICES: '/notices'
 }

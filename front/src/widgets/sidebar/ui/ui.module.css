@@ -1,5 +1,9 @@
 .root {
-	border-radius: 8px;
+	border-radius: 10px !important;
+}
+
+.root select {
+	border-radius: 10px !important;
 }
 
 .title {
@@ -19,25 +23,6 @@
 	border-right: 1px solid #424242;
 }
 
-.switch {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
-
-.switchText {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-}
-
-.switchButton div {
-	cursor: pointer !important;
-}
-
-.item {
-	border-radius: 8px;
-}
 .item span {
 	font-size: 16px;
 }

@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useUnit } from 'effector-react'
-import { ChartNoAxesCombined, CircleCheck, CirclePlus, House, Moon, Sun } from 'lucide-react'
+import { Bell, ChartNoAxesCombined, CircleCheck, CirclePlus, House } from 'lucide-react'
 
 import { Loading } from '@app/assets/svg'
-import { Box, Divider, Flex, NavLink, Switch, Text, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Divider, Flex, NativeSelect, NavLink, Skeleton, Title, useMantineTheme } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { routes } from '@shared/config'
 
-import { getUserProjectsModel } from './model'
+import { getUserProjectsModel } from '../model'
+
+import { SwitchTheme } from './switch-theme'
 
 import styles from './ui.module.css'
 
@@ -76,8 +78,6 @@ import styles from './ui.module.css'
 // ]
 
 export const Sidebar = () => {
-	const { colorScheme, toggleColorScheme } = useMantineColorScheme()
-	const isDark = colorScheme === 'dark'
 	const pathname = useLocation().pathname
 	const theme = useMantineTheme()
 
@@ -100,6 +100,13 @@ export const Sidebar = () => {
 					<Link to='/'>TaskNest</Link>
 				</Title>
 				<Divider my='sm' variant='dashed' />
+				<NativeSelect
+					// value={value}
+					// onChange={(event) => setValue(event.currentTarget.value)}
+					className={styles.root}
+					data={['Default', '1', '2', '3']}
+				/>
+				<Divider my='sm' variant='dashed' />
 				<Flex direction='column' gap='xs'>
 					<NavLink
 						component={Link}
@@ -109,6 +116,15 @@ export const Sidebar = () => {
 						leftSection={<House />}
 						className={styles.root}
 						active={pathname === routes.MAIN}
+					/>
+					<NavLink
+						component={Link}
+						to={routes.NOTICES}
+						label='Уведомления'
+						variant='filled'
+						leftSection={<Bell />}
+						className={styles.root}
+						active={pathname === routes.NOTICES}
 					/>
 					<NavLink
 						component={Link}
@@ -138,33 +154,24 @@ export const Sidebar = () => {
 				</Flex>
 				<Flex direction='column' gap='xs' h='100%' wrap='wrap' align='center' justify='center'>
 					{/* {data
-						?.slice(0, 11)
-						?.map((item: ProjectsResponse) => (
+						?.slice(0, 9)
+						?.map((item) => (
 							<NavLink
 								key={item.id}
 								component={Link}
 								to={`/${item.id}`}
 								label={`#${item.id} ${item.title}`}
 								variant='filled'
-								className={styles.item}
+								className={styles.root}
 								active={pathname === `/${item.id}`}
 							/>
 						))} */}
 				</Flex>
 			</Flex>
-			<Flex align='center' justify='center'>
-				{/* {loading && <Loading />} */}
+			<Flex align='center' justify='center' direction='column' gap='xs'>
+				{/* {true && Array.from({ length: 9 }, (_, index) => <Skeleton key={index} height={41} radius='10' />)} */}
 			</Flex>
-			<Box mb={10}>
-				<Divider my='lg' variant='dashed' />
-				<Box className={styles.switch}>
-					<Text className={styles.switchText} ml={10}>
-						{isDark ? <Moon /> : <Sun />}
-						{isDark ? 'Темная тема' : 'Светлая тема'}
-					</Text>
-					<Switch className={styles.switchButton} color='pink' onClick={toggleColorScheme} checked={isDark} size='md' />
-				</Box>
-			</Box>
+			<SwitchTheme />
 		</Flex>
 	)
 }
