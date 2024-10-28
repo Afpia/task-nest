@@ -7,8 +7,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const [session, setSession] = useState<SessionField>(
 		(JSON.parse(localStorage.getItem('session') as string) as SessionField) || {
 			isLogin: false,
-			userId: '',
-			accessToken: ''
+			accessToken: '',
+			user: {}
 		}
 	)
 

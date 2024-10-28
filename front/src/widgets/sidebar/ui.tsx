@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useUnit } from 'effector-react'
 import { ChartNoAxesCombined, CircleCheck, CirclePlus, House, Moon, Sun } from 'lucide-react'
 
+import { Loading } from '@app/assets/svg'
 import { Box, Divider, Flex, NavLink, Switch, Text, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { modals } from '@mantine/modals'
+import { routes } from '@shared/config'
 
 import { getUserProjectsModel } from './model'
 
 import styles from './ui.module.css'
-import { Loading } from '@app/assets/svg'
 
 // const data = [
 // 	{
@@ -78,10 +80,6 @@ export const Sidebar = () => {
 	const isDark = colorScheme === 'dark'
 	const pathname = useLocation().pathname
 	const theme = useMantineTheme()
-	// const { favorites, pending } = useUnit({
-	// 	favorites: getUserProjectsModel.$data,
-	// 	pending: getUserProjectsModel.$pending
-	// })
 
 	useEffect(() => {
 		// AuthInterceptors(setLoading)
@@ -105,12 +103,12 @@ export const Sidebar = () => {
 				<Flex direction='column' gap='xs'>
 					<NavLink
 						component={Link}
-						to='/'
+						to={routes.MAIN}
 						label='Главная'
 						variant='filled'
 						leftSection={<House />}
 						className={styles.root}
-						active={pathname === '/'}
+						active={pathname === routes.MAIN}
 					/>
 					<NavLink
 						component={Link}
@@ -123,12 +121,12 @@ export const Sidebar = () => {
 					/>
 					<NavLink
 						component={Link}
-						to='/analytics'
+						to={routes.ANALYTICS}
 						label='Аналитика'
 						variant='filled'
 						leftSection={<ChartNoAxesCombined />}
 						className={styles.root}
-						active={pathname === '/analytics'}
+						active={pathname === routes.ANALYTICS}
 					/>
 				</Flex>
 				<Divider my='sm' variant='dashed' />

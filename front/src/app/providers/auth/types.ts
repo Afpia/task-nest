@@ -1,11 +1,13 @@
+import type { UserResponse } from '@shared/types'
+
 export interface AuthProviderProps {
 	children: React.ReactNode
 }
 
 export interface SessionField {
 	isLogin: boolean
-	userId: string
 	accessToken: string
+	user: Partial<UserResponse>
 }
 
 export interface AuthProviderState {

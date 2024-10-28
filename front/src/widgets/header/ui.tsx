@@ -14,20 +14,12 @@ export const Header = () => {
 	const pageInfo = {
 		[routes.MAIN]: { title: 'Главная', subtitle: 'Контролируйте все свои проекты и задачи здесь' },
 		[routes.SETTINGS]: { title: 'Настройки', subtitle: 'Настройте свой профиль и предпочтения' },
-		[routes.PROFILE]: { title: 'Профиль', subtitle: 'Просмотр и редактирование профиля' }
+		[routes.PROFILE]: { title: 'Профиль', subtitle: 'Просмотр и редактирование профиля' },
+		[routes.ANALYTICS]: { title: 'Аналитика', subtitle: '' }
 	}
 
 	return (
-		<Flex
-			w='100%'
-			h={80}
-			p={10}
-			mt={10}
-			align='center'
-			justify='space-between'
-			bg={theme.colors.gray[3]}
-			className={styles.header}
-		>
+		<Flex w='100%' h={80} p={10} mt={10} align='center' justify='space-between' bg={theme.white} className={styles.header}>
 			<Flex direction='column' pl={10}>
 				<Title order={1} size={28} c={theme.colors.dark[6]}>
 					{pageInfo[location.pathname].title}

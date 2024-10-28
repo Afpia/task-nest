@@ -1,6 +1,7 @@
 import { api } from '@shared/api'
+import type { UserResponse } from '@shared/types'
 
-import type { PostUserConfig, PostUserSocialConfig, UserResponse } from './types'
+import type { PostUserConfig, PostUserSocialConfig } from './types'
 
 export const postUser = async (requestConfig?: PostUserConfig) => api.post<UserResponse>('login', requestConfig)
 

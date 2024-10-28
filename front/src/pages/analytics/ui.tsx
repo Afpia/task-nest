@@ -1,1 +1,1 @@
-export const Analytics = () => <div>ui</div>
+export const Analytics = () => <div>Analytics</div>

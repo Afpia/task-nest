@@ -3,6 +3,7 @@ import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
 import { myColors } from '@shared/config'
 
+import { AuthProvider } from './providers/auth'
 import { Router } from './router'
 
 import '@mantine/notifications/styles.css'
@@ -39,8 +40,10 @@ const theme = createTheme({
 export const App = () => (
 	<MantineProvider theme={theme} defaultColorScheme='auto'>
 		<ModalsProvider>
-			<Notifications />
-			<Router />
+			<AuthProvider>
+				<Notifications />
+				<Router />
+			</AuthProvider>
 		</ModalsProvider>
 	</MantineProvider>
 )
