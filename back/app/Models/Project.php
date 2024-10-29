@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +16,6 @@ class Project extends Model
         'start_date',
         'end_date',
         'status',
-        'remaining_days',
         'user_id'
     ];
 
@@ -27,5 +27,27 @@ class Project extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function userProject()
+    {
+        return $this->hasMany(UserProject::class);
+    }
+    public function remainingDays()
+    {
+        $endDate = Carbon::parse($this->end_date);
+
+        return $endDate->diffInDays(Carbon::now(), 1) + 1;
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_projects')
+            ->withPivot('role');
+    }
+
+    public function isOwnedBy(User $user)
+    {
+        return $this->users()->where('user_id', $user->id)->exists();
     }
 }

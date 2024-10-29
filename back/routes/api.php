@@ -19,13 +19,16 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('auth/{provider}/redirect', [AuthController::class, 'redirectToProvider']);
 Route::get('auth/{provider}/callback', [AuthController::class, 'handleProviderCallback']);
 
-Route::get('/projects', [ProjectController::class, 'index'])->middleware('auth:sanctum');
-Route::post('/project/add', [ProjectController::class, 'store']);
-Route::get('/project/{project}', [ProjectController::class, 'view']);
-Route::get('/user/projects', [ProjectController::class, 'userProjects'])->middleware('auth:sanctum');
-Route::put('/project/update', [ProjectController::class, 'update']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/projects', [ProjectController::class, 'index']);
+    Route::post('/project/add', [ProjectController::class, 'store']);
+    Route::get('/project/{project}', [ProjectController::class, 'show']);
+    Route::get('/user/projects', [ProjectController::class, 'userProjects']);
+    Route::get('/project/{project}/users', [ProjectController::class, 'projectUsers']);
+    Route::put('/project/{project}/update', [ProjectController::class, 'update']);
+    Route::delete('/project/{project}/delete', [ProjectController::class, 'destroy']);
 
-Route::get('/task/{task}', [TaskController::class, 'view']);
-
+    Route::get('/task/{task}', [TaskController::class, 'view']);
+});
 
 
