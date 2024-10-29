@@ -1,4 +1,9 @@
 export interface UserResponse {
+	accessToken: string
+	user: UserFieldResponse
+}
+
+export interface UserFieldResponse {
 	id: number
 	name: string
 	email: string

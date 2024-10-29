@@ -1,4 +1,4 @@
-import type { UserResponse } from '@shared/types'
+import type { UserFieldResponse } from '@shared/types'
 
 export interface AuthProviderProps {
 	children: React.ReactNode
@@ -7,7 +7,7 @@ export interface AuthProviderProps {
 export interface SessionField {
 	isLogin: boolean
 	accessToken: string
-	user: Partial<UserResponse>
+	user: Partial<UserFieldResponse>
 }
 
 export interface AuthProviderState {

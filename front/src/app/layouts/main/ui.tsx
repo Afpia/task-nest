@@ -15,7 +15,7 @@ export const Layout: FC = () => {
 			<Sidebar />
 			<Flex direction='column' style={{ width: 'calc(100% - 230px)' }} className={styles.root} mr={10} mb={10}>
 				<Header />
-				<Box bg={theme.white} className={styles.layout} px={20}>
+				<Box bg={theme.white} className={styles.layout} p={20}>
 					<Outlet />
 				</Box>
 			</Flex>
