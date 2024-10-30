@@ -1,0 +1,16 @@
+.bottomBorder {
+	border-bottom: 1px solid #424242;
+}
+
+.header {
+	border-radius: 10px 10px 0 0;
+}
+
+.link {
+	text-decoration: none;
+}
+
+.linkSetting {
+	color: inherit;
+	height: 24px;
+}
