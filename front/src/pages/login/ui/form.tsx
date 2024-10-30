@@ -6,9 +6,12 @@ import { Button, PasswordInput, TextInput } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
 
 import { auth, loginErrors, loginFx, user } from '../model'
+import { useNavigate } from 'react-router-dom'
+import { routes } from '@shared/config'
 
 export const LoginForm = () => {
 	const [login, loading, error, data] = useUnit([loginFx, loginFx.pending, loginErrors, user])
+	const navigate = useNavigate()
 
 	const { setSession } = useAuth()
 
@@ -26,7 +29,8 @@ export const LoginForm = () => {
 
 	useEffect(() => {
 		if (data !== null) {
-			setSession({ isLogin: true, accessToken: data.accessToken, user: data.user })
+			setSession({ isLogin: true, accessToken: data.access_token, user: data.user })
+			navigate(routes.MAIN)
 		}
 	}, [data])
 

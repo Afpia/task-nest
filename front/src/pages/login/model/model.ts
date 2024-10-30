@@ -31,7 +31,7 @@ export const loginSocialFx = createEffect(postUserAccess)
 sample({
 	clock: loginFx.doneData,
 	fn: (data) => {
-		// redirect(routes.MAIN)
+		redirect(routes.MAIN)
 		notifySuccess({
 			title: 'Поздравляю',
 			message: 'Вы вошли в систему'

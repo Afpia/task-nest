@@ -169,7 +169,7 @@ export const Sidebar = () => {
 				</Flex>
 			</Flex>
 			<Flex align='center' justify='center' direction='column' gap='xs'>
-				{/* {true && Array.from({ length: 9 }, (_, index) => <Skeleton key={index} height={41} radius='10' />)} */}
+				{/* {true && Array.from({ length: 5 }, (_, index) => <Skeleton key={index} height={41} radius='10' />)} */}
 			</Flex>
 			<SwitchTheme />
 		</Flex>

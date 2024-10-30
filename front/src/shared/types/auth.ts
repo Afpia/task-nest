@@ -1,5 +1,5 @@
 export interface UserResponse {
-	accessToken: string
+	access_token: string
 	user: UserFieldResponse
 }
 
