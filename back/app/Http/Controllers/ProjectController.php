@@ -5,8 +5,6 @@ use App\Models\Project;
 use App\Models\User;
 use App\Services\ProjectService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-use Carbon\Carbon;
 
 class ProjectController extends Controller
 {
@@ -35,11 +33,11 @@ class ProjectController extends Controller
     {
         $this->authorize('view', $project);
 
-        $userRole = $this->projectService->getUserRoleInProject($project, auth()->user());
+        // $userRole = $this->projectService->getUserRoleInProject($project, auth()->user());
 
         return response()->json([
             'project' => $project,
-            'role' => $userRole,
+            // 'role' => $userRole,
         ]);
     }
 
@@ -78,6 +76,29 @@ class ProjectController extends Controller
         $this->authorize('delete', $project);
         $this->projectService->deleteProject($project);
 
-        return response()->json(['message' => 'Project deleted successfully'], 200);
+        return response()->json(['message' => 'Проект успешно удален'], 200);
     }
+
+    public function manageUserInProject(Request $request, Project $project)
+    {
+        $currentUser = $request->user();
+
+        $currentUserRole = $this->projectService->getUserRoleInProject($project, $currentUser);
+
+        if ($currentUserRole !== 'owner') {
+            return response()->json(['message' => 'Доступ запрещен. Только владелец может добавлять пользователей'], 403);
+        }
+
+        $userId = $request->user_id;
+        $role = $request->input('role', 'viewer');
+
+        if ($userId === $currentUser->id) {
+            return response()->json(['message' => 'Вы не можете изменить свою роль'], 403);
+        }
+
+        $this->projectService->attachUserToProject($project, $userId, $role);
+
+        return response()->json(['message' => 'Успешно'], 201);
+    }
+
 }

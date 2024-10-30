@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PersonalAccessTokenController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -21,12 +22,13 @@ Route::get('auth/{provider}/callback', [AuthController::class, 'handleProviderCa
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/projects', [ProjectController::class, 'index']);
-    Route::post('/project/add', [ProjectController::class, 'store']);
     Route::get('/project/{project}', [ProjectController::class, 'show']);
+    Route::post('/project/add', [ProjectController::class, 'store']);
     Route::get('/user/projects', [ProjectController::class, 'userProjects']);
     Route::get('/project/{project}/users', [ProjectController::class, 'projectUsers']);
     Route::put('/project/{project}/update', [ProjectController::class, 'update']);
     Route::delete('/project/{project}/delete', [ProjectController::class, 'destroy']);
+    Route::post('/project/{project}/manage-user', [ProjectController::class, 'manageUserInProject']);
 
     Route::get('/task/{task}', [TaskController::class, 'view']);
 });
