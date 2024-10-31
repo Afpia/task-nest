@@ -1,4 +1,4 @@
-import { createTheme, MantineProvider } from '@mantine/core'
+import { createTheme, MantineProvider, type MantineTheme } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
 import { myColors } from '@shared/config'
@@ -19,7 +19,7 @@ const theme = createTheme({
 	defaultGradient: { from: 'pink', to: 'blue' },
 	components: {
 		Anchor: {
-			styles: (style) => ({
+			styles: (style: MantineTheme) => ({
 				root: {
 					'&:hover': {
 						textDecoration: 'underline'
