@@ -22,8 +22,8 @@ export const loginModel = async () => {
 	// }
 }
 
-export const loginErrors = createStore<string | null>(null)
-export const user = createStore<UserResponse | null>(null)
+export const $loginErrors = createStore<string | null>(null)
+export const $user = createStore<UserResponse | null>(null)
 
 export const loginFx = createEffect(postUser)
 export const loginSocialFx = createEffect(postUserAccess)
@@ -38,7 +38,7 @@ sample({
 		})
 		return data
 	},
-	target: user
+	target: $user
 })
 
 sample({
@@ -51,5 +51,5 @@ sample({
 		})
 		return 'Неверная почта или пароль'
 	},
-	target: loginErrors
+	target: $loginErrors
 })

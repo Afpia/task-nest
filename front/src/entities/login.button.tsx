@@ -40,16 +40,7 @@ export const LoginButton = ({ type, variant, loadingProp }: LoginButtonProps) =>
 	}
 
 	return (
-		<Button
-			w={120}
-			variant={variant}
-			color='pink'
-			size='lg'
-			radius='lg'
-			onClick={callback}
-			h={50}
-			loading={loading[type] || loadingProp}
-		>
+		<Button w={120} variant={variant} size='lg' radius='lg' onClick={callback} h={50} loading={loading[type] || loadingProp}>
 			{getIcon()}
 		</Button>
 	)

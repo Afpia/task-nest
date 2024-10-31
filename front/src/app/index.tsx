@@ -9,12 +9,26 @@ import { Router } from './router'
 import '@mantine/notifications/styles.css'
 import '@mantine/spotlight/styles.css'
 import '@mantine/core/styles.css'
+import '@assets/styles/global.css'
 
 const theme = createTheme({
 	colors: {
 		pink: myColors
 	},
-	primaryColor: 'pink'
+	primaryColor: 'pink',
+	defaultGradient: { from: 'pink', to: 'blue' },
+	components: {
+		Anchor: {
+			styles: (style) => ({
+				root: {
+					'&:hover': {
+						textDecoration: 'underline'
+					},
+					color: style.colors.pink[1]
+				}
+			})
+		}
+	}
 	// components: {
 	// 	Input: Input.extend({
 	// 		styles: (style) => ({

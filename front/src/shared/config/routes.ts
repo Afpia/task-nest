@@ -5,5 +5,6 @@ export const routes = {
 	PROFILE: '/profile',
 	ANALYTICS: '/analytics',
 	SETTINGS: '/settings',
-	NOTICES: '/notices'
+	NOTICES: '/notices',
+	FORGOT_PASSWORD: '/forgot-password'
 }
