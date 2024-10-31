@@ -19,6 +19,16 @@ class Project extends Model
         'user_id'
     ];
 
+    public function workspace()
+    {
+        return $this->belongsTo(Workspace::class);
+    }
+
+    public function manager()
+    {
+        return $this->belongsTo(User::class, 'project_manager_id');
+    }
+
     public function tasks()
     {
         return $this->hasMany(Task::class);
@@ -27,11 +37,6 @@ class Project extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function userProject()
-    {
-        return $this->hasMany(UserProject::class);
     }
     public function remainingDays()
     {

@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'avatar_url'
     ];
 
     /**
@@ -43,11 +44,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function providers()
-    {
-        return $this->hasMany(UserProvider::class);
-    }
-
     public function managedProjects()
     {
         return $this->hasMany(Project::class); // Предполагаем, что поле user_id в projects связывает пользователя с проектом как руководителя
@@ -56,10 +52,5 @@ class User extends Authenticatable
     public function tasks()
     {
         return $this->hasMany(Task::class);
-    }
-
-    public function projects()
-    {
-        return $this->belongsToMany(Project::class, UserProject::class)->withPivot('role');
     }
 }

@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DisposableToken;
-use App\Models\User;
-use Auth;
-use Hash;
+use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Str;
 
 class AuthController extends Controller
 {
+    private $authService;
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
     public function redirectToProvider($provider)
     {
         return Socialite::driver($provider)->stateless()->redirect();
@@ -19,21 +23,7 @@ class AuthController extends Controller
 
     public function handleProviderCallback($provider)
     {
-        $socialUser = Socialite::driver($provider)->stateless()->user();
-
-        $user = User::where('email', $socialUser->getEmail())->first();
-
-        if (!$user) {
-            // return redirect('http://localhost:5173/login?error=401');
-
-            $user = User::create([
-                'name' => $socialUser->getName(),
-                'email' => $socialUser->getEmail(),
-            ]);
-        }
-        $token = $this->createToken($user->id);
-        // $token = $user->createToken('auth_token')->plainTextToken;
-
+        $token = $this->authService->handleSocialCallback($provider);
         return redirect("http://localhost:5173/login?access_token=$token");
     }
 
@@ -41,46 +31,35 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = $user->createToken('auth_token')->plainTextToken;
-
-            return response()->json(['access_token' => $token, 'user' => $user]);
+        try {
+            $token = $this->authService->login($credentials);
+            return response()->json(['access_token' => $token, 'user' => auth()->user()]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
         }
-
-        return response()->json(['message' => 'неверный логин или пароль'], 401);
     }
 
-    private function createToken($user_id)
+    public function register(Request $request)
     {
-        $token = Str::random(32);
-
-        DisposableToken::create([
-            'user_id' => $user_id,
-            'token' => Hash::make($token)
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:3',
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        return $token;
+        $user = $this->authService->register($validated);
+        return response()->json([
+            'access_token' => $user['access_token'],
+            'user' => $user['user'],
+        ], 201);
     }
 
     public function checkToken(Request $request)
     {
-        $token = $request->data['accessToken'];
+        $token = $request->input('accessToken');
 
-        $DisTokens = DisposableToken::all();
-
-        foreach ($DisTokens as $DisToken) {
-            if (Hash::check($token, $DisToken->token)) {
-                $user = User::where('id', $DisToken->user_id)->first();
-
-                $DisToken->delete();
-
-                $token = $user->createToken('auth_token')->plainTextToken;
-
-                return response()->json(['access_token' => $token, 'user' => $user], 200);
-            }
-        }
-
-        return response()->json(['message' => 'Токен устарел'], 401);
+        return $this->checkDisposableToken($token);
     }
 }
+

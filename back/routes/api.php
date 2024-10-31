@@ -5,6 +5,7 @@ use App\Http\Controllers\PersonalAccessTokenController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkspaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -14,13 +15,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('/accessUser', [AuthController::class, 'checkToken']);
 
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('auth/{provider}/redirect', [AuthController::class, 'redirectToProvider']);
 Route::get('auth/{provider}/callback', [AuthController::class, 'handleProviderCallback']);
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/workspaces', [WorkspaceController::class, 'index']);
+    Route::get('/workspace/{wprkspace}', [WorkspaceController::class, 'show']);
+    Route::post('/workspace/add', [WorkspaceController::class, 'store']);
+    Route::put('/workspace/{wprkspace}/update', [WorkspaceController::class, 'update']);
+    Route::delete('/project/{workspace}/delete', [WorkspaceController::class, 'destroy']);
+    Route::get('/workspace/{wprkspace}/users', [WorkspaceController::class, 'workspaceUsers']);
+    Route::post('/workspace/{workspace}/manage-user', [WorkspaceController::class, 'manageUserInWorkspace']);
+
     Route::get('/projects', [ProjectController::class, 'index']);
     Route::get('/project/{project}', [ProjectController::class, 'show']);
     Route::post('/project/add', [ProjectController::class, 'store']);

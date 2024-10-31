@@ -23,11 +23,11 @@ class ProjectController extends Controller
         $this->projectService = $projectService;
     }
 
-    public function index()
-    {
-        $projects = Project::all();
-        return response()->json($projects);
-    }
+    // public function index()
+    // {
+    //     $projects = Project::all();
+    //     return response()->json($projects);
+    // }
 
     public function show(Project $project)
     {
@@ -41,14 +41,14 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function userProjects(Request $request)
-    {
-        return response()->json($request->user()->projects);
-    }
+    // public function userProjects(Request $request)
+    // {
+    //     return response()->json($request->user()->projects);
+    // }
 
     public function projectUsers(Project $project)
     {
-        return response()->json($project->users);
+        // return response()->json($project->users);
     }
 
     public function store(Request $request)
@@ -79,26 +79,26 @@ class ProjectController extends Controller
         return response()->json(['message' => 'Проект успешно удален'], 200);
     }
 
-    public function manageUserInProject(Request $request, Project $project)
-    {
-        $currentUser = $request->user();
+    // public function manageUserInProject(Request $request, Project $project)
+    // {
+    //     $currentUser = $request->user();
 
-        $currentUserRole = $this->projectService->getUserRoleInProject($project, $currentUser);
+    //     $currentUserRole = $this->projectService->getUserRoleInProject($project, $currentUser);
 
-        if ($currentUserRole !== 'owner') {
-            return response()->json(['message' => 'Доступ запрещен. Только владелец может добавлять пользователей'], 403);
-        }
+    //     if ($currentUserRole !== 'owner') {
+    //         return response()->json(['message' => 'Доступ запрещен. Только владелец может добавлять пользователей'], 403);
+    //     }
 
-        $userId = $request->user_id;
-        $role = $request->input('role', 'viewer');
+    //     $userId = $request->user_id;
+    //     $role = $request->input('role', 'viewer');
 
-        if ($userId === $currentUser->id) {
-            return response()->json(['message' => 'Вы не можете изменить свою роль'], 403);
-        }
+    //     if ($userId === $currentUser->id) {
+    //         return response()->json(['message' => 'Вы не можете изменить свою роль'], 403);
+    //     }
 
-        $this->projectService->attachUserToProject($project, $userId, $role);
+    //     $this->projectService->attachUserToProject($project, $userId, $role);
 
-        return response()->json(['message' => 'Успешно'], 201);
-    }
+    //     return response()->json(['message' => 'Успешно'], 201);
+    // }
 
 }
