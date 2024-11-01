@@ -12,7 +12,6 @@ import { $loginErrors, $user, loginFx, LoginScheme } from '../model'
 export const LoginForm = () => {
 	const [login, loading, error, data] = useUnit([loginFx, loginFx.pending, $loginErrors, $user])
 	const navigate = useNavigate()
-
 	const { setSession } = useAuth()
 
 	const form = useForm({

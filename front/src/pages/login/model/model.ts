@@ -2,7 +2,6 @@ import { redirect } from 'react-router-dom'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 
 import { useAuth } from '@app/hooks/useAuth'
-import { notifications } from '@mantine/notifications'
 import { notifyError, notifySuccess, routes } from '@shared/config'
 import type { UserResponse } from '@shared/types'
 
@@ -31,7 +30,6 @@ export const loginSocialFx = createEffect(postUserAccess)
 sample({
 	clock: loginFx.doneData,
 	fn: (data) => {
-		redirect(routes.MAIN)
 		notifySuccess({
 			title: 'Поздравляю',
 			message: 'Вы вошли в систему'

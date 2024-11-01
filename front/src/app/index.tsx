@@ -11,7 +11,6 @@ import '@mantine/spotlight/styles.css'
 import '@mantine/core/styles.css'
 import '@assets/styles/global.css'
 
-// #1c1b22
 const theme = createTheme({
 	colors: {
 		pink: myColors
