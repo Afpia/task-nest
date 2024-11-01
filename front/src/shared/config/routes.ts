@@ -1,8 +1,10 @@
 export const routes = {
 	MAIN: '/',
 	LOGIN: '/login',
+	SIGNUP: '/signup',
 	PROFILE: '/profile',
 	ANALYTICS: '/analytics',
 	SETTINGS: '/settings',
-	NOTICES: '/notices'
+	NOTICES: '/notices',
+	FORGOT_PASSWORD: '/forgot-password'
 }

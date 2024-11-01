@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import { Layout } from '@app/layouts'
-import { Analytics, Home, Login, NotFound, Profile } from '@pages/index'
+import { LayoutHome, LayoutLogin } from '@app/layouts'
+import { Analytics, ForgotPassword, Home, Login, NotFound, Profile, SignUp } from '@pages/index'
 import { routes } from '@shared/config'
 
 import { PrivateRouter } from './router-private'
@@ -12,15 +12,28 @@ const router = createBrowserRouter([
 		element: <NotFound />
 	},
 	{
-		path: routes.LOGIN,
-		element: <Login />
+		element: <LayoutLogin />,
+		children: [
+			{
+				path: routes.LOGIN,
+				element: <Login />
+			},
+			{
+				path: routes.FORGOT_PASSWORD,
+				element: <ForgotPassword />
+			},
+			{
+				path: routes.SIGNUP,
+				element: <SignUp />
+			}
+		]
 	},
 	{
 		path: routes.MAIN,
 		element: <PrivateRouter />,
 		children: [
 			{
-				element: <Layout />,
+				element: <LayoutHome />,
 				children: [
 					{ path: routes.PROFILE, element: <Profile /> },
 					{ path: routes.ANALYTICS, element: <Analytics /> },

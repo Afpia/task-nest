@@ -1,12 +1,13 @@
 import { useState } from 'react'
 
+import type { UserResponse } from '@shared/types'
+
 import { AuthContext } from './auth.context'
-import type { AuthProviderProps, SessionField } from './types'
+import type { AuthProviderProps } from './types'
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-	const [session, setSession] = useState<SessionField>(
-		(JSON.parse(localStorage.getItem('session') as string) as SessionField) || {
-			isLogin: false,
+	const [session, setSession] = useState<UserResponse>(
+		(JSON.parse(localStorage.getItem('session') as string) as UserResponse) || {
 			accessToken: '',
 			user: {}
 		}
@@ -14,7 +15,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const value = {
 		session,
-		setSession: (user: SessionField) => {
+		setSession: (user: UserResponse) => {
 			localStorage.setItem('session', JSON.stringify(user))
 			setSession(user)
 		}

@@ -1,4 +1,4 @@
-import { createTheme, MantineProvider } from '@mantine/core'
+import { createTheme, MantineProvider, type MantineTheme } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
 import { myColors } from '@shared/config'
@@ -9,12 +9,27 @@ import { Router } from './router'
 import '@mantine/notifications/styles.css'
 import '@mantine/spotlight/styles.css'
 import '@mantine/core/styles.css'
+import '@assets/styles/global.css'
 
+// #1c1b22
 const theme = createTheme({
 	colors: {
 		pink: myColors
 	},
-	primaryColor: 'pink'
+	primaryColor: 'pink',
+	defaultGradient: { from: 'pink', to: 'blue' },
+	components: {
+		Anchor: {
+			styles: (style: MantineTheme) => ({
+				root: {
+					'&:hover': {
+						textDecoration: 'underline'
+					},
+					color: style.colors.pink[2]
+				}
+			})
+		}
+	}
 	// components: {
 	// 	Input: Input.extend({
 	// 		styles: (style) => ({
