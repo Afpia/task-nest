@@ -5,6 +5,7 @@ use App\Http\Controllers\PersonalAccessTokenController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkspaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -14,13 +15,31 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('/accessUser', [AuthController::class, 'checkToken']);
 
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('auth/{provider}/redirect', [AuthController::class, 'redirectToProvider']);
 Route::get('auth/{provider}/callback', [AuthController::class, 'handleProviderCallback']);
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/workspaces', [WorkspaceController::class, 'index']);
+    Route::post('/workspace/add', [WorkspaceController::class, 'store']);
+
+    Route::middleware('role:executor')->group(function () {
+        Route::get('/workspace/{workspace}', [WorkspaceController::class, 'show']);
+        Route::get('/workspace/{workspace}/users', [WorkspaceController::class, 'workspaceUsers']);
+    });
+
+    Route::middleware('role:admin')->group(function () {
+        Route::delete('/workspace/{workspace}/delete', [WorkspaceController::class, 'destroy']);
+        Route::post('/workspace/{workspace}/manage-user', [WorkspaceController::class, 'manageUserInWorkspace']);
+    });
+
+    Route::middleware('role:owner')->group(function () {
+        Route::put('/workspace/{workspace}/update', [WorkspaceController::class, 'update']);
+    });
+
     Route::get('/projects', [ProjectController::class, 'index']);
     Route::get('/project/{project}', [ProjectController::class, 'show']);
     Route::post('/project/add', [ProjectController::class, 'store']);

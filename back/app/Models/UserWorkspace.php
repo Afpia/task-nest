@@ -5,18 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserProject extends Model
+class UserWorkspace extends Model
 {
     use HasFactory;
 
+    protected $table = 'user_workspaces';
+
     protected $fillable = [
         'user_id',
-        'project_id',
+        'workspace_id',
         'role'
     ];
-
-    public function project()
-    {
-        return $this->belongsTo(Project::class);
-    }
 }
