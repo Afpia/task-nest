@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
-import { Box, Button, Flex, Text, TextInput, Title } from '@mantine/core'
+import { Anchor, Box, Button, Flex, Text, TextInput, Title } from '@mantine/core'
+import { routes } from '@shared/config'
+import { Link } from 'react-router-dom'
 
 export const ForgotPassword = () => {
 	const [loading, setLoading] = useState(false)
@@ -19,20 +21,14 @@ export const ForgotPassword = () => {
 					электронной почте.
 				</Text>
 				<TextInput label='Почта' size='lg' radius='md' mb={14} disabled={loading} />
-				<Button
-					type='submit'
-					mt={20}
-					w={220}
-					variant='filled'
-					fz={14}
-					color='pink'
-					size='lg'
-					radius='xl'
-					h={50}
-					loading={loading}
-				>
-					Отправить инструкции
-				</Button>
+				<Flex align='center' mt={20} gap={20}>
+					<Button type='submit' w={220} variant='filled' fz={14} color='pink' size='lg' radius='xl' h={50} loading={loading}>
+						Отправить инструкции
+					</Button>
+					<Anchor component={Link} to={routes.LOGIN}>
+						Назад
+					</Anchor>
+				</Flex>
 			</Box>
 		</Flex>
 	)

@@ -1,4 +1,4 @@
-export const Logo = () => (
+export const Logo = ({ color = '#000' }) => (
 	<svg
 		version='1.0'
 		xmlns='http://www.w3.org/2000/svg'
@@ -7,7 +7,7 @@ export const Logo = () => (
 		viewBox='0 0 200 150'
 		preserveAspectRatio='xMidYMid meet'
 	>
-		<g transform='translate(0.000000,86.000000) scale(0.100000,-0.100000)' fill='#000000' stroke='none'>
+		<g transform='translate(0.000000,86.000000) scale(0.100000,-0.100000)' fill={color} stroke='none'>
 			<path
 				d='M183 649 c-101 -19 -169 -69 -179 -130 -8 -45 25 -89 66 -89 l29 0
 -17 29 c-29 52 9 100 97 120 l43 9 -7 -56 c-11 -89 -43 -179 -77 -218 -29 -32
