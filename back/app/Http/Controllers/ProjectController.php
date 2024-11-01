@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\User;
+use App\Models\Workspace;
 use App\Services\ProjectService;
 use Illuminate\Http\Request;
 
@@ -23,11 +24,10 @@ class ProjectController extends Controller
         $this->projectService = $projectService;
     }
 
-    // public function index()
-    // {
-    //     $projects = Project::all();
-    //     return response()->json($projects);
-    // }
+    public function index(Workspace $workspace)
+    {
+
+    }
 
     public function show(Project $project)
     {
@@ -55,7 +55,11 @@ class ProjectController extends Controller
     {
         $validated = $request->validate(self::PROJECT_VALIDATOR);
 
-        $project = $this->projectService->createProject($validated);
+        try {
+            $project = $this->projectService->createProject($validated);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Project creation failed. Please try again.'], 500);
+        }
 
         return response()->json($project, 201);
     }

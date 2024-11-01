@@ -45,6 +45,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    const ROLE_HIERARCHY = [
+        'executor' => 1,
+        'project_manager' => 2,
+        'admin' => 3,
+        'owner' => 4,
+    ];
+
     public function workspaces()
     {
         return $this->belongsToMany(Workspace::class, 'user_workspaces')
@@ -59,5 +66,16 @@ class User extends Authenticatable
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function hasRoleLevel(string $requiredRole, Workspace $workspace)
+    {
+        $userRole = $this->workspaces()
+            ->where('workspace_id', $workspace->id)
+            ->first()
+            ->pivot
+            ->role;
+
+        return self::ROLE_HIERARCHY[$userRole] >= self::ROLE_HIERARCHY[$requiredRole];
     }
 }

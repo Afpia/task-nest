@@ -40,13 +40,15 @@ class WorkspaceService
         $workspace->delete();
     }
 
-    public function getUserRoleInWorkspace(Workspace $workspace, User $user): ?string
+    public function getUserRoleInWorkspace(Workspace $workspace, $userId): ?string
     {
-        return $workspace->users()
-            ->where('user_id', $user->id)
-            ->first()
-            ->pivot
-            ->role ?? null;
+        if ($workspace !== null && $userId !== null) {
+            return $workspace->users()
+                ->where('user_id', $userId)
+                ->withPivot('role')
+                ->first()?->pivot->role ?? null;
+        }
+        return null;
     }
 
     public function manageUserInWorkspace(Workspace $workspace, int $userId, string $role = 'executor'): void

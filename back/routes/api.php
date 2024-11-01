@@ -24,12 +24,21 @@ Route::get('auth/{provider}/callback', [AuthController::class, 'handleProviderCa
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/workspaces', [WorkspaceController::class, 'index']);
-    Route::get('/workspace/{workspace}', [WorkspaceController::class, 'show']);
     Route::post('/workspace/add', [WorkspaceController::class, 'store']);
-    Route::put('/workspace/{workspace}/update', [WorkspaceController::class, 'update']);
-    Route::delete('/workspace/{workspace}/delete', [WorkspaceController::class, 'destroy']);
-    Route::get('/workspace/{workspace}/users', [WorkspaceController::class, 'workspaceUsers']);
-    Route::post('/workspace/{workspace}/manage-user', [WorkspaceController::class, 'manageUserInWorkspace']);
+
+    Route::middleware('role:executor')->group(function () {
+        Route::get('/workspace/{workspace}', [WorkspaceController::class, 'show']);
+        Route::get('/workspace/{workspace}/users', [WorkspaceController::class, 'workspaceUsers']);
+    });
+
+    Route::middleware('role:admin')->group(function () {
+        Route::delete('/workspace/{workspace}/delete', [WorkspaceController::class, 'destroy']);
+        Route::post('/workspace/{workspace}/manage-user', [WorkspaceController::class, 'manageUserInWorkspace']);
+    });
+
+    Route::middleware('role:owner')->group(function () {
+        Route::put('/workspace/{workspace}/update', [WorkspaceController::class, 'update']);
+    });
 
     Route::get('/projects', [ProjectController::class, 'index']);
     Route::get('/project/{project}', [ProjectController::class, 'show']);
