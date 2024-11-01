@@ -24,11 +24,11 @@ Route::get('auth/{provider}/callback', [AuthController::class, 'handleProviderCa
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/workspaces', [WorkspaceController::class, 'index']);
-    Route::get('/workspace/{wprkspace}', [WorkspaceController::class, 'show']);
+    Route::get('/workspace/{workspace}', [WorkspaceController::class, 'show']);
     Route::post('/workspace/add', [WorkspaceController::class, 'store']);
-    Route::put('/workspace/{wprkspace}/update', [WorkspaceController::class, 'update']);
-    Route::delete('/project/{workspace}/delete', [WorkspaceController::class, 'destroy']);
-    Route::get('/workspace/{wprkspace}/users', [WorkspaceController::class, 'workspaceUsers']);
+    Route::put('/workspace/{workspace}/update', [WorkspaceController::class, 'update']);
+    Route::delete('/workspace/{workspace}/delete', [WorkspaceController::class, 'destroy']);
+    Route::get('/workspace/{workspace}/users', [WorkspaceController::class, 'workspaceUsers']);
     Route::post('/workspace/{workspace}/manage-user', [WorkspaceController::class, 'manageUserInWorkspace']);
 
     Route::get('/projects', [ProjectController::class, 'index']);

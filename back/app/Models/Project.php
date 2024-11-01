@@ -38,6 +38,7 @@ class Project extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function remainingDays()
     {
         $endDate = Carbon::parse($this->end_date);

@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->date('end_date');
             $table->enum('status', ['Создан', 'В процессе', 'Завершён']);
             $table->foreignId('workspace_id')->constrained('workspaces')->onDelete('cascade');
+            $table->string('image_url')->nullable();
             $table->timestamps();
         });
     }
