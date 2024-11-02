@@ -22,7 +22,7 @@ export const LoginForm = () => {
 
 	useEffect(() => {
 		if (error !== null) {
-			form.setErrors({ email: true, password: error })
+			form.setErrors({ email: error, password: true })
 		}
 	}, [error])
 

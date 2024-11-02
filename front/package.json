@@ -22,6 +22,7 @@
 		"dayjs": "^1.11.13",
 		"effector": "^23.2.3",
 		"effector-react": "^23.2.1",
+		"effector-storage": "^7.1.0",
 		"lucide-react": "^0.453.0",
 		"mantine-form-zod-resolver": "^1.1.0",
 		"react": "^18.3.1",

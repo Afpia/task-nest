@@ -42,12 +42,14 @@ sample({
 sample({
 	clock: loginFx.failData,
 	fn: (error) => {
-		// :TODO обработка ошибок разных типов
 		notifyError({
 			title: 'Мы не смогли войти в систему',
 			message: error.message
 		})
-		return 'Неверная почта или пароль'
+		if (error.message === 'Request failed with status code 401') {
+			return 'Такого пользователя не существует'
+		}
+		return 'Непредвиденная ошибка'
 	},
 	target: $loginErrors
 })
