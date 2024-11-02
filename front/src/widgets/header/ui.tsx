@@ -7,16 +7,16 @@ import { routes } from '@shared/config'
 
 import styles from './ui.module.css'
 
+const pageInfo = {
+	[routes.MAIN]: { title: 'Главная', subtitle: 'Контролируйте все свои проекты и задачи здесь' },
+	[routes.SETTINGS]: { title: 'Настройки', subtitle: 'Настройте свой профиль и предпочтения' },
+	[routes.PROFILE]: { title: 'Профиль', subtitle: 'Просмотр и редактирование профиля' },
+	[routes.ANALYTICS]: { title: 'Аналитика', subtitle: '' }
+}
+
 export const Header = () => {
 	const theme = useMantineTheme()
 	const location = useLocation()
-
-	const pageInfo = {
-		[routes.MAIN]: { title: 'Главная', subtitle: 'Контролируйте все свои проекты и задачи здесь' },
-		[routes.SETTINGS]: { title: 'Настройки', subtitle: 'Настройте свой профиль и предпочтения' },
-		[routes.PROFILE]: { title: 'Профиль', subtitle: 'Просмотр и редактирование профиля' },
-		[routes.ANALYTICS]: { title: 'Аналитика', subtitle: '' }
-	}
 
 	return (
 		<Flex

@@ -1,31 +1,29 @@
-import { redirect } from 'react-router-dom'
+import { redirect, useNavigate } from 'react-router-dom'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 
-import { useAuth } from '@app/hooks/useAuth'
+import { allUserReceived } from '@app/providers/auth'
+import type { UseFormReturnType } from '@mantine/form'
 import { notifyError, notifySuccess, routes } from '@shared/config'
-import type { UserResponse } from '@shared/types'
 
 import { postUser, postUserAccess } from '../api'
+import type { UserRequest, UserSocialRequest } from '../api/types'
 
-export const loginModel = async () => {
-	// const queryHash = window.location.search
-	// const params = new URLSearchParams(queryHash.substring(1))
-	// const accessToken = params.get('access_token')
-	// window.history.replaceState({}, document.title, window.location.pathname)
-	// const $user = createStore({})
-	// if (accessToken) {
-	// 	const loginFx = createEffect(async () => {
-	// 		const data = await postUserAccess({ data: { accessToken } })
-	// 		return data
-	// 	})
-	// }
-}
-
-export const $loginErrors = createStore<string | null>(null)
-export const $user = createStore<UserResponse | null>(null)
+export const loginFormed = createEvent<
+	UseFormReturnType<
+		{
+			password: string
+			email: string
+		},
+		(values: UserRequest) => {
+			password: string
+			email: string
+		}
+	>
+>()
 
 export const loginFx = createEffect(postUser)
 export const loginSocialFx = createEffect(postUserAccess)
+export const loginSocialSended = createEvent()
 
 sample({
 	clock: loginFx.doneData,
@@ -34,22 +32,43 @@ sample({
 			title: 'Поздравляю',
 			message: 'Вы вошли в систему'
 		})
+		// useRedirect(routes.MAIN)
 		return data
 	},
-	target: $user
+	target: allUserReceived
 })
 
 sample({
 	clock: loginFx.failData,
-	fn: (error) => {
+	source: loginFormed,
+	fn: (form, error) => {
+		if (error.message === 'Request failed with status code 401') {
+			notifyError({
+				title: 'Мы не смогли войти в систему',
+				message: 'Такого пользователя не существует'
+			})
+			form.setErrors({ email: 'Такого пользователя не существует', password: true })
+		}
+		form.setErrors({ email: true, password: true })
 		notifyError({
 			title: 'Мы не смогли войти в систему',
 			message: error.message
 		})
-		if (error.message === 'Request failed with status code 401') {
-			return 'Такого пользователя не существует'
+	}
+})
+
+sample({
+	clock: loginSocialSended,
+	fn: () => {
+		const queryHash = window.location.search
+		const params = new URLSearchParams(queryHash.substring(1))
+		const accessToken = params.get('access_token')
+		window.history.replaceState({}, document.title, window.location.pathname)
+		console.log(accessToken)
+		if (accessToken) {
+			return { data: { accessToken } as UserSocialRequest }
 		}
-		return 'Непредвиденная ошибка'
+		return { data: { accessToken: '' } as UserSocialRequest }
 	},
-	target: $loginErrors
+	target: loginSocialFx
 })
