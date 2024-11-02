@@ -59,4 +59,9 @@ class WorkspaceService
         );
     }
 
+    public function deleteUserFromWorkspace(Workspace $workspace, int $userId): void
+    {
+        UserWorkspace::where('user_id', $userId)->where('workspace_id', $workspace->id)->delete();
+    }
+
 }

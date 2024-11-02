@@ -25,8 +25,6 @@ class AuthService
     {
         $socialUser = Socialite::driver($provider)->stateless()->user();
 
-        dd($socialUser->getAvatar());
-
         $user = User::where('email', $socialUser->getEmail())->first();
 
         if (!$user) {

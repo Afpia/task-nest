@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PersonalAccessTokenController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
@@ -26,30 +27,60 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/workspaces', [WorkspaceController::class, 'index']);
     Route::post('/workspace/add', [WorkspaceController::class, 'store']);
 
+    //executor 
     Route::middleware('role:executor')->group(function () {
+        //workspaces routes
         Route::get('/workspace/{workspace}', [WorkspaceController::class, 'show']);
         Route::get('/workspace/{workspace}/users', [WorkspaceController::class, 'workspaceUsers']);
+        Route::get('/workspace/{workspace}/stats', [WorkspaceController::class, 'workspaceStats']);
+        Route::delete('workspace/{workspace}/leave', [WorkspaceController::class, 'leaveWorkspace']);
+
+        //projects routes
+        Route::get('/projects/{workspace}', [ProjectController::class, 'index']);
+        Route::get('/project/{project}', [ProjectController::class, 'show']);
+        Route::get('/project/{project}/users', [ProjectController::class, 'projectUsers']);
+
+        //tasks routes
+        Route::get('/my-tasks/{workspace}', [TaskController::class, 'myTasksInWorkspace']);
+        Route::get('/my-tasks/{project}/project', [TaskController::class, 'myTasksInProject']);
+        Route::get('/task/{task}', [TaskController::class, 'view']);
+        Route::get('/task/{task}/users', [TaskController::class, 'taskUsers']);
+        Route::put('/task/{task}/status', [TaskController::class, 'updateStatus']);
+
+        //comments routes
+        Route::get('/comment/{task}', [CommentController::class, 'index']);
+        Route::post('/comment/{task}', [CommentController::class, 'store']);
     });
 
+    //project manager
+    Route::middleware('role:project_manager')->group(function () {
+        //task routes
+        Route::get('/tasks/{project}', [TaskController::class, 'index']);
+        Route::post('/task/{project}/add', [TaskController::class, 'store']);
+        Route::post('/task/{task}/add-user', [TaskController::class, 'addUserToTask']);
+        Route::put('/task/{task}/update', [TaskController::class, 'update']);
+        Route::delete('/task/{task}/delete', [TaskController::class, 'destroy']);
+    });
+
+    //admin
     Route::middleware('role:admin')->group(function () {
-        Route::delete('/workspace/{workspace}/delete', [WorkspaceController::class, 'destroy']);
-        Route::post('/workspace/{workspace}/manage-user', [WorkspaceController::class, 'manageUserInWorkspace']);
+        //workspaces routes
+        Route::post('/workspace/{workspace}/user-add', [WorkspaceController::class, 'addUserToWorkspace']);
+        Route::put('/workspace/{workspace}/manage-user', [WorkspaceController::class, 'manageUserInWorkspace']);
+        Route::delete('workspace/{workspace}/kick-user', [WorkspaceController::class, 'kickUserFromWorkspace']);
+
+        //projects routes
+        Route::post('/project/{workspace}/add', [ProjectController::class, 'store']);
+        Route::post('/project/{workspace}/add-manager', [ProjectController::class, 'addManagerToProject']);
+        Route::put('/project/{project}/update', [ProjectController::class, 'update']);
+        Route::delete('/project/{project}/delete', [ProjectController::class, 'destroy']);
     });
 
+    //owner
     Route::middleware('role:owner')->group(function () {
         Route::put('/workspace/{workspace}/update', [WorkspaceController::class, 'update']);
+        Route::delete('/workspace/{workspace}/delete', [WorkspaceController::class, 'destroy']);
     });
-
-    Route::get('/projects', [ProjectController::class, 'index']);
-    Route::get('/project/{project}', [ProjectController::class, 'show']);
-    Route::post('/project/add', [ProjectController::class, 'store']);
-    Route::get('/user/projects', [ProjectController::class, 'userProjects']);
-    Route::get('/project/{project}/users', [ProjectController::class, 'projectUsers']);
-    Route::put('/project/{project}/update', [ProjectController::class, 'update']);
-    Route::delete('/project/{project}/delete', [ProjectController::class, 'destroy']);
-    Route::post('/project/{project}/manage-user', [ProjectController::class, 'manageUserInProject']);
-
-    Route::get('/task/{task}', [TaskController::class, 'view']);
 });
 
 

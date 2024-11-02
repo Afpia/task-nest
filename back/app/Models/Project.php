@@ -16,7 +16,8 @@ class Project extends Model
         'start_date',
         'end_date',
         'status',
-        'user_id'
+        'workspace_id',
+        'image_url',
     ];
 
     public function workspace()

@@ -10,11 +10,22 @@ use Carbon\Carbon;
 
 class ProjectService
 {
-    public function createProject(array $data): Project
+    protected $imageService;
+
+    public function __construct(ImageService $imageService)
     {
+        $this->imageService = $imageService;
+    }
+
+    public function createProject(array $data, int $workspaceId): Project
+    {
+        $data['workspace_id'] = $workspaceId;
+        $data['status'] = 'Создан';
+
         $project = Project::create($data);
 
-        $this->attachUserToProject($project, Auth::id(), 'owner');
+        $project->image_url = $this->imageService->generateDefaultImage('project', $project->id);
+        $project->save();
 
         return $project;
     }
@@ -28,6 +39,11 @@ class ProjectService
     public function deleteProject(Project $project): void
     {
         $project->delete();
+    }
+
+    public function changeRole(Project $project, $status)
+    {
+        $this->updateProject($project, ['status' => $status]);
     }
 
     public function attachUserToProject(Project $project, int $userId, string $role): void

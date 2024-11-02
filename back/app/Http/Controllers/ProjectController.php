@@ -11,10 +11,9 @@ class ProjectController extends Controller
 {
     private const PROJECT_VALIDATOR = [
         'title' => 'required|string|max:255',
-        'description' => 'required|string',
+        'description' => 'nullable|string',
         'start_date' => 'required|date',
         'end_date' => 'required|date|after_or_equal:start_date',
-        'status' => 'required|in:Создан,В процессе,Завершён',
     ];
 
     protected $projectService;
@@ -26,18 +25,24 @@ class ProjectController extends Controller
 
     public function index(Workspace $workspace)
     {
+        $projects = $workspace->projects->map(function ($project) {
+            return [
+                'id' => $project->id,
+                'title' => $project->title,
+            ];
+        });
 
+        return response()->json($projects);
     }
 
     public function show(Project $project)
     {
-        $this->authorize('view', $project);
+        // $this->authorize('view', $project);
 
         // $userRole = $this->projectService->getUserRoleInProject($project, auth()->user());
 
         return response()->json([
             'project' => $project,
-            // 'role' => $userRole,
         ]);
     }
 
@@ -51,15 +56,11 @@ class ProjectController extends Controller
         // return response()->json($project->users);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Workspace $workspace)
     {
         $validated = $request->validate(self::PROJECT_VALIDATOR);
 
-        try {
-            $project = $this->projectService->createProject($validated);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Project creation failed. Please try again.'], 500);
-        }
+        $project = $this->projectService->createProject($validated, $workspace->id);
 
         return response()->json($project, 201);
     }

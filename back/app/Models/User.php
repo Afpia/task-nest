@@ -68,10 +68,10 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
-    public function hasRoleLevel(string $requiredRole, Workspace $workspace)
+    public function hasRoleLevel(string $requiredRole, $workspace)
     {
         $userRole = $this->workspaces()
-            ->where('workspace_id', $workspace->id)
+            ->where('workspace_id', $workspace)
             ->first()
             ->pivot
             ->role;
