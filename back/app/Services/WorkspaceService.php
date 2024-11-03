@@ -25,8 +25,6 @@ class WorkspaceService
         $workspace->save();
 
         $this->manageUserInWorkspace($workspace, Auth::id(), 'owner');
-
-        return $workspace;
     }
 
     public function updateWorkspace(array $data, Workspace $workspace)
