@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Project $project)
     {
-        $tasks = Task::all();
-
-        return response()->json($tasks);
+        //
     }
 
     public function view(Task $task)

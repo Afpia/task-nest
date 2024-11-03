@@ -32,13 +32,14 @@ Route::middleware('auth:sanctum')->group(function () {
         //workspaces routes
         Route::get('/workspace/{workspace}', [WorkspaceController::class, 'show']);
         Route::get('/workspace/{workspace}/users', [WorkspaceController::class, 'workspaceUsers']);
-        Route::get('/workspace/{workspace}/stats', [WorkspaceController::class, 'workspaceStats']);
+        Route::get('/workspace/{workspace}/stats', [WorkspaceController::class, 'workspaceStats']);//нужны поля
+        Route::get('/workspace/{workspace}/role', [WorkspaceController::class, 'getUserRole']);
         Route::delete('workspace/{workspace}/leave', [WorkspaceController::class, 'leaveWorkspace']);
 
         //projects routes
         Route::get('/projects/{workspace}', [ProjectController::class, 'index']);
         Route::get('/project/{project}', [ProjectController::class, 'show']);
-        Route::get('/project/{project}/users', [ProjectController::class, 'projectUsers']);
+        Route::get('/project/{project}/users', [ProjectController::class, 'projectUsers']);//после тасков
 
         //tasks routes
         Route::get('/my-tasks/{workspace}', [TaskController::class, 'myTasksInWorkspace']);
@@ -54,6 +55,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //project manager
     Route::middleware('role:project_manager')->group(function () {
+        //project routes
+        Route::post('/project/{project}/leave', [ProjectController::class, 'leaveProject']);
+
         //task routes
         Route::get('/tasks/{project}', [TaskController::class, 'index']);
         Route::post('/task/{project}/add', [TaskController::class, 'store']);
@@ -66,18 +70,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:admin')->group(function () {
         //workspaces routes
         Route::post('/workspace/{workspace}/user-add', [WorkspaceController::class, 'addUserToWorkspace']);
+        Route::post('workspace/{workspace}/kick-user', [WorkspaceController::class, 'kickUserFromWorkspace']);
         Route::put('/workspace/{workspace}/manage-user', [WorkspaceController::class, 'manageUserInWorkspace']);
-        Route::delete('workspace/{workspace}/kick-user', [WorkspaceController::class, 'kickUserFromWorkspace']);
 
         //projects routes
         Route::post('/project/{workspace}/add', [ProjectController::class, 'store']);
-        Route::post('/project/{workspace}/add-manager', [ProjectController::class, 'addManagerToProject']);
+        Route::post('/project/{project}/add-manager', [ProjectController::class, 'assignProjectManager']);
+        Route::post('/project/{project}/kick-manager', [ProjectController::class, 'kickProjectManager']);
         Route::put('/project/{project}/update', [ProjectController::class, 'update']);
         Route::delete('/project/{project}/delete', [ProjectController::class, 'destroy']);
     });
 
     //owner
     Route::middleware('role:owner')->group(function () {
+        //workspaces routes
         Route::put('/workspace/{workspace}/update', [WorkspaceController::class, 'update']);
         Route::delete('/workspace/{workspace}/delete', [WorkspaceController::class, 'destroy']);
     });

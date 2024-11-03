@@ -25,19 +25,9 @@ class Project extends Model
         return $this->belongsTo(Workspace::class);
     }
 
-    public function manager()
-    {
-        return $this->belongsTo(User::class, 'project_manager_id');
-    }
-
     public function tasks()
     {
         return $this->hasMany(Task::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 
     public function remainingDays()
@@ -53,8 +43,8 @@ class Project extends Model
             ->withPivot('role');
     }
 
-    public function isOwnedBy(User $user)
+    public function managers()
     {
-        return $this->users()->where('user_id', $user->id)->exists();
+        return $this->belongsToMany(ProjectManagers::class, 'user_id');
     }
 }

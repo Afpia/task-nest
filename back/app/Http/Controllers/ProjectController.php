@@ -12,8 +12,8 @@ class ProjectController extends Controller
     private const PROJECT_VALIDATOR = [
         'title' => 'required|string|max:255',
         'description' => 'nullable|string',
-        'start_date' => 'required|date',
-        'end_date' => 'required|date|after_or_equal:start_date',
+        'start_date' => 'date',
+        'end_date' => 'date|after_or_equal:start_date',
     ];
 
     protected $projectService;
@@ -29,6 +29,7 @@ class ProjectController extends Controller
             return [
                 'id' => $project->id,
                 'title' => $project->title,
+                'description' => $project->description,
             ];
         });
 
@@ -46,11 +47,6 @@ class ProjectController extends Controller
         ]);
     }
 
-    // public function userProjects(Request $request)
-    // {
-    //     return response()->json($request->user()->projects);
-    // }
-
     public function projectUsers(Project $project)
     {
         // return response()->json($project->users);
@@ -67,43 +63,46 @@ class ProjectController extends Controller
 
     public function update(Request $request, Project $project)
     {
-        $this->authorize('update', $project);
-
         $validated = $request->validate(self::PROJECT_VALIDATOR);
 
-        $updatedProject = $this->projectService->updateProject($project, $validated);
+        $this->projectService->updateProject($project, $validated);
 
-        return response()->json($updatedProject, 200);
+        return response()->json(['message' => 'Проект успешно обнавлен'], 200);
     }
 
     public function destroy(Project $project)
     {
-        $this->authorize('delete', $project);
         $this->projectService->deleteProject($project);
 
         return response()->json(['message' => 'Проект успешно удален'], 200);
     }
 
-    // public function manageUserInProject(Request $request, Project $project)
-    // {
-    //     $currentUser = $request->user();
+    public function assignProjectManager(Request $request, Project $project)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
 
-    //     $currentUserRole = $this->projectService->getUserRoleInProject($project, $currentUser);
+        $this->projectService->assignManager($project, $request->user_id);
 
-    //     if ($currentUserRole !== 'owner') {
-    //         return response()->json(['message' => 'Доступ запрещен. Только владелец может добавлять пользователей'], 403);
-    //     }
+        return response()->json(['message' => 'Менеджер проекта успешно назначен'], 200);
+    }
 
-    //     $userId = $request->user_id;
-    //     $role = $request->input('role', 'viewer');
+    public function kickProjectManager(Request $request, Project $project)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
 
-    //     if ($userId === $currentUser->id) {
-    //         return response()->json(['message' => 'Вы не можете изменить свою роль'], 403);
-    //     }
+        $this->projectService->DeleteManagerFromProject($project, $request->user_id);
 
-    //     $this->projectService->attachUserToProject($project, $userId, $role);
+        return response()->json(['message' => 'Менеджер проекта успешно отстранен'], 200);
+    }
 
-    //     return response()->json(['message' => 'Успешно'], 201);
-    // }
+    public function LeaveProject(Request $request, Project $project)
+    {
+        $this->projectService->DeleteManagerFromProject($project, $request->user()->id);
 
+        return response()->json(['message' => 'Вы вышли из проекта'], 200);
+    }
 }

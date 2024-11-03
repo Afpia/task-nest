@@ -14,9 +14,15 @@ class Task extends Model
         return $this->belongsTo(Project::class);
     }
 
+    public function workspace()
+    {
+        return $this->belongsTo(Workspace::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
 
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Project;
+use App\Models\ProjectManagers;
 use App\Models\User;
 use App\Models\UserProject;
 use Illuminate\Support\Facades\Auth;
@@ -30,10 +31,10 @@ class ProjectService
         return $project;
     }
 
-    public function updateProject(Project $project, array $data): Project
+    public function updateProject(Project $project, array $data)
     {
         $project->update($data);
-        return $project;
+        $project->save();
     }
 
     public function deleteProject(Project $project): void
@@ -41,18 +42,6 @@ class ProjectService
         $project->delete();
     }
 
-    public function changeRole(Project $project, $status)
-    {
-        $this->updateProject($project, ['status' => $status]);
-    }
-
-    public function attachUserToProject(Project $project, int $userId, string $role): void
-    {
-        UserProject::updateOrCreate(
-            ['user_id' => $userId, 'project_id' => $project->id],
-            ['role' => $role]
-        );
-    }
 
     public function getUserRoleInProject(Project $project, User $user): ?string
     {
@@ -61,5 +50,20 @@ class ProjectService
             ->first()
             ->pivot
             ->role ?? null;
+    }
+
+    public function assignManager(Project $project, $userId)
+    {
+        ProjectManagers::create([
+            'user_id' => $userId,
+            'project_id' => $project->id,
+        ]);
+    }
+
+    public function DeleteManagerFromProject(Project $project, $userId)
+    {
+        ProjectManagers::where('user_id', $userId)
+            ->where('project_id', $project->id)
+            ->delete();
     }
 }
