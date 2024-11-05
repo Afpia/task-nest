@@ -1,15 +1,18 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useUnit } from 'effector-react'
 
-import { useAuth } from '@app/hooks/useAuth'
 import { Button, Flex, PasswordInput, TextInput } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
-import { $signupErrors, $user, signupFx, signupSchema } from '@pages/signup'
+import { signupFormed, signupFx, signupSchema } from '@pages/signup/model'
+
+interface FormFields {
+	name: string
+	surname: string
+	email: string
+	password: string
+}
 
 export const Form = () => {
-	const [signup, loading, error, data] = useUnit([signupFx, signupFx.pending, $signupErrors, $user])
-	const { setSession } = useAuth()
+	const [signup, loading, signupError] = useUnit([signupFx, signupFx.pending, signupFormed])
 
 	const form = useForm({
 		mode: 'controlled',
@@ -17,22 +20,13 @@ export const Form = () => {
 		validate: zodResolver(signupSchema)
 	})
 
-	// useEffect(() => {
-	// 	if (error !== null) {
-	// 		form.setErrors({ name: true, surname: true, email: error, password: true })
-	// 	}
-	// }, [error])
-	// TODO: ошибки решить какие
-
-	useEffect(() => {
-		if (data !== null) {
-			setSession({ access_token: data.access_token, user: data.user })
-			// TODO: переписать стор на effector
-		}
-	}, [data])
+	const onClickForm = (values: FormFields) => {
+		signupError(form)
+		signup({ data: { name: `${values.name} ${values.surname}`, email: values.email, password: values.password } })
+	}
 
 	return (
-		<form onSubmit={form.onSubmit((values) => signup({ data: values }))}>
+		<form onSubmit={form.onSubmit((values) => onClickForm(values))}>
 			<Flex justify='space-between' mb={35}>
 				<TextInput {...form.getInputProps('name')} label='Имя' size='lg' radius='md' disabled={loading} w={185} />
 				<TextInput {...form.getInputProps('surname')} label='Фамилия' size='lg' radius='md' disabled={loading} w={185} />

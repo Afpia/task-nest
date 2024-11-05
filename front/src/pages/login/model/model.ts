@@ -1,12 +1,15 @@
-import { redirect, useNavigate } from 'react-router-dom'
-import { createEffect, createEvent, createStore, sample } from 'effector'
+import { redirect } from 'atomic-router'
+import { createEffect, createEvent, sample } from 'effector'
 
-import { allUserReceived } from '@app/providers/auth'
 import type { UseFormReturnType } from '@mantine/form'
-import { notifyError, notifySuccess, routes } from '@shared/config'
+import { allUserReceived } from '@shared/auth'
+import { routes } from '@shared/config'
+import { notifyError, notifySuccess } from '@shared/notifications'
 
 import { postUser, postUserAccess } from '../api'
 import type { UserRequest, UserSocialRequest } from '../api/types'
+
+export const currentRoute = routes.auth.login
 
 export const loginFormed = createEvent<
 	UseFormReturnType<
@@ -32,10 +35,14 @@ sample({
 			title: 'Поздравляю',
 			message: 'Вы вошли в систему'
 		})
-		// useRedirect(routes.MAIN)
 		return data
 	},
 	target: allUserReceived
+})
+
+redirect({
+	clock: loginFx.doneData,
+	route: routes.private.home
 })
 
 sample({
@@ -48,12 +55,13 @@ sample({
 				message: 'Такого пользователя не существует'
 			})
 			form.setErrors({ email: 'Такого пользователя не существует', password: true })
+		} else {
+			form.setErrors({ email: true, password: true })
+			notifyError({
+				title: 'Мы не смогли войти в систему',
+				message: error.message
+			})
 		}
-		form.setErrors({ email: true, password: true })
-		notifyError({
-			title: 'Мы не смогли войти в систему',
-			message: error.message
-		})
 	}
 })
 
@@ -64,11 +72,16 @@ sample({
 		const params = new URLSearchParams(queryHash.substring(1))
 		const accessToken = params.get('access_token')
 		window.history.replaceState({}, document.title, window.location.pathname)
-		console.log(accessToken)
 		if (accessToken) {
 			return { data: { accessToken } as UserSocialRequest }
 		}
 		return { data: { accessToken: '' } as UserSocialRequest }
 	},
+	// filter: ({ data }) => !!data.accessToken,
 	target: loginSocialFx
+})
+
+redirect({
+	clock: loginSocialFx.doneData,
+	route: routes.private.home
 })

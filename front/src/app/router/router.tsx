@@ -29,7 +29,6 @@ const router = createBrowserRouter([
 		]
 	},
 	{
-		path: routes.MAIN,
 		element: <PrivateRouter />,
 		children: [
 			{

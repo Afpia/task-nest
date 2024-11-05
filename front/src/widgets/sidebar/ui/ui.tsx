@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 import { Bell, ChartNoAxesCombined, CircleCheck, CirclePlus, House } from 'lucide-react'
 
-import { Loading } from '@app/assets/svg'
 import { Divider, Flex, NativeSelect, NavLink, Skeleton, Title, useMantineTheme } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { routes } from '@shared/config'
@@ -76,14 +75,12 @@ import styles from './ui.module.css'
 // 		title: 'hello'
 // 	}
 // ]
+export const currentRoute = routes.private.home
 
 export const Sidebar = () => {
-	const pathname = useLocation().pathname
+	// const pathname = useLocation().pathname
 	const theme = useMantineTheme()
-
-	useEffect(() => {
-		// AuthInterceptors(setLoading)
-	}, [])
+	console.log(currentRoute)
 
 	const openModal = () =>
 		modals.openConfirmModal({
@@ -110,7 +107,7 @@ export const Sidebar = () => {
 				<Flex direction='column' gap='xs'>
 					<NavLink
 						component={Link}
-						to={routes.MAIN}
+						to={routes.private.home}
 						label='Главная'
 						variant='filled'
 						leftSection={<House />}
@@ -119,7 +116,7 @@ export const Sidebar = () => {
 					/>
 					<NavLink
 						component={Link}
-						to={routes.NOTICES}
+						to={routes.private.notices}
 						label='Уведомления'
 						variant='filled'
 						leftSection={<Bell />}
@@ -137,7 +134,7 @@ export const Sidebar = () => {
 					/>
 					<NavLink
 						component={Link}
-						to={routes.ANALYTICS}
+						to={routes.private.analytics}
 						label='Аналитика'
 						variant='filled'
 						leftSection={<ChartNoAxesCombined />}

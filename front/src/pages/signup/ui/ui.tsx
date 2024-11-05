@@ -1,13 +1,11 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'atomic-router-react'
 
 import { LoginButton } from '@entities/login.button'
 import { Anchor, Box, Button, CloseButton, Divider, Flex, Space, Text, Title, Transition } from '@mantine/core'
 import { routes } from '@shared/config'
 
 import { Form } from './form'
-
-// import styles from './ui.module.css'
 
 export const SignUp = () => {
 	const [opened, setOpened] = useState(false)
@@ -39,7 +37,7 @@ export const SignUp = () => {
 								<Flex mt={16} justify='center'>
 									<Text>Уже есть аккаунт?</Text>
 									<Space w='2' />
-									<Anchor component={Link} to={routes.LOGIN}>
+									<Anchor component={Link} to={routes.auth.login}>
 										Войти
 									</Anchor>
 								</Flex>
@@ -64,7 +62,7 @@ export const SignUp = () => {
 								<Flex mt={16} justify='center'>
 									<Text>Уже есть аккаунт?</Text>
 									<Space w='2' />
-									<Anchor component={Link} to={routes.LOGIN}>
+									<Anchor component={Link} to={routes.auth.login}>
 										Войти
 									</Anchor>
 								</Flex>

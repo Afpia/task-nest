@@ -1,7 +1,7 @@
+import { redirect } from 'atomic-router'
 import { createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 
-import { useRedirect } from '@app/hooks'
 import { routes } from '@shared/config'
 import type { UserFieldResponse, UserResponse } from '@shared/types'
 
@@ -23,9 +23,9 @@ sample({
 	target: $accessToken
 })
 
-sample({
+redirect({
 	clock: allUserExpired,
-	fn: () => useRedirect(routes.LOGIN)
+	route: routes.auth.login
 })
 
 export const $isAuth = $accessToken.map((token) => !!token)

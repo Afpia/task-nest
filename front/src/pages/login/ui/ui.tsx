@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'atomic-router-react'
 
 import { LoginButton } from '@entities/login.button'
 import { Anchor, Box, Divider, Flex, Space, Text, Title } from '@mantine/core'
@@ -22,7 +22,7 @@ export const Login = () => (
 			<Flex mt={16} justify='center'>
 				<Text>Ещё нет аккаунта?</Text>
 				<Space w='2' />
-				<Anchor component={Link} to={routes.SIGNUP}>
+				<Anchor component={Link} to={routes.auth.signup}>
 					Зарегистрироваться
 				</Anchor>
 			</Flex>
