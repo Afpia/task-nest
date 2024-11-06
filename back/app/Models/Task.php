@@ -9,14 +9,31 @@ class Task extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'description',
+        'project_id',
+        'priority',
+        'start_date',
+        'end_date',
+        'status'
+    ];
+
     public function project()
     {
         return $this->belongsTo(Project::class);
     }
 
-    public function user()
+    public function workspace()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Workspace::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_tasks')
+            ->withPivot('role');
+    }
+
 
 }

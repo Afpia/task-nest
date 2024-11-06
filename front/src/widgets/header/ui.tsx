@@ -8,6 +8,8 @@ import { $user } from '@shared/auth'
 import { path, routes } from '@shared/config'
 
 import styles from './ui.module.css'
+import { useLocation } from 'react-router-dom'
+import { Link } from 'atomic-router-react'
 
 const pageInfo = {
 	[path.HOME]: { title: 'Главная', subtitle: 'Контролируйте все свои проекты и задачи здесь' },

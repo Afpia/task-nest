@@ -27,6 +27,11 @@ class Workspace extends Model
         return $this->hasMany(Project::class);
     }
 
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
     public function isOwnedBy(User $user)
     {
         return $this->users()->where('user_id', $user->id)->exists();

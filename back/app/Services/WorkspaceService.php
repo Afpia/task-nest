@@ -17,16 +17,17 @@ class WorkspaceService
         $this->imageService = $imageService;
     }
 
-    public function createWorkspace(string $title)
+    public function createWorkspace(string $title, $userId = false)
     {
         $workspace = Workspace::create(['title' => $title]);
 
         $workspace->image_url = $this->imageService->generateDefaultImage('workspace', $workspace->id);
         $workspace->save();
+        if (!$userId) {
+            $userId = Auth::id();
+        }
 
-        $this->manageUserInWorkspace($workspace, Auth::id(), 'owner');
-
-        return $workspace;
+        $this->manageUserInWorkspace($workspace, $userId, 'owner');
     }
 
     public function updateWorkspace(array $data, Workspace $workspace)
@@ -57,6 +58,11 @@ class WorkspaceService
             ['user_id' => $userId, 'workspace_id' => $workspace->id],
             ['role' => $role]
         );
+    }
+
+    public function deleteUserFromWorkspace(Workspace $workspace, int $userId): void
+    {
+        UserWorkspace::where('user_id', $userId)->where('workspace_id', $workspace->id)->delete();
     }
 
 }
