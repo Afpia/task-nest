@@ -2,18 +2,8 @@ import { createHistoryRouter, createRoute } from 'atomic-router'
 import { sample } from 'effector'
 import { createBrowserHistory } from 'history'
 
+import { path } from './path'
 import { started } from './start'
-
-// export const routes = {
-// 	MAIN: '/',
-// 	LOGIN: '/login',
-// 	SIGNUP: '/signup',
-// 	PROFILE: '/profile',
-// 	ANALYTICS: '/analytics',
-// 	SETTINGS: '/settings',
-// 	NOTICES: '/notices',
-// 	FORGOT_PASSWORD: '/forgot-password'
-// }
 
 export const routes = {
 	auth: {
@@ -33,35 +23,35 @@ export const routes = {
 export const mappedRoutes = [
 	{
 		route: routes.auth.login,
-		path: '/login'
+		path: path.LOGIN
 	},
 	{
 		route: routes.auth.signup,
-		path: '/signup'
+		path: path.SIGNUP
 	},
 	{
 		route: routes.auth.forgotPassword,
-		path: '/forgot-password'
+		path: path.FORGOT_PASSWORD
 	},
 	{
 		route: routes.private.profile,
-		path: '/profile'
+		path: path.PROFILE
 	},
 	{
 		route: routes.private.settings,
-		path: '/settings'
+		path: path.SETTINGS
 	},
 	{
 		route: routes.private.analytics,
-		path: '/analytics'
+		path: path.ANALYTICS
 	},
 	{
 		route: routes.private.notices,
-		path: '/notices'
+		path: path.NOTICES
 	},
 	{
 		route: routes.private.home,
-		path: '/'
+		path: path.HOME
 	}
 ]
 

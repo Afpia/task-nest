@@ -1,4 +1,4 @@
-export interface ProjectsResponse {
+export type ProjectsResponse = {
 	id: number
 	title: string
 	description: string
@@ -6,7 +6,7 @@ export interface ProjectsResponse {
 	end_date: string
 	status: string
 	remaining_days: number
-}
+}[]
 
 export interface UserParams {
 	user_id: number

@@ -40,7 +40,6 @@ persist({
 // persist({
 // 	key: 'user',
 // 	store: $user,
-// 	serialize: (state) => state,
-// 	deserialize: (state) => state
+// 	serialize: (state) => JSON.stringify(state),
+// 	deserialize: (state) => JSON.parse(state)
 // })
-// stringify and parse ?
