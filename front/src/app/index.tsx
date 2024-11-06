@@ -1,7 +1,10 @@
+import { RouterProvider } from 'atomic-router-react'
+
 import { createTheme, MantineProvider, type MantineTheme } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
-import { myColors } from '@shared/config'
+import { Pages } from '@pages/index'
+import { myColors, router, started } from '@shared/config'
 
 import { AuthProvider } from './providers/auth'
 import { Router } from './router'
@@ -11,7 +14,6 @@ import '@mantine/spotlight/styles.css'
 import '@mantine/core/styles.css'
 import '@assets/styles/global.css'
 
-// #1c1b22
 const theme = createTheme({
 	colors: {
 		pink: myColors
@@ -25,6 +27,7 @@ const theme = createTheme({
 					'&:hover': {
 						textDecoration: 'underline'
 					},
+					// eslint-disable-next-line style/quote-props
 					color: style.colors.pink[2]
 				}
 			})
@@ -52,13 +55,18 @@ const theme = createTheme({
 	// }
 })
 
+started()
+
 export const App = () => (
 	<MantineProvider theme={theme} defaultColorScheme='auto'>
 		<ModalsProvider>
-			<AuthProvider>
-				<Notifications />
-				<Router />
-			</AuthProvider>
+			{/* <AuthProvider> */}
+			<Notifications />
+			{/* <Router /> */}
+			<RouterProvider router={router}>
+				<Pages />
+			</RouterProvider>
+			{/* </AuthProvider> */}
 		</ModalsProvider>
 	</MantineProvider>
 )

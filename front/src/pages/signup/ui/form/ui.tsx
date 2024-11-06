@@ -1,11 +1,18 @@
-import { useState } from 'react'
+import { useUnit } from 'effector-react'
 
 import { Button, Flex, PasswordInput, TextInput } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
-import { signupSchema } from '@pages/signup/model'
+import { signupFormed, signupFx, signupSchema } from '@pages/signup/model'
+
+interface FormFields {
+	name: string
+	surname: string
+	email: string
+	password: string
+}
 
 export const Form = () => {
-	const [loading, setLoading] = useState(false)
+	const [signup, loading, signupError] = useUnit([signupFx, signupFx.pending, signupFormed])
 
 	const form = useForm({
 		mode: 'controlled',
@@ -13,8 +20,13 @@ export const Form = () => {
 		validate: zodResolver(signupSchema)
 	})
 
+	const onClickForm = (values: FormFields) => {
+		signupError(form)
+		signup({ data: { name: `${values.name} ${values.surname}`, email: values.email, password: values.password } })
+	}
+
 	return (
-		<form onSubmit={form.onSubmit((values) => console.log(values))}>
+		<form onSubmit={form.onSubmit((values) => onClickForm(values))}>
 			<Flex justify='space-between' mb={35}>
 				<TextInput {...form.getInputProps('name')} label='Имя' size='lg' radius='md' disabled={loading} w={185} />
 				<TextInput {...form.getInputProps('surname')} label='Фамилия' size='lg' radius='md' disabled={loading} w={185} />

@@ -1,19 +1,16 @@
 import { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 
-import { useAuth } from '@app/hooks/useAuth'
-import { Anchor, Button, Flex, PasswordInput, Text, TextInput } from '@mantine/core'
+import { Anchor, Button, Flex, PasswordInput, TextInput } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
 import { routes } from '@shared/config'
 
-import { $loginErrors, $user, loginFx, LoginScheme } from '../model'
+import type { UserRequest } from '../api/types'
+import { loginFormed, loginFx, LoginScheme, loginSocialSended } from '../model'
 
 export const LoginForm = () => {
-	const [login, loading, error, data] = useUnit([loginFx, loginFx.pending, $loginErrors, $user])
-	const navigate = useNavigate()
-
-	const { setSession } = useAuth()
+	const [login, loading, loginError, accessToken] = useUnit([loginFx, loginFx.pending, loginFormed, loginSocialSended])
 
 	const form = useForm({
 		mode: 'controlled',
@@ -21,25 +18,21 @@ export const LoginForm = () => {
 		validate: zodResolver(LoginScheme)
 	})
 
-	useEffect(() => {
-		if (error !== null) {
-			form.setErrors({ email: true, password: error })
-		}
-	}, [error])
+	const onClickForm = (values: UserRequest) => {
+		loginError(form)
+		login({ data: values })
+	}
 
 	useEffect(() => {
-		if (data !== null) {
-			setSession({ access_token: data.access_token, user: data.user })
-			navigate(routes.MAIN)
-		}
-	}, [data])
+		accessToken()
+	}, [])
 
 	return (
-		<form onSubmit={form.onSubmit((values) => login({ data: values }))}>
+		<form onSubmit={form.onSubmit((values) => onClickForm(values))}>
 			<TextInput {...form.getInputProps('email')} label='Почта' size='lg' radius='md' mb={14} disabled={loading} />
 			<PasswordInput {...form.getInputProps('password')} label='Пароль' radius='md' size='lg' disabled={loading} />
 			<Flex justify='flex-end' mt={10}>
-				<Anchor component={Link} to={routes.FORGOT_PASSWORD}>
+				<Anchor component={Link} to={routes.auth.forgotPassword}>
 					Забыли пароль?
 				</Anchor>
 			</Flex>

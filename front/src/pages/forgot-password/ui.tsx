@@ -1,8 +1,8 @@
 import { useState } from 'react'
+import { Link } from 'atomic-router-react'
 
 import { Anchor, Box, Button, Flex, Text, TextInput, Title } from '@mantine/core'
 import { routes } from '@shared/config'
-import { Link } from 'react-router-dom'
 
 export const ForgotPassword = () => {
 	const [loading, setLoading] = useState(false)
@@ -25,7 +25,7 @@ export const ForgotPassword = () => {
 					<Button type='submit' w={220} variant='filled' fz={14} color='pink' size='lg' radius='xl' h={50} loading={loading}>
 						Отправить инструкции
 					</Button>
-					<Anchor component={Link} to={routes.LOGIN}>
+					<Anchor component={Link} to={routes.auth.login}>
 						Назад
 					</Anchor>
 				</Flex>

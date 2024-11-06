@@ -9,6 +9,7 @@ const initialState: AuthProviderState = {
 			id: 0,
 			name: '',
 			email: '',
+			avatar_url: '',
 			role: '',
 			created_at: '',
 			updated_at: ''

@@ -1,55 +1,87 @@
-import { redirect } from 'react-router-dom'
-import { createEffect, createEvent, createStore, sample } from 'effector'
+import { redirect } from 'atomic-router'
+import { createEffect, createEvent, sample } from 'effector'
 
-import { useAuth } from '@app/hooks/useAuth'
-import { notifications } from '@mantine/notifications'
-import { notifyError, notifySuccess, routes } from '@shared/config'
-import type { UserResponse } from '@shared/types'
+import type { UseFormReturnType } from '@mantine/form'
+import { allUserReceived } from '@shared/auth'
+import { routes } from '@shared/config'
+import { notifyError, notifySuccess } from '@shared/notifications'
 
 import { postUser, postUserAccess } from '../api'
+import type { UserRequest, UserSocialRequest } from '../api/types'
 
-export const loginModel = async () => {
-	// const queryHash = window.location.search
-	// const params = new URLSearchParams(queryHash.substring(1))
-	// const accessToken = params.get('access_token')
-	// window.history.replaceState({}, document.title, window.location.pathname)
-	// const $user = createStore({})
-	// if (accessToken) {
-	// 	const loginFx = createEffect(async () => {
-	// 		const data = await postUserAccess({ data: { accessToken } })
-	// 		return data
-	// 	})
-	// }
-}
+export const currentRoute = routes.auth.login
 
-export const $loginErrors = createStore<string | null>(null)
-export const $user = createStore<UserResponse | null>(null)
+export const loginFormed = createEvent<
+	UseFormReturnType<
+		{
+			password: string
+			email: string
+		},
+		(values: UserRequest) => {
+			password: string
+			email: string
+		}
+	>
+>()
 
 export const loginFx = createEffect(postUser)
 export const loginSocialFx = createEffect(postUserAccess)
+export const loginSocialSended = createEvent()
 
 sample({
 	clock: loginFx.doneData,
 	fn: (data) => {
-		redirect(routes.MAIN)
 		notifySuccess({
 			title: 'Поздравляю',
 			message: 'Вы вошли в систему'
 		})
 		return data
 	},
-	target: $user
+	target: allUserReceived
+})
+
+redirect({
+	clock: loginFx.doneData,
+	route: routes.private.home
 })
 
 sample({
 	clock: loginFx.failData,
-	fn: (error) => {
-		// :TODO обработка ошибок разных типов
-		notifyError({
-			title: 'Мы не смогли войти в систему',
-			message: error.message
-		})
-		return 'Неверная почта или пароль'
+	source: loginFormed,
+	fn: (form, error) => {
+		if (error.message === 'Request failed with status code 401') {
+			notifyError({
+				title: 'Мы не смогли войти в систему',
+				message: 'Такого пользователя не существует'
+			})
+			form.setErrors({ email: 'Такого пользователя не существует', password: true })
+		} else {
+			form.setErrors({ email: true, password: true })
+			notifyError({
+				title: 'Мы не смогли войти в систему',
+				message: error.message
+			})
+		}
+	}
+})
+
+sample({
+	clock: loginSocialSended,
+	fn: () => {
+		const queryHash = window.location.search
+		const params = new URLSearchParams(queryHash.substring(1))
+		const accessToken = params.get('access_token')
+		window.history.replaceState({}, document.title, window.location.pathname)
+		if (accessToken) {
+			return { data: { accessToken } as UserSocialRequest }
+		}
+		return { data: { accessToken: '' } as UserSocialRequest }
 	},
-	target: $loginErrors
+	// filter: ({ data }) => !!data.accessToken,
+	target: loginSocialFx
+})
+
+redirect({
+	clock: loginSocialFx.doneData,
+	route: routes.private.home
 })

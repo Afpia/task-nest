@@ -31,6 +31,12 @@ importers:
       '@mantine/spotlight':
         specifier: ^7.13.3
         version: 7.13.4(@mantine/core@7.13.4(@mantine/hooks@7.13.4(react@18.3.1))(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.13.4(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      atomic-router:
+        specifier: ^0.10.1
+        version: 0.10.1(effector@23.2.3)(history@5.3.0)
+      atomic-router-react:
+        specifier: ^0.10.0
+        version: 0.10.0(atomic-router@0.10.1(effector@23.2.3)(history@5.3.0))(effector-react@23.2.1(effector@23.2.3)(react@18.3.1))(effector@23.2.3)(react@18.3.1)
       axios:
         specifier: ^1.7.7
         version: 1.7.7
@@ -43,6 +49,12 @@ importers:
       effector-react:
         specifier: ^23.2.1
         version: 23.2.1(effector@23.2.3)(react@18.3.1)
+      effector-storage:
+        specifier: ^7.1.0
+        version: 7.1.0(effector@23.2.3)
+      history:
+        specifier: ^5.3.0
+        version: 5.3.0
       lucide-react:
         specifier: ^0.453.0
         version: 0.453.0(react@18.3.1)
@@ -964,6 +976,22 @@ packages:
   asynckit@0.4.0:
     resolution: { integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q== }
 
+  atomic-router-react@0.10.0:
+    resolution: { integrity: sha512-9EM3n1eLDbuYQjWijiHMjA2l5UPvM2pt4O7Z0TUupuDz6KF00HNMd/iBIUq7uCyDwmyctgqqR5bHIeqRlXVUAQ== }
+    engines: { node: '>=14' }
+    peerDependencies:
+      atomic-router: ^0.10.0
+      effector: ^22.8.8 || ^23
+      effector-react: ^22.1.0 || ^23
+      react: ^17 || ^18
+
+  atomic-router@0.10.1:
+    resolution: { integrity: sha512-u7XV+gOBgIAO84T58eXBkL3J4ARaHsltW7GuG01307BjvFfFGdE0yAVGm/JmMhBbIGhwTLHkalPbf8mudJIV3A== }
+    engines: { node: '>=10' }
+    peerDependencies:
+      effector: ^22.8.8 || ^23
+      history: ^5.3.0
+
   available-typed-arrays@1.0.7:
     resolution: { integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ== }
     engines: { node: '>= 0.4' }
@@ -1042,6 +1070,10 @@ packages:
   cliui@8.0.1:
     resolution: { integrity: sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ== }
     engines: { node: '>=12' }
+
+  clsx@1.2.1:
+    resolution: { integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg== }
+    engines: { node: '>=6' }
 
   clsx@2.1.1:
     resolution: { integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA== }
@@ -1234,6 +1266,11 @@ packages:
     peerDependencies:
       effector: ^23.0.0
       react: '>=16.8.0 <19.0.0'
+
+  effector-storage@7.1.0:
+    resolution: { integrity: sha512-l5+RR48g7ZKUldElHnJSkzPwiMeyoO7D+C/xM6g4MVHpM9Waty8HMuIas+udSXYE1Tf9i8xm/AGBhdRrMm2FIA== }
+    peerDependencies:
+      effector: ^22.4.0 || ^23.0.0
 
   effector@23.2.3:
     resolution: { integrity: sha512-nBk3pzdJKT/Sn3OhLUurZoxKXUBd+iqiYHNoBRDFc8EE/vXp2JPNsickX59ZjlDbsWZwTMCVV3tovxjRo+vMGQ== }
@@ -1777,6 +1814,9 @@ packages:
   hasown@2.0.2:
     resolution: { integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ== }
     engines: { node: '>= 0.4' }
+
+  history@5.3.0:
+    resolution: { integrity: sha512-ZqaKwjjrAYUYfLG+htGaIIZ4nioX2L70ZUMIFysS3xvBsSG4x/n1V6TXV3N8ZYNuFGlDirFg32T7B6WOUPDYcQ== }
 
   hosted-git-info@2.8.9:
     resolution: { integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw== }
@@ -2336,6 +2376,9 @@ packages:
 
   path-parse@1.0.7:
     resolution: { integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw== }
+
+  path-to-regexp@6.3.0:
+    resolution: { integrity: sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ== }
 
   path-type@4.0.0:
     resolution: { integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw== }
@@ -3986,6 +4029,20 @@ snapshots:
 
   asynckit@0.4.0: {}
 
+  atomic-router-react@0.10.0(atomic-router@0.10.1(effector@23.2.3)(history@5.3.0))(effector-react@23.2.1(effector@23.2.3)(react@18.3.1))(effector@23.2.3)(react@18.3.1):
+    dependencies:
+      atomic-router: 0.10.1(effector@23.2.3)(history@5.3.0)
+      clsx: 1.2.1
+      effector: 23.2.3
+      effector-react: 23.2.1(effector@23.2.3)(react@18.3.1)
+      react: 18.3.1
+
+  atomic-router@0.10.1(effector@23.2.3)(history@5.3.0):
+    dependencies:
+      effector: 23.2.3
+      history: 5.3.0
+      path-to-regexp: 6.3.0
+
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.0.0
@@ -4064,6 +4121,8 @@ snapshots:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
+
+  clsx@1.2.1: {}
 
   clsx@2.1.1: {}
 
@@ -4235,6 +4294,10 @@ snapshots:
       effector: 23.2.3
       react: 18.3.1
       use-sync-external-store: 1.2.2(react@18.3.1)
+
+  effector-storage@7.1.0(effector@23.2.3):
+    dependencies:
+      effector: 23.2.3
 
   effector@23.2.3: {}
 
@@ -5011,6 +5074,10 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
+  history@5.3.0:
+    dependencies:
+      '@babel/runtime': 7.26.0
+
   hosted-git-info@2.8.9: {}
 
   html-tags@3.3.1: {}
@@ -5704,6 +5771,8 @@ snapshots:
   path-key@3.1.1: {}
 
   path-parse@1.0.7: {}
+
+  path-to-regexp@6.3.0: {}
 
   path-type@4.0.0: {}
 
