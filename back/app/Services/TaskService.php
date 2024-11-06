@@ -46,7 +46,6 @@ class TaskService
                 ->withPivot('role')
                 ->first()?->pivot->role ?? null;
         }
-        return null;
     }
 
     public function getMyTasksInProject(Project $project, User $user)

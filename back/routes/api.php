@@ -27,6 +27,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/workspaces', [WorkspaceController::class, 'index']);
     Route::post('/workspace/add', [WorkspaceController::class, 'store']);
 
+    //user
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/user/info', [UserController::class, 'profile']);
+    Route::get('/user/info/avatar', [UserController::class, 'avatar']);
+    Route::get('/user/workspaces', [UserController::class, 'workspaces']);
+
+    Route::get('/user/{user}', [UserController::class, 'view']);
+
+
+
     //executor 
     Route::middleware('role:executor')->group(function () {
         //workspaces routes
@@ -87,6 +97,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/workspace/{workspace}/update', [WorkspaceController::class, 'update']);
         Route::delete('/workspace/{workspace}/delete', [WorkspaceController::class, 'destroy']);
     });
+
+    Route::get('requests', [PersonalAccessTokenController::class, 'index']);
+    Route::post('request/{user}', [PersonalAccessTokenController::class, 'store']);
+    Route::post('request{request}/accept', [PersonalAccessTokenController::class, 'accept']);
+    Route::post('request{request}/desline', [PersonalAccessTokenController::class, 'desline']);
+
 });
 
 

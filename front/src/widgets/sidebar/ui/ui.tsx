@@ -78,9 +78,9 @@ import styles from './ui.module.css'
 export const currentRoute = routes.private.home
 
 export const Sidebar = () => {
-	// const pathname = useLocation().pathname
 	const theme = useMantineTheme()
-	console.log(currentRoute)
+	const pathname = window.location.pathname
+	console.log(pathname)
 
 	const openModal = () =>
 		modals.openConfirmModal({
@@ -112,7 +112,7 @@ export const Sidebar = () => {
 						variant='filled'
 						leftSection={<House />}
 						className={styles.root}
-						active={pathname === routes.MAIN}
+						active={pathname === routes.private.home}
 					/>
 					<NavLink
 						component={Link}
@@ -121,7 +121,7 @@ export const Sidebar = () => {
 						variant='filled'
 						leftSection={<Bell />}
 						className={styles.root}
-						active={pathname === routes.NOTICES}
+						active={pathname === routes.private.notices}
 					/>
 					<NavLink
 						component={Link}
@@ -139,7 +139,7 @@ export const Sidebar = () => {
 						variant='filled'
 						leftSection={<ChartNoAxesCombined />}
 						className={styles.root}
-						active={pathname === routes.ANALYTICS}
+						active={pathname === routes.private.analytics}
 					/>
 				</Flex>
 				<Divider my='sm' variant='dashed' />
