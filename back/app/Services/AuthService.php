@@ -14,11 +14,13 @@ class AuthService
 {
     private $avatarService;
     private $tokenService;
+    private $workspaceService;
 
-    public function __construct(ImageService $avatarService, TokenService $tokenService)
+    public function __construct(ImageService $avatarService, TokenService $tokenService, WorkspaceService $workspaceService)
     {
         $this->avatarService = $avatarService;
         $this->tokenService = $tokenService;
+        $this->workspaceService = $workspaceService;
     }
 
     public function handleSocialCallback($provider)
@@ -53,6 +55,7 @@ class AuthService
                 $this->avatarService->generateDefaultImage('avatar', $validated['name']),
         ]);
 
+        $this->workspaceService->createWorkspace("$user->name`s Workspace", $user->id);
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return [

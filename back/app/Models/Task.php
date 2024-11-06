@@ -13,7 +13,6 @@ class Task extends Model
         'title',
         'description',
         'project_id',
-        'user_id',
         'priority',
         'start_date',
         'end_date',
@@ -30,9 +29,10 @@ class Task extends Model
         return $this->belongsTo(Workspace::class);
     }
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class, 'user_tasks')
+            ->withPivot('role');
     }
 
 

@@ -17,14 +17,17 @@ class WorkspaceService
         $this->imageService = $imageService;
     }
 
-    public function createWorkspace(string $title)
+    public function createWorkspace(string $title, $userId = false)
     {
         $workspace = Workspace::create(['title' => $title]);
 
         $workspace->image_url = $this->imageService->generateDefaultImage('workspace', $workspace->id);
         $workspace->save();
+        if (!$userId) {
+            $userId = Auth::id();
+        }
 
-        $this->manageUserInWorkspace($workspace, Auth::id(), 'owner');
+        $this->manageUserInWorkspace($workspace, $userId, 'owner');
     }
 
     public function updateWorkspace(array $data, Workspace $workspace)

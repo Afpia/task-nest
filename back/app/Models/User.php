@@ -65,7 +65,8 @@ class User extends Authenticatable
 
     public function tasks()
     {
-        return $this->hasMany(Task::class);
+        return $this->belongsToMany(Task::class, 'user_tasks')
+            ->withPivot('role');
     }
 
     public function hasRoleLevel(string $requiredRole, $workspace)
@@ -78,4 +79,6 @@ class User extends Authenticatable
 
         return self::ROLE_HIERARCHY[$userRole] >= self::ROLE_HIERARCHY[$requiredRole];
     }
+
+
 }

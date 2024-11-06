@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Task;
+use App\Models\Workspace;
 use App\Services\QueryService;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
@@ -77,10 +78,56 @@ class TaskController extends Controller
         return response()->json(['message' => __('messages.update_success')], 200);
     }
 
-    public function delete(Task $task)
+    public function destroy(Task $task)
     {
         $task->delete();
 
         return response()->json(['message' => __('messages.delete_success')], 200);
+    }
+
+    public function addUserToTask(Request $request, Task $task)
+    {
+        $this->taskService->addUserToTask($task, $request->user_id);
+        return response()->json([__('messages.add_user_success')], 201);
+    }
+
+    public function taskUsers(Task $task)
+    {
+        $taskWithUsers = $task->load('users');
+        $sanitizedUsers = $taskWithUsers->users->map(function ($user) use ($task) {
+            $role = $this->taskService->getUserRoleInTask($task, $user->id);
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'role' => $role,
+            ];
+        });
+
+        return response()->json($sanitizedUsers);
+    }
+
+    public function updateStatus(Request $request, Task $task)
+    {
+        $validate = $request->validate([
+            'status' => 'required|in:Назначена,Выполняется,Завершена',
+        ]);
+
+        $this->taskService->updateTask($validate, $task);
+
+        return response()->json(['message' => __('messages.update_status_success')], 200);
+    }
+
+    public function myTasksInProject(Project $project)
+    {
+        $tasks = $this->taskService->getMyTasksInProject($project, auth()->user());
+
+        return response()->json($tasks);
+    }
+
+    public function myTasksInWorkspace(Request $request, Workspace $workspace)
+    {
+        $tasks = $this->taskService->getMyTasksInWorkspace($workspace, auth()->user());
+
+        return response()->json($tasks);
     }
 }

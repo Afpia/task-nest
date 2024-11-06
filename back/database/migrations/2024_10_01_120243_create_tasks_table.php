@@ -19,7 +19,6 @@ return new class extends Migration {
             $table->string('title');
             $table->text('description');
             $table->foreignIdFor(Project::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->enum('priority', ['Низкий', 'Средний', 'Высокий']);
             $table->date('start_date');
             $table->date('end_date');

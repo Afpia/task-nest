@@ -46,7 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/my-tasks/{project}/project', [TaskController::class, 'myTasksInProject']);
         Route::get('/task/{task}', [TaskController::class, 'view']);
         Route::get('/task/{task}/users', [TaskController::class, 'taskUsers']);
-        Route::put('/task/{task}/status', [TaskController::class, 'updateStatus']);
+        Route::put('/task/{task}/update-status', [TaskController::class, 'updateStatus']);
 
         //comments routes
         Route::get('/comment/{task}', [CommentController::class, 'index']);
