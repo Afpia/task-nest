@@ -20,13 +20,15 @@ class WorkspaceController extends Controller
 
     public function index(Request $request)
     {
-        $filters = $request->input('filters', []);
-        $columns = $request->input('columns', ['*']);
-        $perPage = $request->input('per_page');
+        $filters = $request->input('filters', '');
+        $columns = $request->input('columns', '*');
+        $perPage = $request->input('per_page', false);
 
         $query = Workspace::query();
+
         $query = $this->queryService->applyFilters($query, $filters);
         $query = $this->queryService->selectColumns($query, $columns);
+
         $workspaces = $this->queryService->paginateResults($query, $perPage);
 
         return response()->json($workspaces);
@@ -34,7 +36,7 @@ class WorkspaceController extends Controller
 
     public function show(Request $request, Workspace $workspace)
     {
-        $columns = $request->input('columns', ['*']);
+        $columns = $request->input('columns', '*');
         $workspace = $this->queryService->selectColumns($workspace->newQuery(), $columns)->find($workspace->id);
 
         return response()->json([
