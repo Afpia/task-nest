@@ -4,12 +4,11 @@ import { Settings } from 'lucide-react'
 
 import { SidebarSearch } from '@features/search'
 import { Avatar, Divider, Flex, Text, Title, useMantineTheme } from '@mantine/core'
-import { $user } from '@shared/auth'
 import { path, routes } from '@shared/config'
 
+import { $avatar } from './module'
+
 import styles from './ui.module.css'
-import { useLocation } from 'react-router-dom'
-import { Link } from 'atomic-router-react'
 
 const pageInfo = {
 	[path.HOME]: { title: 'Главная', subtitle: 'Контролируйте все свои проекты и задачи здесь' },
@@ -19,7 +18,7 @@ const pageInfo = {
 }
 
 export const Header = () => {
-	const [avatar] = useUnit([$user])
+	const [avatar] = useUnit([$avatar])
 	const theme = useMantineTheme()
 	const pathname = window.location.pathname
 
@@ -49,7 +48,7 @@ export const Header = () => {
 				</Link>
 				<Divider size='xs' my='xs' orientation='vertical' />
 				<Link to={routes.private.profile} className={styles.link}>
-					<Avatar size='46' src={avatar.avatar_url} radius='xl' variant='default' />
+					<Avatar size='46' src={avatar} radius='xl' variant='default' />
 				</Link>
 			</Flex>
 		</Flex>

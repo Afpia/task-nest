@@ -31,7 +31,7 @@ export const signupSocialFx = createEffect(postUserAccess)
 
 sample({
 	clock: signupFx.doneData,
-	fn: (data) => {
+	fn: ({ data }) => {
 		notifySuccess({
 			title: 'Поздравляю',
 			message: 'Вы успешно зарегистрировались'

@@ -3,7 +3,6 @@ import { Avatar, Box, Button, Flex, Text, Title } from '@mantine/core'
 import styles from './ui.module.css'
 
 export const Profile = () => {
-	// const
 	return (
 		<Flex direction='column' gap='20'>
 			<Box className={styles.root}>

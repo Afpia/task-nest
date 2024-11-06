@@ -9,14 +9,20 @@ import { modals } from '@mantine/modals'
 import { $user } from '@shared/auth'
 import { path, routes } from '@shared/config'
 
-import { $projects, getUserProjectsFx } from '../model'
+import { $projects, $workspaces, getUserProjectsFx } from '../model'
 
 import { SwitchTheme } from './switch-theme'
 
 import styles from './ui.module.css'
 
 export const Sidebar = () => {
-	const [data, projectsFetched, loading, idUser] = useUnit([$projects, getUserProjectsFx, getUserProjectsFx.pending, $user])
+	const [data, projectsFetched, loading, idUser, workspaces] = useUnit([
+		$projects,
+		getUserProjectsFx,
+		getUserProjectsFx.pending,
+		$user,
+		$workspaces
+	])
 	const theme = useMantineTheme()
 	const pathname = window.location.pathname
 
@@ -28,9 +34,9 @@ export const Sidebar = () => {
 			onConfirm: () => console.log('Да')
 		})
 
-	useEffect(() => {
-		projectsFetched(idUser.id)
-	}, [])
+	// useEffect(() => {
+	// 	projectsFetched(idUser.id)
+	// }, [])
 
 	return (
 		<Flex direction='column' gap='xs' w='230px' h='100vh' p={10} justify='space-between'>
@@ -43,7 +49,7 @@ export const Sidebar = () => {
 					// value={value}
 					// onChange={(event) => setValue(event.currentTarget.value)}
 					className={styles.root}
-					data={['Default', '1', '2', '3']}
+					data={workspaces.map((workspace) => ({ value: workspace.id, label: workspace.title }))}
 				/>
 				<Divider my='sm' variant='dashed' />
 				<Flex direction='column' gap='xs'>

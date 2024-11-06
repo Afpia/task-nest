@@ -9,7 +9,16 @@ export type ProjectsResponse = {
 }[]
 
 export interface UserParams {
-	user_id: number
+	workspace: string
 }
 
-export type GetUserProjectsConfig = AxiosRequestConfig<UserParams, undefined>
+export type WorkspacesResponse = {
+	id: string
+	title: string
+	description: string
+	image_url: string
+}[]
+
+export type GetUserProjectsConfig = AxiosRequestConfig<UserParams>
+
+export type GetUserWorkspacesConfig = AxiosRequestConfig
