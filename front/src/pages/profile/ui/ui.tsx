@@ -4,7 +4,7 @@ import { useUnit } from 'effector-react'
 import { Avatar, Box, Button, FileButton, Flex, Group, Image, Input, Text, TextInput, Title } from '@mantine/core'
 
 import { AvatarChange } from './avatar'
-import { ButtonExit } from './exit-button'
+import { Security } from './security'
 
 import styles from './ui.module.css'
 
@@ -19,7 +19,7 @@ export const Profile = () => {
 					<Title order={3} size={18} fw={600}>
 						Персональные данные
 					</Title>
-					<Button onClick={() => openEditPersonal(!editPersonal)} variant='outline' radius='lg'>
+					<Button radius='md' onClick={() => openEditPersonal(!editPersonal)} variant='outline'>
 						Редактировать
 					</Button>
 				</Flex>
@@ -50,8 +50,8 @@ export const Profile = () => {
 						</Flex>
 					</Flex>
 				</Flex>
-				<ButtonExit />
 			</Box>
+			<Security />
 		</Flex>
 	)
 }

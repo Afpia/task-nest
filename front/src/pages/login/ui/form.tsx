@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 

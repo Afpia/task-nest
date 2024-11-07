@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 
-import { Avatar, Box, Button, Flex, Group, Text } from '@mantine/core'
+import { Avatar, Box, Button, Flex, Group, Text, useMantineTheme } from '@mantine/core'
 import { Dropzone, type FileWithPath } from '@mantine/dropzone'
 
 import styles from './ui.module.css'
@@ -8,6 +8,7 @@ import styles from './ui.module.css'
 export const AvatarChange = () => {
 	const [file, setFile] = useState<FileWithPath[]>([])
 	const openRef = useRef<() => void>(null)
+	const theme = useMantineTheme()
 
 	const clearFile = () => {
 		setFile([])
@@ -40,10 +41,17 @@ export const AvatarChange = () => {
 						</Flex>
 					</Flex>
 					<Group justify='center'>
-						<Button style={{ pointerEvents: 'all' }} onClick={() => openRef.current?.()}>
-							Выбрать фото
-						</Button>
-						<Button style={{ pointerEvents: 'all' }} disabled={file.length === 0} color='red' onClick={clearFile}>
+						{/* eslint-disable-next-line style/multiline-ternary */}
+						{file.length === 0 ? (
+							<Button radius='md' style={{ pointerEvents: 'all' }} onClick={() => openRef.current?.()}>
+								Выбрать фото
+							</Button>
+						) : (
+							<Button radius='md' style={{ pointerEvents: 'all' }} className={styles.buttonSave}>
+								Сохранить
+							</Button>
+						)}
+						<Button radius='md' style={{ pointerEvents: 'all' }} disabled={file.length === 0} color='red' onClick={clearFile}>
 							Удалить
 						</Button>
 					</Group>

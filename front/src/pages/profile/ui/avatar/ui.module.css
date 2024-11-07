@@ -4,3 +4,7 @@
 	border-radius: 16px;
 	height: 100%;
 }
+
+.buttonSave {
+	background: rgb(64, 192, 87) !important;
+}

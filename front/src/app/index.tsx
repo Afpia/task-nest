@@ -6,9 +6,6 @@ import { Notifications } from '@mantine/notifications'
 import { Pages } from '@pages/index'
 import { myColors, router, started } from '@shared/config'
 
-import { AuthProvider } from './providers/auth'
-import { Router } from './router'
-
 import '@mantine/notifications/styles.css'
 import '@mantine/spotlight/styles.css'
 import '@mantine/dropzone/styles.css'
