@@ -17,7 +17,7 @@ export function privateAuth<Params extends RouteParams>(route: RouteInstance<Par
 		clock: checkSessionStarted,
 		filter: $isAuth
 	})
-	console.log(forbidden)
+
 	redirect({
 		clock: forbidden,
 		route: routes.private.home

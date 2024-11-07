@@ -1,27 +1,25 @@
 /* eslint-disable style/operator-linebreak */
-import { useEffect } from 'react'
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 import { Bell, ChartNoAxesCombined, CircleCheck, CirclePlus, House } from 'lucide-react'
 
-import { Divider, Flex, NativeSelect, NavLink, Skeleton, Text, Title, useMantineTheme } from '@mantine/core'
+import { Avatar, Divider, Flex, NativeSelect, NavLink, Skeleton, Text, Title, useMantineTheme } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { $user } from '@shared/auth'
 import { path, routes } from '@shared/config'
 
-import { $projects, $workspaces, getUserProjectsFx } from '../model'
+import { $currentWorkspace, $projects, $workspaces, changedWorkspace, getUserProjectsFx } from '../model'
 
 import { SwitchTheme } from './switch-theme'
 
 import styles from './ui.module.css'
 
 export const Sidebar = () => {
-	const [data, projectsFetched, loading, idUser, workspaces] = useUnit([
+	const [workspaces, currentWorkspace, change, data, loading] = useUnit([
+		$workspaces,
+		$currentWorkspace,
+		changedWorkspace,
 		$projects,
-		getUserProjectsFx,
-		getUserProjectsFx.pending,
-		$user,
-		$workspaces
+		getUserProjectsFx.pending
 	])
 	const theme = useMantineTheme()
 	const pathname = window.location.pathname
@@ -34,10 +32,7 @@ export const Sidebar = () => {
 			onConfirm: () => console.log('Да')
 		})
 
-	// useEffect(() => {
-	// 	projectsFetched(idUser.id)
-	// }, [])
-
+	// TODO: возможно брать ошибку и по ней выводить нет проектов
 	return (
 		<Flex direction='column' gap='xs' w='230px' h='100vh' p={10} justify='space-between'>
 			<Flex direction='column'>
@@ -46,10 +41,11 @@ export const Sidebar = () => {
 				</Title>
 				<Divider my='sm' variant='dashed' />
 				<NativeSelect
-					// value={value}
-					// onChange={(event) => setValue(event.currentTarget.value)}
+					value={currentWorkspace.id}
+					onChange={(current) => change(current.target.value)}
 					className={styles.root}
 					data={workspaces.map((workspace) => ({ value: workspace.id, label: workspace.title }))}
+					leftSection={<Avatar size={20} src={currentWorkspace.image_url} />}
 				/>
 				<Divider my='sm' variant='dashed' />
 				<Flex direction='column' gap='xs'>
@@ -113,9 +109,9 @@ export const Sidebar = () => {
 									active={pathname === `/${item.id}`}
 								/>
 							))}
-						{/* TODO: Сделать адаптивный вывод */}
 					</Flex>
 				)}
+				{/* TODO: Сделать адаптивный вывод */}
 			</Flex>
 
 			{!loading && data.length === 0 && (

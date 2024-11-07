@@ -12,12 +12,14 @@ export interface UserParams {
 	workspace: string
 }
 
-export type WorkspacesResponse = {
+export type WorkspacesResponse = WorkspaceField[]
+
+export interface WorkspaceField {
 	id: string
 	title: string
 	description: string
 	image_url: string
-}[]
+}
 
 export type GetUserProjectsConfig = AxiosRequestConfig<UserParams>
 

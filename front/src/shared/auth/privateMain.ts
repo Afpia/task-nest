@@ -17,7 +17,7 @@ export function privateMain<Params extends RouteParams>(route: RouteInstance<Par
 		clock: checkSessionStarted,
 		filter: $isAuth.map((isAuth) => !isAuth)
 	})
-	console.log(unauthorized)
+
 	redirect({
 		clock: unauthorized,
 		route: routes.auth.login

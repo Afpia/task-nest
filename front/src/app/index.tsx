@@ -11,6 +11,7 @@ import { Router } from './router'
 
 import '@mantine/notifications/styles.css'
 import '@mantine/spotlight/styles.css'
+import '@mantine/dropzone/styles.css'
 import '@mantine/core/styles.css'
 import '@assets/styles/global.css'
 
