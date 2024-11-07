@@ -2,7 +2,7 @@ import { chainRoute } from 'atomic-router'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 
-import { privateMain } from '@shared/auth'
+import { allUserExpired, privateMain } from '@shared/auth'
 import { path, routes } from '@shared/config'
 
 import { getUserProjects, getUserWorkspaces } from '../api'
@@ -20,7 +20,7 @@ export const currentRoute = getCurrentRoute(window.location.pathname)
 
 export const $projects = createStore<ProjectsResponse>([] as ProjectsResponse)
 export const $workspaces = createStore<WorkspacesResponse>([] as WorkspacesResponse)
-export const $currentWorkspace = createStore<WorkspaceField>({} as WorkspaceField)
+export const $currentWorkspace = createStore<WorkspaceField>({} as WorkspaceField).reset(allUserExpired)
 
 export const getUserProjectsFx = createEffect((workspace: string) => getUserProjects({ params: { workspace } }))
 export const getUserWorkspacesFx = createEffect(getUserWorkspaces)

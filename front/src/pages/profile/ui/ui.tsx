@@ -1,11 +1,14 @@
 import { useRef, useState } from 'react'
+import { useUnit } from 'effector-react'
 
 import { Avatar, Box, Button, FileButton, Flex, Group, Image, Input, Text, TextInput, Title } from '@mantine/core'
 import { Dropzone, type FileWithPath } from '@mantine/dropzone'
+import { allUserExpired } from '@shared/auth'
 
 import styles from './ui.module.css'
 
 export const Profile = () => {
+	const [onExit] = useUnit([allUserExpired])
 	const [file, setFile] = useState<FileWithPath[]>([])
 	const openRef = useRef<() => void>(null)
 	const [editPersonal, openEditPersonal] = useState(false)
@@ -95,6 +98,7 @@ export const Profile = () => {
 					</Flex>
 				</Flex>
 			</Box>
+			<Button onClick={onExit}>Выйти</Button>
 		</Flex>
 	)
 }

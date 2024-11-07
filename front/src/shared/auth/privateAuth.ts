@@ -10,7 +10,7 @@ export function privateAuth<Params extends RouteParams>(route: RouteInstance<Par
 
 	const alreadyAuthorized = sample({
 		clock: checkSessionStarted,
-		filter: $isAuth.map((isAuth) => isAuth)
+		filter: $isAuth.map((isAuth) => !isAuth)
 	})
 
 	const forbidden = sample({

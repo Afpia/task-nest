@@ -7,10 +7,10 @@ import { useForm, zodResolver } from '@mantine/form'
 import { routes } from '@shared/config'
 
 import type { UserRequest } from '../api/types'
-import { loginFormed, loginFx, LoginScheme, loginSocialSended } from '../model'
+import { loginFormed, loginFx, LoginScheme } from '../model'
 
 export const LoginForm = () => {
-	const [login, loading, loginError, accessToken] = useUnit([loginFx, loginFx.pending, loginFormed, loginSocialSended])
+	const [login, loading, loginError] = useUnit([loginFx, loginFx.pending, loginFormed])
 
 	const form = useForm({
 		mode: 'controlled',
@@ -22,10 +22,6 @@ export const LoginForm = () => {
 		loginError(form)
 		login({ data: values })
 	}
-
-	useEffect(() => {
-		accessToken()
-	}, [])
 
 	return (
 		<form onSubmit={form.onSubmit((values) => onClickForm(values))}>

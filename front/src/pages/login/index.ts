@@ -8,7 +8,7 @@ import { Login } from './ui'
 
 export const LoginRoute = {
 	view: Login,
-	route: routes.auth.login,
+	route: privateAuth(routes.auth.login),
 	layout: LayoutLogin
 }
 

@@ -13,6 +13,7 @@ export function privateMain<Params extends RouteParams>(route: RouteInstance<Par
 		filter: $isAuth
 	})
 
+	console.log(route)
 	const unauthorized = sample({
 		clock: checkSessionStarted,
 		filter: $isAuth.map((isAuth) => !isAuth)

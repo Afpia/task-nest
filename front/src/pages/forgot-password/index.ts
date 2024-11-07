@@ -6,6 +6,6 @@ import { ForgotPassword } from './ui'
 
 export const ForgotPasswordRoute = {
 	view: ForgotPassword,
-	route: routes.auth.forgotPassword,
+	route: privateAuth(routes.auth.forgotPassword),
 	layout: LayoutLogin
 }

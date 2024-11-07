@@ -3,6 +3,7 @@ import { createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 
 import { routes } from '@shared/config'
+import { notifySuccess } from '@shared/notifications'
 import type { UserFieldResponse, UserResponse } from '@shared/types'
 
 export const allUserReceived = createEvent<UserResponse>()
@@ -21,6 +22,16 @@ sample({
 	clock: allUserReceived,
 	fn: (allUser) => allUser.access_token,
 	target: $accessToken
+})
+
+sample({
+	clock: allUserExpired,
+	fn: () => {
+		notifySuccess({
+			title: 'Поздравляю',
+			message: 'Вы успешно вышли из системы'
+		})
+	}
 })
 
 redirect({
