@@ -1,4 +1,5 @@
 export * from './colors'
+export * from './path'
 export * from './redirects'
 export * from './routes'
 export * from './start'

@@ -9,8 +9,6 @@ import { notifyError, notifySuccess } from '@shared/notifications'
 import { postUser, postUserAccess } from '../api'
 import type { UserRequest, UserSocialRequest } from '../api/types'
 
-export const currentRoute = routes.auth.login
-
 export const loginFormed = createEvent<
 	UseFormReturnType<
 		{
@@ -30,7 +28,7 @@ export const loginSocialSended = createEvent()
 
 sample({
 	clock: loginFx.doneData,
-	fn: (data) => {
+	fn: ({ data }) => {
 		notifySuccess({
 			title: 'Поздравляю',
 			message: 'Вы вошли в систему'

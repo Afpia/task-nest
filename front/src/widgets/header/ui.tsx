@@ -1,21 +1,24 @@
+import { Link } from 'atomic-router-react'
+import { useUnit } from 'effector-react'
 import { Settings } from 'lucide-react'
 
 import { SidebarSearch } from '@features/search'
 import { Avatar, Divider, Flex, Text, Title, useMantineTheme } from '@mantine/core'
-import { mappedRoutes, routes } from '@shared/config'
+import { path, routes } from '@shared/config'
+
+import { $avatar } from './module'
 
 import styles from './ui.module.css'
-import { useLocation } from 'react-router-dom'
-import { Link } from 'atomic-router-react'
 
 const pageInfo = {
-	[mappedRoutes[7].path]: { title: 'Главная', subtitle: 'Контролируйте все свои проекты и задачи здесь' }
-	// [routes.private.settings]: { title: 'Настройки', subtitle: 'Настройте свой профиль и предпочтения' },
-	// [routes.private.profile]: { title: 'Профиль', subtitle: 'Просмотр и редактирование профиля' },
-	// [routes.private.analytics]: { title: 'Аналитика', subtitle: '' }
+	[path.HOME]: { title: 'Главная', subtitle: 'Контролируйте все свои проекты и задачи здесь' },
+	[path.SETTINGS]: { title: 'Настройки', subtitle: 'Настройте свой профиль и предпочтения' },
+	[path.PROFILE]: { title: 'Профиль', subtitle: 'Просмотр и редактирование профиля' },
+	[path.ANALYTICS]: { title: 'Аналитика', subtitle: '' }
 }
 
 export const Header = () => {
+	const [avatar] = useUnit([$avatar])
 	const theme = useMantineTheme()
 	const pathname = window.location.pathname
 
@@ -45,7 +48,7 @@ export const Header = () => {
 				</Link>
 				<Divider size='xs' my='xs' orientation='vertical' />
 				<Link to={routes.private.profile} className={styles.link}>
-					<Avatar size='46' color='initials' radius='xl' name='hello' variant='default' />
+					<Avatar size='46' src={avatar} radius='xl' variant='default' />
 				</Link>
 			</Flex>
 		</Flex>

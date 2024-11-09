@@ -37,7 +37,11 @@ export const SidebarSearch = () => (
 			radius='md'
 			onClick={spotlight.open}
 			w={280}
-			rightSection={<Kbd size='xs'>Ctrl + K</Kbd>}
+			rightSection={
+				<Kbd h='25px' w='60px' size='xs'>
+					Ctrl + K
+				</Kbd>
+			}
 		>
 			<Text w={156} className={styles.search}>
 				Поиск

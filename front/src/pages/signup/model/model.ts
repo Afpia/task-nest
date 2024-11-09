@@ -1,5 +1,5 @@
 import { redirect } from 'atomic-router'
-import { createEffect, createEvent, createStore, sample } from 'effector'
+import { createEffect, createEvent, sample } from 'effector'
 
 import type { UseFormReturnType } from '@mantine/form'
 import { allUserReceived } from '@shared/auth'
@@ -8,8 +8,6 @@ import { notifyError, notifySuccess } from '@shared/notifications'
 
 import { postUser, postUserAccess } from '../api'
 import type { UserRequest } from '../api/types'
-
-export const currentRoute = routes.auth.signup
 
 export const signupFormed = createEvent<
 	UseFormReturnType<
@@ -33,7 +31,7 @@ export const signupSocialFx = createEffect(postUserAccess)
 
 sample({
 	clock: signupFx.doneData,
-	fn: (data) => {
+	fn: ({ data }) => {
 		notifySuccess({
 			title: 'Поздравляю',
 			message: 'Вы успешно зарегистрировались'

@@ -5,8 +5,7 @@ api.interceptors.request.use((config) => {
 		return config
 	} else {
 		const session = localStorage.getItem('token')
-		const { accessToken } = JSON.parse(session!)
-		config.headers.Authorization = `Bearer ${accessToken}`
+		config.headers.Authorization = `Bearer ${session}`
 		return config
 	}
 })
