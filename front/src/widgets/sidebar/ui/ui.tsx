@@ -3,15 +3,16 @@ import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 import { Bell, ChartNoAxesCombined, CircleCheck, CirclePlus, House } from 'lucide-react'
 
-import { Avatar, Divider, Flex, NativeSelect, NavLink, Skeleton, Text, Title, useMantineTheme } from '@mantine/core'
-import { modals } from '@mantine/modals'
+import { Avatar, Divider, Flex, Menu, NativeSelect, NavLink, Skeleton, Text, Title, useMantineTheme } from '@mantine/core'
 import { path, routes } from '@shared/config'
 
 import { $currentWorkspace, $projects, $workspaces, changedWorkspace, getUserProjectsFx } from '../model'
 
+import { CreateProject } from './create-project'
 import { SwitchTheme } from './switch-theme'
 
 import styles from './ui.module.css'
+import { useState } from 'react'
 
 export const Sidebar = () => {
 	const [workspaces, currentWorkspace, change, data, loading] = useUnit([
@@ -23,16 +24,13 @@ export const Sidebar = () => {
 	])
 	const theme = useMantineTheme()
 	const pathname = window.location.pathname
+	const [menuOpened, setMenuOpened] = useState(false)
 
-	const openModal = () =>
-		modals.openConfirmModal({
-			title: 'Вы уверены что хотите создать новый проект?',
-			centered: true,
-			labels: { confirm: 'Да', cancel: 'Нет' },
-			onConfirm: () => console.log('Да')
-		})
+	const handleContextMenu = (event: React.MouseEvent) => {
+		event.preventDefault()
+		setMenuOpened(true)
+	}
 
-	// TODO: возможно брать ошибку и по ней выводить нет проектов
 	return (
 		<Flex direction='column' gap='xs' w='230px' h='100vh' p={10} justify='space-between'>
 			<Flex direction='column'>
@@ -41,11 +39,12 @@ export const Sidebar = () => {
 				</Title>
 				<Divider my='sm' variant='dashed' />
 				<NativeSelect
-					value={currentWorkspace.id}
+					// value={currentWorkspace.id}
 					onChange={(current) => change(current.target.value)}
 					className={styles.root}
-					data={workspaces.map((workspace) => ({ value: workspace.id, label: workspace.title }))}
+					// data={workspaces.map((workspace) => ({ value: workspace.id, label: workspace.title }))}
 					leftSection={<Avatar size={20} src={currentWorkspace.image_url} />}
+					data={[{ value: currentWorkspace.id, label: currentWorkspace.title }]}
 				/>
 				<Divider my='sm' variant='dashed' />
 				<Flex direction='column' gap='xs'>
@@ -87,41 +86,40 @@ export const Sidebar = () => {
 					/>
 				</Flex>
 				<Divider my='sm' variant='dashed' />
-				<Flex align='center' justify='space-between' mb={18}>
-					<Title c={theme.colors.gray[6]} order={2} size={12} className={styles.title}>
-						Проекты
-					</Title>
-					<CirclePlus size='16' className={styles.addProject} onClick={openModal} />
-				</Flex>
-
-				{!loading && data.length > 0 && (
+				<CreateProject />
+				{!loading && data?.length > 0 && (
 					<Flex direction='column' gap='xs' h='100%' wrap='wrap' align='center' justify='center'>
-						{data
-							?.slice(0, 9)
-							?.map((item) => (
-								<NavLink
-									key={item.id}
-									component={Link}
-									to={`/${item.id}`}
-									label={`#${item.id} ${item.title}`}
-									variant='filled'
-									className={styles.root}
-									active={pathname === `/${item.id}`}
-								/>
-							))}
+						{data?.slice(0, 9)?.map((item) => (
+							<Menu key={item.id} opened={menuOpened} onClose={() => setMenuOpened(false)} shadow='md' width={200}>
+								<Menu.Target>
+									<NavLink
+										component={Link}
+										to={`/${item.id}`}
+										onContextMenu={handleContextMenu}
+										label={`#${item.id} ${item.title}`}
+										variant='filled'
+										className={styles.root}
+										active={pathname === `/${item.id}`}
+									/>
+								</Menu.Target>
+
+								<Menu.Dropdown>
+									<Menu.Item>Изменить название</Menu.Item>
+								</Menu.Dropdown>
+							</Menu>
+						))}
 					</Flex>
 				)}
 				{/* TODO: Сделать адаптивный вывод */}
 			</Flex>
-
-			{!loading && data.length === 0 && (
+			{!loading && data?.length === 0 && (
 				<Flex align='center' justify='center' h='100%'>
 					<Text>У вас нет проектов</Text>
 				</Flex>
 			)}
 			{loading && (
 				<Flex align='center' justify='flex-start' direction='column' gap='xs' h='100%'>
-					{Array.from({ length: 5 }, (_, index) => (
+					{Array.from({ length: 9 }, (_, index) => (
 						<Skeleton key={index} height={41} radius='10' />
 					))}
 				</Flex>

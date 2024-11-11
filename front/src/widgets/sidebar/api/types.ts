@@ -21,6 +21,12 @@ export interface WorkspaceField {
 	image_url: string
 }
 
+export interface ProjectRequest {
+	title: string
+	start_date: string
+	end_date: string
+}
+
 export type GetUserProjectsConfig = AxiosRequestConfig<UserParams>
 
 export type GetUserWorkspacesConfig = AxiosRequestConfig
