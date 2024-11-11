@@ -1,4 +1,5 @@
 /* eslint-disable style/operator-linebreak */
+import { useState } from 'react'
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 import { Bell, ChartNoAxesCombined, CircleCheck, CirclePlus, House } from 'lucide-react'
@@ -12,7 +13,6 @@ import { CreateProject } from './create-project'
 import { SwitchTheme } from './switch-theme'
 
 import styles from './ui.module.css'
-import { useState } from 'react'
 
 export const Sidebar = () => {
 	const [workspaces, currentWorkspace, change, data, loading] = useUnit([

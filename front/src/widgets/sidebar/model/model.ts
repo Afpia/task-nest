@@ -8,16 +8,6 @@ import { path, routes } from '@shared/config'
 import { getUserProjects, getUserWorkspaces } from '../api'
 import type { ProjectsResponse, WorkspaceField, WorkspacesResponse } from '../api/types'
 
-// export const currentRoute = routes.private.home || routes.private.profile
-
-// function getCurrentRoute(location: string) {
-// 	// if (location === path.HOME) return routes.private.home
-// 	if (location === path.PROFILE) return routes.private.profile
-// 	return routes.private.home
-// }
-
-// export const currentRoute = getCurrentRoute(window.location.pathname)
-
 export const $projects = createStore<ProjectsResponse>([] as ProjectsResponse)
 export const $workspaces = createStore<WorkspacesResponse>([] as WorkspacesResponse)
 export const $currentWorkspace = createStore<WorkspaceField>({} as WorkspaceField).reset(allUserExpired)
@@ -51,7 +41,7 @@ sample({
 persist({
 	key: 'workspace',
 	store: $currentWorkspace,
-	clock: changedWorkspace,
+	// clock: changedWorkspace,
 	serialize: (state) => JSON.stringify(state),
 	deserialize: (state) => JSON.parse(state)
 })
