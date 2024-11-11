@@ -71,7 +71,7 @@ sample({
 sample({
 	clock: getUserWorkspacesFx.doneData,
 	source: $currentWorkspace,
-	fn: (workspace) => workspace.title,
+	fn: (workspace) => workspace.id,
 	target: getUserProjectsFx
 })
 

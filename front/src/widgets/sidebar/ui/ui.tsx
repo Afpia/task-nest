@@ -41,7 +41,7 @@ export const Sidebar = () => {
 				</Title>
 				<Divider my='sm' variant='dashed' />
 				<NativeSelect
-					value={currentWorkspace.id}
+					value={currentWorkspace.title}
 					onChange={(current) => change(current.target.value)}
 					className={styles.root}
 					data={workspaces.map((workspace) => ({ value: workspace.id, label: workspace.title }))}
