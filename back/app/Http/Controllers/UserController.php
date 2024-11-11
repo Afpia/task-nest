@@ -15,6 +15,7 @@ class UserController extends Controller
     {
         $this->queryService = $queryService;
     }
+
     public function index()
     {
         $users = User::all();
@@ -25,7 +26,7 @@ class UserController extends Controller
     public function view(Request $request, User $user)
     {
 
-        $columns = $request->input('columns', ['*']);
+        $columns = $request->input('columns', '*');
         $user = $this->queryService->selectColumns($user->newQuery(), $columns)->find($user->id);
         return response()->json($user);
     }
@@ -34,7 +35,7 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        $columns = $request->input('columns', ['*']);
+        $columns = $request->input('columns', '*');
         $user = $this->queryService->selectColumns($user->newQuery(), $columns)->find($user->id);
 
         return response()->json($user);
@@ -51,7 +52,9 @@ class UserController extends Controller
     public function workspaces()
     {
         $user = auth()->user();
-        $workspaces = $user->workspaces()->get();
+
+        $workspaces = $user->workspaces;
+
         return response()->json($workspaces);
     }
 
