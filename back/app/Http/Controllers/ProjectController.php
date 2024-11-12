@@ -5,6 +5,7 @@ use App\Models\Project;
 use App\Models\User;
 use App\Models\Workspace;
 use App\Services\ProjectService;
+use App\Services\QueryService;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -17,21 +18,26 @@ class ProjectController extends Controller
     ];
 
     protected $projectService;
+    protected $queryService;
 
-    public function __construct(ProjectService $projectService)
+    public function __construct(ProjectService $projectService, QueryService $queryService)
     {
         $this->projectService = $projectService;
+        $this->queryService = $queryService;
     }
 
-    public function index(Workspace $workspace)
+    public function index(Request $request, Workspace $workspace)
     {
-        $projects = $workspace->projects->map(function ($project) {
-            return [
-                'id' => $project->id,
-                'title' => $project->title,
-                'description' => $project->description,
-            ];
-        });
+        $filters = $request->input('filters', '');
+        $columns = $request->input('columns', '*');
+        $perPage = $request->input('per_page', false);
+
+        $query = Project::query()->where('workspace_id', $workspace->id);
+
+        $query = $this->queryService->applyFilters($query, $filters);
+        $query = $this->queryService->selectColumns($query, $columns);
+
+        $projects = $this->queryService->paginateResults($query, $perPage);
 
         return response()->json($projects);
     }

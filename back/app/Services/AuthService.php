@@ -72,4 +72,20 @@ class AuthService
 
         throw new \Exception('Invalid credentials');
     }
+
+    public function userExists(string $email): bool
+    {
+        return User::where('email', $email)->exists();
+    }
+
+    public function validatePassword(string $email, string $password): bool
+    {
+        $user = User::where('email', $email)->first();
+
+        if (!$user) {
+            return false;
+        }
+
+        return Hash::check($password, $user->password);
+    }
 }
