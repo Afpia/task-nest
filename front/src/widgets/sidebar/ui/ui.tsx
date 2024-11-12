@@ -94,12 +94,13 @@ export const Sidebar = () => {
 								<Menu.Target>
 									<NavLink
 										component={Link}
-										to={`/${item.id}`}
+										params={{ projectId: item.id.toString() }}
+										to={routes.private.project}
 										onContextMenu={handleContextMenu}
 										label={`#${item.id} ${item.title}`}
 										variant='filled'
 										className={styles.root}
-										active={pathname === `/${item.id}`}
+										active={pathname === `${routes.private.project}`}
 									/>
 								</Menu.Target>
 

@@ -5,8 +5,8 @@ import { persist } from 'effector-storage/local'
 import { $user, allUserExpired, allUserReceived, privateMain } from '@shared/auth'
 import { path, routes } from '@shared/config'
 
-import { getUserProjects, getUserWorkspaces } from '../api'
-import type { ProjectsResponse, WorkspaceField, WorkspacesResponse } from '../api/types'
+import { getUserProjects, getUserWorkspaces, postProjectAdd } from '../api'
+import type { PostProjectAddConfig, ProjectsResponse, WorkspaceField, WorkspacesResponse } from '../api/types'
 
 export const $projects = createStore<ProjectsResponse>([] as ProjectsResponse)
 export const $workspaces = createStore<WorkspacesResponse>([] as WorkspacesResponse)
@@ -15,10 +15,11 @@ export const $currentWorkspace = createStore<WorkspaceField>({} as WorkspaceFiel
 export const getUserProjectsFx = createEffect((workspace: string) => getUserProjects({ params: { workspace } }))
 export const getUserWorkspacesFx = createEffect(getUserWorkspaces)
 getUserWorkspacesFx({ config: {} })
+export const postProjectWorkspaceFx = createEffect(({ params, data }: PostProjectAddConfig) => postProjectAdd({ params, data }))
 
 export const changedWorkspace = createEvent<string>()
 
-export const createdProjects = createEvent()
+export const createdProjects = createEvent<string | undefined>()
 
 sample({
 	clock: getUserWorkspacesFx.doneData,
@@ -56,6 +57,7 @@ sample({
 })
 
 // Проекты
+
 sample({
 	clock: getUserWorkspacesFx.doneData,
 	source: $currentWorkspace,
@@ -73,18 +75,19 @@ sample({
 
 sample({
 	clock: createdProjects,
-	source: $projects,
-	fn: (projects) => [
-		...projects,
-		{
-			id: 1,
-			title: 'test',
-			description: 'test',
-			start_date: 'test',
-			end_date: 'test',
-			status: 'test',
-			remaining_days: 1
-		}
-	],
-	target: $projects
+	source: $currentWorkspace,
+	fn: (source, clock) => ({
+		params: { workspace: source.id },
+		data: { title: clock }
+	}),
+	target: postProjectWorkspaceFx
+})
+
+// TODO: Сделать без эффекта
+
+sample({
+	clock: postProjectWorkspaceFx.doneData,
+	source: $currentWorkspace,
+	fn: (workspace) => workspace.id,
+	target: getUserProjectsFx
 })

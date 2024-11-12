@@ -36,9 +36,9 @@ export const Header = () => {
 		>
 			<Flex direction='column'>
 				<Title order={1} size={28} c={theme.colors.dark[6]}>
-					{pageInfo[pathname].title}
+					{pageInfo?.[pathname]?.title}
 				</Title>
-				<Text c={theme.colors.gray[6]}>{pageInfo[pathname].subtitle}</Text>
+				<Text c={theme.colors.gray[6]}>{pageInfo?.[pathname]?.subtitle}</Text>
 			</Flex>
 			<Flex align='center' gap={20}>
 				<SidebarSearch />

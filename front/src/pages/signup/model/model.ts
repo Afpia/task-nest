@@ -50,7 +50,7 @@ sample({
 	clock: signupFx.failData,
 	source: signupFormed,
 	fn: (form, error) => {
-		if (error.message === 'Request failed with status code 409') {
+		if (error.message === 'Request failed with status code 422') {
 			notifyError({
 				title: 'Мы не смогли войти в систему',
 				message: 'Такой пользователь уже зарегистрирован'

@@ -8,11 +8,9 @@ export type ProjectsResponse = {
 	remaining_days: number
 }[]
 
-export interface UserParams {
+export interface WorkspaceParams {
 	workspace: string
 }
-
-export type WorkspacesResponse = WorkspaceField[]
 
 export interface WorkspaceField {
 	id: string
@@ -21,12 +19,21 @@ export interface WorkspaceField {
 	image_url: string
 }
 
+export type WorkspacesResponse = WorkspaceField[]
+
 export interface ProjectRequest {
 	title: string
 	start_date: string
 	end_date: string
 }
 
-export type GetUserProjectsConfig = AxiosRequestConfig<UserParams>
+export type GetUserProjectsConfig = AxiosRequestConfig<WorkspaceParams>
 
 export type GetUserWorkspacesConfig = AxiosRequestConfig
+
+export interface ProjectAddRequest {
+	title?: string
+}
+// export interface ProjectAddResponse
+
+export type PostProjectAddConfig = AxiosRequestConfig<WorkspaceParams, ProjectAddRequest>

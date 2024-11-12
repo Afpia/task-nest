@@ -16,7 +16,8 @@ export const routes = {
 		settings: createRoute(),
 		analytics: createRoute(),
 		notices: createRoute(),
-		home: createRoute()
+		home: createRoute(),
+		project: createRoute<{ projectId: string }>()
 	}
 }
 
@@ -52,6 +53,10 @@ export const mappedRoutes = [
 	{
 		route: routes.private.home,
 		path: path.HOME
+	},
+	{
+		route: routes.private.project,
+		path: path.PROJECT
 	}
 ]
 

@@ -47,15 +47,9 @@ export const AvatarChange = () => {
 				</Flex>
 				<Group justify='center'>
 					{/* eslint-disable-next-line style/multiline-ternary */}
-					{file.length === 0 ? (
-						<Button radius='md' style={{ pointerEvents: 'all' }} onClick={() => openRef.current?.()}>
-							Выбрать фото
-						</Button>
-					) : (
-						<Button radius='md' style={{ pointerEvents: 'all' }} className={styles.buttonSave}>
-							Сохранить
-						</Button>
-					)}
+					<Button radius='md' style={{ pointerEvents: 'all' }} onClick={() => openRef.current?.()}>
+						Выбрать фото
+					</Button>
 					<Button radius='md' style={{ pointerEvents: 'all' }} disabled={file.length === 0} color='red' onClick={clearFile}>
 						Удалить
 					</Button>
