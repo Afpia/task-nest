@@ -6,5 +6,6 @@ export const path = {
 	SETTINGS: '/settings',
 	NOTICES: '/notices',
 	FORGOT_PASSWORD: '/forgot-password',
-	HOME: '/'
+	HOME: '/',
+	PROJECT: '/project/:projectId'
 }

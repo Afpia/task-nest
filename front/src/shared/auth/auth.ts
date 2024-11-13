@@ -9,12 +9,12 @@ import type { UserFieldResponse, UserResponse } from '@shared/types'
 export const allUserReceived = createEvent<UserResponse>()
 export const allUserExpired = createEvent()
 
-export const $user = createStore<UserFieldResponse>({} as UserFieldResponse).reset(allUserExpired)
+export const $user = createStore<string>({} as string).reset(allUserExpired)
 const $accessToken = createStore<string>('').reset(allUserExpired)
 
 sample({
 	clock: allUserReceived,
-	fn: (allUser) => allUser.user,
+	fn: ({ user }) => user.name,
 	target: $user
 })
 
@@ -49,8 +49,8 @@ persist({
 })
 
 // persist({
-// 	key: 'user',
+// 	key: 'username',
 // 	store: $user,
-// 	serialize: (state) => JSON.stringify(state),
-// 	deserialize: (state) => JSON.parse(state)
+// 	serialize: (state) => state,
+// 	deserialize: (state) => state
 // })

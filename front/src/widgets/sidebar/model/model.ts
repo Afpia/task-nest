@@ -2,21 +2,11 @@ import { chainRoute } from 'atomic-router'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 
-import { allUserExpired, privateMain } from '@shared/auth'
+import { $user, allUserExpired, allUserReceived, privateMain } from '@shared/auth'
 import { path, routes } from '@shared/config'
 
-import { getUserProjects, getUserWorkspaces } from '../api'
-import type { ProjectsResponse, WorkspaceField, WorkspacesResponse } from '../api/types'
-
-// export const currentRoute = routes.private.home || routes.private.profile
-
-function getCurrentRoute(location: string) {
-	// if (location === path.HOME) return routes.private.home
-	if (location === path.PROFILE) return routes.private.profile
-	return routes.private.home
-}
-
-export const currentRoute = getCurrentRoute(window.location.pathname)
+import { getUserProjects, getUserWorkspaces, postProjectAdd } from '../api'
+import type { PostProjectAddConfig, ProjectsResponse, WorkspaceField, WorkspacesResponse } from '../api/types'
 
 export const $projects = createStore<ProjectsResponse>([] as ProjectsResponse)
 export const $workspaces = createStore<WorkspacesResponse>([] as WorkspacesResponse)
@@ -24,8 +14,12 @@ export const $currentWorkspace = createStore<WorkspaceField>({} as WorkspaceFiel
 
 export const getUserProjectsFx = createEffect((workspace: string) => getUserProjects({ params: { workspace } }))
 export const getUserWorkspacesFx = createEffect(getUserWorkspaces)
+getUserWorkspacesFx({ config: {} })
+export const postProjectWorkspaceFx = createEffect(({ params, data }: PostProjectAddConfig) => postProjectAdd({ params, data }))
 
 export const changedWorkspace = createEvent<string>()
+
+export const createdProjects = createEvent<string | undefined>()
 
 sample({
 	clock: getUserWorkspacesFx.doneData,
@@ -33,33 +27,27 @@ sample({
 	target: $workspaces
 })
 
-// TODO: как сделать layout один раз вызываемым
-chainRoute({
-	route: privateMain(currentRoute),
-	beforeOpen: {
-		effect: getUserWorkspacesFx,
-		mapParams: ({ params, query }) => ({
-			data: undefined,
-			config: {
-				params,
-				...query
-			}
-		})
-	}
+sample({
+	source: $user,
+	fn: () => ({ config: {} }),
+	target: getUserWorkspacesFx
 })
 
 sample({
 	clock: getUserWorkspacesFx.doneData,
 	fn: ({ data }) => data[0],
-	target: $currentWorkspace
+	target: [$currentWorkspace, changedWorkspace]
 })
 
 persist({
 	key: 'workspace',
 	store: $currentWorkspace,
+	// clock: changedWorkspace,
 	serialize: (state) => JSON.stringify(state),
 	deserialize: (state) => JSON.parse(state)
 })
+
+// Смена рабочего пространства
 
 sample({
 	clock: changedWorkspace,
@@ -67,6 +55,8 @@ sample({
 	fn: (workspaces, workspace) => workspaces.find((item) => item.id === workspace) || workspaces[0],
 	target: $currentWorkspace
 })
+
+// Проекты
 
 sample({
 	clock: getUserWorkspacesFx.doneData,
@@ -79,4 +69,25 @@ sample({
 	clock: getUserProjectsFx.doneData,
 	fn: ({ data }) => data,
 	target: $projects
+})
+
+// Создание проекта
+
+sample({
+	clock: createdProjects,
+	source: $currentWorkspace,
+	fn: (source, clock) => ({
+		params: { workspace: source.id },
+		data: { title: clock }
+	}),
+	target: postProjectWorkspaceFx
+})
+
+// TODO: Сделать без эффекта
+
+sample({
+	clock: postProjectWorkspaceFx.doneData,
+	source: $currentWorkspace,
+	fn: (workspace) => workspace.id,
+	target: getUserProjectsFx
 })
