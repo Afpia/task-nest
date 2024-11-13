@@ -15,17 +15,7 @@ class TaskService
         $data['project_id'] = $project->id;
         $data['status'] = 'Назначена';
 
-        $task = Task::create([
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'priority' => $data['priority'],
-            'start_date' => $data['start_date'],
-            'end_date' => $data['end_date'],
-            'status' => $data['status'],
-            'project_id' => $data['project_id']
-        ]);
-
-        $this->addUserToTask($task, $data['user_id'], 'respectively');
+        $task = Task::create($data);
     }
 
     public function updateTask(array $data, Task $task)

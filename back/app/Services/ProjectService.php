@@ -18,9 +18,8 @@ class ProjectService
         $this->imageService = $imageService;
     }
 
-    public function createProject(array $data, int $workspaceId): Project
+    public function createProject(array $data): Project
     {
-        $data['workspace_id'] = $workspaceId;
         $data['status'] = 'Создан';
 
         $project = Project::create($data);
@@ -43,27 +42,13 @@ class ProjectService
     }
 
 
-    public function getUserRoleInProject(Project $project, User $user): ?string
-    {
-        return $project->users()
-            ->where('user_id', $user->id)
-            ->first()
-            ->pivot
-            ->role ?? null;
-    }
-
     public function assignManager(Project $project, $userId)
     {
-        ProjectManagers::create([
-            'user_id' => $userId,
-            'project_id' => $project->id,
-        ]);
+        //
     }
 
     public function DeleteManagerFromProject(Project $project, $userId)
     {
-        ProjectManagers::where('user_id', $userId)
-            ->where('project_id', $project->id)
-            ->delete();
+        //
     }
 }

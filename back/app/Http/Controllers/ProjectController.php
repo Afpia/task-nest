@@ -23,17 +23,9 @@ class ProjectController extends Controller
         $this->projectService = $projectService;
     }
 
-    public function index(Workspace $workspace)
+    public function index()
     {
-        $projects = $workspace->projects->map(function ($project) {
-            return [
-                'id' => $project->id,
-                'title' => $project->title,
-                'description' => $project->description,
-            ];
-        });
-
-        return response()->json($projects);
+        return response()->json(Project::all());
     }
 
     public function show(Project $project)
@@ -52,11 +44,11 @@ class ProjectController extends Controller
         // return response()->json($project->users);
     }
 
-    public function store(Request $request, Workspace $workspace)
+    public function store(Request $request)
     {
         $validated = $request->validate(self::PROJECT_VALIDATOR);
 
-        $project = $this->projectService->createProject($validated, $workspace->id);
+        $project = $this->projectService->createProject($validated);
 
         return response()->json($project, 201);
     }
@@ -77,32 +69,4 @@ class ProjectController extends Controller
         return response()->json(['message' => 'Проект успешно удален'], 200);
     }
 
-    public function assignProjectManager(Request $request, Project $project)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-        ]);
-
-        $this->projectService->assignManager($project, $request->user_id);
-
-        return response()->json(['message' => 'Менеджер проекта успешно назначен'], 200);
-    }
-
-    public function kickProjectManager(Request $request, Project $project)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-        ]);
-
-        $this->projectService->DeleteManagerFromProject($project, $request->user_id);
-
-        return response()->json(['message' => 'Менеджер проекта успешно отстранен'], 200);
-    }
-
-    public function LeaveProject(Request $request, Project $project)
-    {
-        $this->projectService->DeleteManagerFromProject($project, $request->user()->id);
-
-        return response()->json(['message' => 'Вы вышли из проекта'], 200);
-    }
 }

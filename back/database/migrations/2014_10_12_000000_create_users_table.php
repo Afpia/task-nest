@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password')->nullable();
+            $table->enum('role', ['Администратор', 'Руководитель проекта', 'Исполнитель'])->default('Исполнитель');
             $table->rememberToken();
             $table->string('avatar_url')->nullable();
             $table->timestamps();
