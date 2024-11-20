@@ -19,7 +19,7 @@ export const postProjectWorkspaceFx = createEffect(({ params, data }: PostProjec
 
 export const changedWorkspace = createEvent<string>()
 
-export const createdProjects = createEvent<string | undefined>()
+export const createdProjects = createEvent<string>()
 
 sample({
 	clock: getUserWorkspacesFx.doneData,

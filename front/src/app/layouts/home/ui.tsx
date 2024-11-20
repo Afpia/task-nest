@@ -1,22 +1,22 @@
-import { Box, Flex, useMantineTheme } from '@mantine/core'
+import { Box, Flex, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { useColorScheme } from '@mantine/hooks'
 import type { Children } from '@shared/types'
 import { Header } from '@widgets/header'
 import { Sidebar } from '@widgets/sidebar'
 
 import styles from './ui.module.css'
 
-export const LayoutHome = ({ children }: Children) => {
-	const theme = useMantineTheme()
+export const LayoutHome = ({ children }: Children) => (
+	// const { colorScheme } = useMantineColorScheme()
+	// const color = colorScheme === 'dark' ? '#1c1b22' : '#fff'
 
-	return (
-		<Flex h='100vh' w='100vw'>
-			<Sidebar />
-			<Flex direction='column' style={{ width: 'calc(100% - 230px)' }} className={styles.root} mr={10} mb={10}>
-				<Header />
-				<Box bg={theme.white} className={styles.layout} p={20}>
-					{children}
-				</Box>
-			</Flex>
+	<Flex h='100vh' w='100vw'>
+		<Sidebar />
+		<Flex direction='column' style={{ width: 'calc(100% - 230px)' }} className={styles.root} mr={10} mb={10}>
+			<Header />
+			<Box className={styles.layout} p={20}>
+				{children}
+			</Box>
 		</Flex>
-	)
-}
+	</Flex>
+)
