@@ -2,11 +2,13 @@ import { chainRoute } from 'atomic-router'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 
+import { getUserProjects } from '@shared/api'
 import { $user, allUserExpired, allUserReceived, privateMain } from '@shared/auth'
 import { path, routes } from '@shared/config'
+import type { ProjectsResponse } from '@shared/types'
 
-import { getUserProjects, getUserWorkspaces, postProjectAdd } from '../api'
-import type { PostProjectAddConfig, ProjectsResponse, WorkspaceField, WorkspacesResponse } from '../api/types'
+import { getUserWorkspaces, postProjectAdd } from '../api'
+import type { PostProjectAddConfig, WorkspaceField, WorkspacesResponse } from '../api/types'
 
 export const $projects = createStore<ProjectsResponse>([] as ProjectsResponse)
 export const $workspaces = createStore<WorkspacesResponse>([] as WorkspacesResponse)
@@ -61,7 +63,7 @@ sample({
 sample({
 	clock: getUserWorkspacesFx.doneData,
 	source: $currentWorkspace,
-	fn: (workspace) => workspace.id,
+	fn: (source) => source.id,
 	target: getUserProjectsFx
 })
 

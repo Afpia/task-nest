@@ -3,10 +3,8 @@ import { TotalStats } from '@widgets/total'
 
 import styles from './ui.module.css'
 
-export const Home = () => {
-	return (
-		<Flex>
-			<TotalStats />
-		</Flex>
-	)
-}
+export const Home = () => (
+	<Flex>
+		<TotalStats />
+	</Flex>
+)

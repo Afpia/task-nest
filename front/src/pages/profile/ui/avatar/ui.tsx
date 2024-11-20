@@ -11,7 +11,6 @@ export const AvatarChange = () => {
 	const [avatar] = useUnit([$avatar])
 	const [file, setFile] = useState<FileWithPath[]>([])
 	const openRef = useRef<() => void>(null)
-	// const theme = useMantineTheme()
 
 	const clearFile = () => {
 		setFile([])

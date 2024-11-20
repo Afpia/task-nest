@@ -7,7 +7,7 @@ import { Bell, ChartNoAxesCombined, CircleCheck, CirclePlus, House } from 'lucid
 import { Avatar, Divider, Flex, Menu, NativeSelect, NavLink, Skeleton, Text, Title, useMantineTheme } from '@mantine/core'
 import { path, routes } from '@shared/config'
 
-import { $currentWorkspace, $projects, $workspaces, changedWorkspace, getUserProjectsFx } from '../model'
+import { $currentWorkspace, $projects, $workspaces, changedWorkspace, getUserProjectsFx, getUserWorkspacesFx } from '../model'
 
 import { CreateProject } from './create-project'
 import { SwitchTheme } from './switch-theme'
@@ -15,12 +15,13 @@ import { SwitchTheme } from './switch-theme'
 import styles from './ui.module.css'
 
 export const Sidebar = () => {
-	const [workspaces, currentWorkspace, change, data, loading] = useUnit([
+	const [workspaces, currentWorkspace, change, data, loading, loadingWorkspaces] = useUnit([
 		$workspaces,
 		$currentWorkspace,
 		changedWorkspace,
 		$projects,
-		getUserProjectsFx.pending
+		getUserProjectsFx.pending,
+		getUserWorkspacesFx.pending
 	])
 	const theme = useMantineTheme()
 	const pathname = window.location.pathname
@@ -90,14 +91,21 @@ export const Sidebar = () => {
 				{!loading && data?.length > 0 && (
 					<Flex direction='column' gap='xs' h='100%' wrap='wrap' align='center' justify='center'>
 						{data?.slice(0, 9)?.map((item) => (
-							<Menu key={item.id} opened={menuOpened} onClose={() => setMenuOpened(false)} shadow='md' width={200}>
+							<Menu
+								key={item.id}
+								opened={menuOpened}
+								onClose={() => setMenuOpened(false)}
+								shadow='md'
+								width={200}
+								position='right-end'
+							>
 								<Menu.Target>
 									<NavLink
 										component={Link}
+										to={routes.private.project as unknown as string}
 										params={{ projectId: item.id.toString() }}
-										to={routes.private.project}
 										onContextMenu={handleContextMenu}
-										label={`#${item.id} ${item.title}`}
+										label={item.title}
 										variant='filled'
 										className={styles.root}
 										active={pathname === `${routes.private.project}`}
@@ -113,14 +121,14 @@ export const Sidebar = () => {
 				)}
 				{/* TODO: Сделать адаптивный вывод */}
 			</Flex>
-			{!loading && data?.length === 0 && (
+			{!loading && !loadingWorkspaces && data?.length === 0 && (
 				<Flex align='center' justify='center' h='100%'>
 					<Text>У вас нет проектов</Text>
 				</Flex>
 			)}
 			{loading && (
 				<Flex align='center' justify='flex-start' direction='column' gap='xs' h='100%'>
-					{Array.from({ length: 9 }, (_, index) => (
+					{Array.from({ length: 8 }, (_, index) => (
 						<Skeleton key={index} height={41} radius='10' />
 					))}
 				</Flex>
