@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('user_providers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('provider');
+            $table->enum('provider', ['google', 'github', 'yandex']);
             $table->string('provider_id');
             $table->timestamps();
         });

@@ -31,11 +31,19 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
+        if (!$this->authService->userExists($credentials['email'])) {
+            return response()->json(['message' => 'Email не найден'], 404);
+        }
+
+        if (!$this->authService->validatePassword($credentials['email'], $credentials['password'])) {
+            return response()->json(['message' => 'Неверный пароль'], 401);
+        }
+
         try {
             $token = $this->authService->login($credentials);
             return response()->json(['access_token' => $token, 'user' => auth()->user()]);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json(['message' => 'Ошибка аутентификации'], 500);
         }
     }
 
