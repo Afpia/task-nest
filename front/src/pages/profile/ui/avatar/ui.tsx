@@ -1,14 +1,32 @@
 import { useRef, useState } from 'react'
-import { useUnit } from 'effector-react'
 
-import { Avatar, Box, Button, Flex, Group, Text, useMantineTheme } from '@mantine/core'
+import { Avatar, Button, Flex, Group, Text } from '@mantine/core'
 import { Dropzone, type FileWithPath } from '@mantine/dropzone'
-import { $avatar } from '@pages/profile/model'
+import type { UseFormReturnType } from '@mantine/form'
 
-import styles from './ui.module.css'
-
-export const AvatarChange = () => {
-	const [avatar] = useUnit([$avatar])
+export const AvatarChange = ({
+	form
+}: {
+	form: UseFormReturnType<
+		{
+			password: string
+			newPassword: string
+			email: string
+			name: string
+			surname: string
+			avatar: string
+		},
+		// eslint-disable-next-line style/member-delimiter-style
+		(values: { password: string; newPassword: string; email: string; name: string; surname: string; avatar: string }) => {
+			password: string
+			newPassword: string
+			email: string
+			name: string
+			surname: string
+			avatar: string
+		}
+	>
+}) => {
 	const [file, setFile] = useState<FileWithPath[]>([])
 	const openRef = useRef<() => void>(null)
 
@@ -27,10 +45,12 @@ export const AvatarChange = () => {
 			h='100%'
 			multiple={false}
 			maxSize={5 * 1024 ** 2}
-			bg='transparent'
-			bd={0}
-			p={0}
+			bg='default'
+			p={20}
+			style={{ borderRadius: '10px' }}
 			mb={20}
+			acceptColor='green'
+			rejectColor='red'
 			openRef={openRef}
 			accept={['image/png', 'image/jpeg']}
 			onDrop={setFile}
@@ -38,7 +58,7 @@ export const AvatarChange = () => {
 		>
 			<Flex w='100%' h='100%' align='center' justify='space-between'>
 				<Flex align='center' justify='start' gap={20}>
-					<Avatar size='85' src={preview[0] || avatar} radius='100%' variant='default' />
+					<Avatar size='85' src={preview[0] || form.getValues().avatar} radius='100%' variant='default' />
 					<Flex direction='column' align='flex-start' h='100%' justify='center' gap={10}>
 						<Text>Фотография профиля</Text>
 						<Text>PNG, JPG меньше 5 МБ</Text>

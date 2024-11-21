@@ -9,7 +9,6 @@ import type { UserFieldResponse } from '@shared/types'
 export const $avatar = createStore<string>('')
 export const $user = createStore({} as Pick<UserFieldResponse, 'email' | 'name'>)
 export const getUserInfoFx = createEffect(() => getUserInfo({ config: {} }))
-
 export const currentRoute = routes.private.profile
 
 chainRoute({

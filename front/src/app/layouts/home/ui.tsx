@@ -1,4 +1,4 @@
-import { Box, Flex, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Box, Flex, ScrollArea, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { useColorScheme } from '@mantine/hooks'
 import type { Children } from '@shared/types'
 import { Header } from '@widgets/header'
@@ -12,11 +12,13 @@ export const LayoutHome = ({ children }: Children) => (
 
 	<Flex h='100vh' w='100vw'>
 		<Sidebar />
-		<Flex direction='column' style={{ width: 'calc(100% - 230px)' }} className={styles.root} mr={10} mb={10}>
-			<Header />
-			<Box className={styles.layout} p={20}>
-				{children}
-			</Box>
+		<Flex direction='column' style={{ width: 'calc(100% - 230px)' }} className={styles.root}>
+			<ScrollArea>
+				<Header />
+				<Box className={styles.layout} p={20}>
+					{children}
+				</Box>
+			</ScrollArea>
 		</Flex>
 	</Flex>
 )

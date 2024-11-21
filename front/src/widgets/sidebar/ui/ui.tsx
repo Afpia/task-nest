@@ -28,7 +28,6 @@ export const Sidebar = () => {
 				<Select
 					value={currentWorkspace.title}
 					onChange={(current) => change(current!)}
-					className={styles.root}
 					allowDeselect={false}
 					data={workspaces.map((workspace) => ({ value: workspace.title, label: workspace.title }))}
 					comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
