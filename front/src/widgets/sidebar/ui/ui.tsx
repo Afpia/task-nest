@@ -1,50 +1,42 @@
-/* eslint-disable style/operator-linebreak */
-import { useState } from 'react'
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
-import { Bell, ChartNoAxesCombined, CircleCheck, CirclePlus, House } from 'lucide-react'
+import { Bell, ChartNoAxesCombined, CircleCheck, House } from 'lucide-react'
 
-import { Avatar, Divider, Flex, Menu, NativeSelect, NavLink, Skeleton, Text, Title, useMantineTheme } from '@mantine/core'
+import { Avatar, Divider, Flex, NavLink, Select, Title, useMantineTheme } from '@mantine/core'
 import { path, routes } from '@shared/config'
 
-import { $currentWorkspace, $projects, $workspaces, changedWorkspace, getUserProjectsFx } from '../model'
+import { $currentWorkspace, $workspaces, changedWorkspace } from '../model'
 
 import { CreateProject } from './create-project'
+import { Projects } from './projects'
 import { SwitchTheme } from './switch-theme'
 
 import styles from './ui.module.css'
 
 export const Sidebar = () => {
-	const [workspaces, currentWorkspace, change, data, loading] = useUnit([
-		$workspaces,
-		$currentWorkspace,
-		changedWorkspace,
-		$projects,
-		getUserProjectsFx.pending
-	])
+	const [workspaces, currentWorkspace, change] = useUnit([$workspaces, $currentWorkspace, changedWorkspace])
 	const theme = useMantineTheme()
 	const pathname = window.location.pathname
-	const [menuOpened, setMenuOpened] = useState(false)
-
-	const handleContextMenu = (event: React.MouseEvent) => {
-		event.preventDefault()
-		setMenuOpened(true)
-	}
 
 	return (
-		<Flex direction='column' gap='xs' w='230px' h='100vh' p={10} justify='space-between'>
+		<Flex direction='column' w='230px' h='100vh' p={10} justify='space-between'>
 			<Flex direction='column'>
 				<Title c={theme.colors.pink[4]} order={1} size={34} className={styles.mainTitle}>
 					<Link to={routes.private.home}>TaskNest</Link>
 				</Title>
 				<Divider my='sm' variant='dashed' />
-				<NativeSelect
+				<Select
 					value={currentWorkspace.title}
-					onChange={(current) => change(current.target.value)}
-					className={styles.root}
-					// data={workspaces.map((workspace) => ({ value: workspace.id, label: workspace.title }))}
+					onChange={(current) => change(current!)}
+					allowDeselect={false}
+					data={workspaces.map((workspace) => ({ value: workspace.title, label: workspace.title }))}
+					comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
 					leftSection={<Avatar size={20} src={currentWorkspace.image_url} />}
-					data={[{ value: currentWorkspace.id, label: currentWorkspace.title }]}
+					styles={{
+						input: {
+							borderRadius: '10px'
+						}
+					}}
 				/>
 				<Divider my='sm' variant='dashed' />
 				<Flex direction='column' gap='xs'>
@@ -87,44 +79,9 @@ export const Sidebar = () => {
 				</Flex>
 				<Divider my='sm' variant='dashed' />
 				<CreateProject />
-				{!loading && data?.length > 0 && (
-					<Flex direction='column' gap='xs' h='100%' wrap='wrap' align='center' justify='center'>
-						{data?.slice(0, 9)?.map((item) => (
-							<Menu key={item.id} opened={menuOpened} onClose={() => setMenuOpened(false)} shadow='md' width={200}>
-								<Menu.Target>
-									<NavLink
-										component={Link}
-										params={{ projectId: item.id.toString() }}
-										to={routes.private.project}
-										onContextMenu={handleContextMenu}
-										label={`#${item.id} ${item.title}`}
-										variant='filled'
-										className={styles.root}
-										active={pathname === `${routes.private.project}`}
-									/>
-								</Menu.Target>
-
-								<Menu.Dropdown>
-									<Menu.Item>Изменить название</Menu.Item>
-								</Menu.Dropdown>
-							</Menu>
-						))}
-					</Flex>
-				)}
-				{/* TODO: Сделать адаптивный вывод */}
 			</Flex>
-			{!loading && data?.length === 0 && (
-				<Flex align='center' justify='center' h='100%'>
-					<Text>У вас нет проектов</Text>
-				</Flex>
-			)}
-			{loading && (
-				<Flex align='center' justify='flex-start' direction='column' gap='xs' h='100%'>
-					{Array.from({ length: 9 }, (_, index) => (
-						<Skeleton key={index} height={41} radius='10' />
-					))}
-				</Flex>
-			)}
+			<Projects />
+			<Divider my='lg' variant='dashed' />
 			<SwitchTheme />
 		</Flex>
 	)

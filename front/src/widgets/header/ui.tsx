@@ -3,7 +3,7 @@ import { useUnit } from 'effector-react'
 import { Settings } from 'lucide-react'
 
 import { SidebarSearch } from '@features/search'
-import { Avatar, Divider, Flex, Text, Title, useMantineTheme } from '@mantine/core'
+import { Avatar, Divider, Flex, Text, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { path, routes } from '@shared/config'
 
 import { $avatar } from './module'
@@ -19,26 +19,15 @@ const pageInfo = {
 
 export const Header = () => {
 	const [avatar] = useUnit([$avatar])
-	const theme = useMantineTheme()
 	const pathname = window.location.pathname
 
 	return (
-		<Flex
-			w='100%'
-			h={80}
-			px={20}
-			py={10}
-			mt={10}
-			align='center'
-			justify='space-between'
-			bg={theme.white}
-			className={styles.header}
-		>
+		<Flex w='100%' h={80} px={20} py={10} mt={10} align='center' justify='space-between' className={styles.header}>
 			<Flex direction='column'>
-				<Title order={1} size={28} c={theme.colors.dark[6]}>
+				<Title order={1} size={28}>
 					{pageInfo?.[pathname]?.title}
 				</Title>
-				<Text c={theme.colors.gray[6]}>{pageInfo?.[pathname]?.subtitle}</Text>
+				<Text>{pageInfo?.[pathname]?.subtitle}</Text>
 			</Flex>
 			<Flex align='center' gap={20}>
 				<SidebarSearch />

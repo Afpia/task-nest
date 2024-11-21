@@ -2,11 +2,13 @@ import { chainRoute } from 'atomic-router'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 
+import { getUserProjects } from '@shared/api'
 import { $user, allUserExpired, allUserReceived, privateMain } from '@shared/auth'
 import { path, routes } from '@shared/config'
+import type { ProjectsResponse } from '@shared/types'
 
-import { getUserProjects, getUserWorkspaces, postProjectAdd } from '../api'
-import type { PostProjectAddConfig, ProjectsResponse, WorkspaceField, WorkspacesResponse } from '../api/types'
+import { getUserWorkspaces, postProjectAdd } from '../api'
+import type { PostProjectAddConfig, WorkspaceField, WorkspacesResponse } from '../api/types'
 
 export const $projects = createStore<ProjectsResponse>([] as ProjectsResponse)
 export const $workspaces = createStore<WorkspacesResponse>([] as WorkspacesResponse)
@@ -19,13 +21,7 @@ export const postProjectWorkspaceFx = createEffect(({ params, data }: PostProjec
 
 export const changedWorkspace = createEvent<string>()
 
-export const createdProjects = createEvent<string | undefined>()
-
-sample({
-	clock: getUserWorkspacesFx.doneData,
-	fn: ({ data }) => data,
-	target: $workspaces
-})
+export const createdProjects = createEvent<string>()
 
 sample({
 	source: $user,
@@ -35,14 +31,26 @@ sample({
 
 sample({
 	clock: getUserWorkspacesFx.doneData,
-	fn: ({ data }) => data[0],
-	target: [$currentWorkspace, changedWorkspace]
+	fn: ({ data }) => data,
+	target: $workspaces
+})
+
+sample({
+	clock: getUserWorkspacesFx.doneData,
+	source: $currentWorkspace,
+	fn: (source, { data }) => {
+		if (source.id) {
+			return source
+		} else {
+			return data[0]
+		}
+	},
+	target: $currentWorkspace
 })
 
 persist({
 	key: 'workspace',
 	store: $currentWorkspace,
-	// clock: changedWorkspace,
 	serialize: (state) => JSON.stringify(state),
 	deserialize: (state) => JSON.parse(state)
 })
@@ -52,16 +60,18 @@ persist({
 sample({
 	clock: changedWorkspace,
 	source: $workspaces,
-	fn: (workspaces, workspace) => workspaces.find((item) => item.id === workspace) || workspaces[0],
+	fn: (source, clock) => source.find((item) => item.title === clock) || source[0],
 	target: $currentWorkspace
 })
 
 // Проекты
 
+// TODO: Есть дабл запрос?????
+
 sample({
-	clock: getUserWorkspacesFx.doneData,
+	clock: [$currentWorkspace, getUserWorkspacesFx.doneData],
 	source: $currentWorkspace,
-	fn: (workspace) => workspace.id,
+	fn: (source) => source.id,
 	target: getUserProjectsFx
 })
 
