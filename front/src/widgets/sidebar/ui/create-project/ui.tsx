@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useUnit } from 'effector-react'
 import { CirclePlus } from 'lucide-react'
 
-import { Button, Flex, Modal, TextInput, Title, useMantineTheme } from '@mantine/core'
+import { Button, Flex, Modal, TextInput, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { createdProjects } from '@widgets/sidebar/model'
 
@@ -10,7 +10,6 @@ export const CreateProject = () => {
 	const [projectName, setProjectName] = useState('Проект')
 	const [opened, { open, close }] = useDisclosure(false)
 	const [createProject] = useUnit([createdProjects])
-	const theme = useMantineTheme()
 
 	const createProjectClick = () => {
 		close()
@@ -19,7 +18,7 @@ export const CreateProject = () => {
 
 	return (
 		<Flex align='center' justify='space-between' mb={18}>
-			<Title c={theme.colors.gray[6]} order={2} size={12} ta='left' tt='uppercase'>
+			<Title c='#868E96' order={2} size={12} ta='left' tt='uppercase'>
 				Проекты
 			</Title>
 			<CirclePlus cursor='pointer' size='16' onClick={open} />

@@ -24,12 +24,6 @@ export const changedWorkspace = createEvent<string>()
 export const createdProjects = createEvent<string>()
 
 sample({
-	clock: getUserWorkspacesFx.doneData,
-	fn: ({ data }) => data,
-	target: $workspaces
-})
-
-sample({
 	source: $user,
 	fn: () => ({ config: {} }),
 	target: getUserWorkspacesFx
@@ -37,14 +31,26 @@ sample({
 
 sample({
 	clock: getUserWorkspacesFx.doneData,
-	fn: ({ data }) => data[0],
-	target: [$currentWorkspace, changedWorkspace]
+	fn: ({ data }) => data,
+	target: $workspaces
+})
+
+sample({
+	clock: getUserWorkspacesFx.doneData,
+	source: $currentWorkspace,
+	fn: (source, { data }) => {
+		if (source.id) {
+			return source
+		} else {
+			return data[0]
+		}
+	},
+	target: $currentWorkspace
 })
 
 persist({
 	key: 'workspace',
 	store: $currentWorkspace,
-	// clock: changedWorkspace,
 	serialize: (state) => JSON.stringify(state),
 	deserialize: (state) => JSON.parse(state)
 })
@@ -54,14 +60,16 @@ persist({
 sample({
 	clock: changedWorkspace,
 	source: $workspaces,
-	fn: (workspaces, workspace) => workspaces.find((item) => item.id === workspace) || workspaces[0],
+	fn: (source, clock) => source.find((item) => item.title === clock) || source[0],
 	target: $currentWorkspace
 })
 
 // Проекты
 
+// TODO: Есть дабл запрос?????
+
 sample({
-	clock: getUserWorkspacesFx.doneData,
+	clock: [$currentWorkspace, getUserWorkspacesFx.doneData],
 	source: $currentWorkspace,
 	fn: (source) => source.id,
 	target: getUserProjectsFx
