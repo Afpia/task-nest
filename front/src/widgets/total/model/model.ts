@@ -1,14 +1,15 @@
 import { createEffect, createStore, sample } from 'effector'
 
 import { getUserProjects } from '@shared/api'
-import { $currentWorkspace } from '@widgets/sidebar/model'
+import { $currentWorkspace, getUserWorkspacesFx } from '@widgets/sidebar/model'
 
 export const $countProjects = createStore<number>(0)
 
 export const getUserProjectsFx = createEffect((workspace: string) => getUserProjects({ params: { workspace } }))
 
 sample({
-	clock: $currentWorkspace,
+	clock: [$currentWorkspace, getUserWorkspacesFx.doneData],
+	source: $currentWorkspace,
 	fn: ({ id }) => id,
 	target: getUserProjectsFx
 })

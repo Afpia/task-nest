@@ -57,12 +57,13 @@ export const Personal = ({
 					<TextInput radius='md' w='48%' label='Почта' leftSection={<Mail />} {...form.getInputProps('email')} />
 				</Flex>
 			</Box>
+			<Divider w='100%' mb={20} mt={20} />
 			<Box>
 				<Flex w='100%' direction='column'>
 					<Title mb={10} order={3} size={14} fw={600}>
 						Произношение
 					</Title>
-					<Select w='48%' data={['он/его', 'она/её', 'они/их']} />
+					<Select w='48%' allowDeselect={false} defaultValue='Не важно' data={['Не важно', 'он/его', 'она/её', 'они/их']} />
 				</Flex>
 			</Box>
 			<Divider w='100%' mb={20} mt={20} />
