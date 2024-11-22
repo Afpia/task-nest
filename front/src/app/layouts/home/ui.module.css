@@ -1,5 +1,5 @@
-.root {
-	border-radius: 10px;
+.root > div {
+	height: 100% !important;
 }
 
 .layout {

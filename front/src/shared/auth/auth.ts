@@ -12,6 +12,8 @@ export const allUserExpired = createEvent()
 export const $user = createStore<string>({} as string).reset(allUserExpired)
 const $accessToken = createStore<string>('').reset(allUserExpired)
 
+export const $isAuth = $accessToken.map((token) => !!token)
+
 sample({
 	clock: allUserReceived,
 	fn: ({ user }) => user.name,
@@ -39,8 +41,6 @@ redirect({
 	route: routes.auth.login
 })
 
-export const $isAuth = $accessToken.map((token) => !!token)
-
 persist({
 	key: 'token',
 	store: $accessToken,
@@ -48,9 +48,9 @@ persist({
 	deserialize: (state) => state
 })
 
-// persist({
-// 	key: 'username',
-// 	store: $user,
-// 	serialize: (state) => state,
-// 	deserialize: (state) => state
-// })
+persist({
+	key: 'username',
+	store: $user,
+	serialize: (state) => state,
+	deserialize: (state) => state
+})

@@ -1,4 +1,4 @@
-import { createHistoryRouter, createRoute } from 'atomic-router'
+import { createHistoryRouter, createRoute, createRouterControls } from 'atomic-router'
 import { sample } from 'effector'
 import { createBrowserHistory } from 'history'
 
@@ -60,8 +60,11 @@ export const mappedRoutes = [
 	}
 ]
 
+export const controls = createRouterControls()
+
 export const router = createHistoryRouter({
-	routes: mappedRoutes
+	routes: mappedRoutes,
+	controls
 })
 
 sample({

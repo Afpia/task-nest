@@ -3,7 +3,7 @@ import { createEffect, createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 
 import { getUserProjects } from '@shared/api'
-import { $user, allUserExpired, allUserReceived, privateMain } from '@shared/auth'
+import { $isAuth, $user, allUserExpired, allUserReceived, privateMain } from '@shared/auth'
 import { path, routes } from '@shared/config'
 import type { ProjectsResponse } from '@shared/types'
 
@@ -16,18 +16,40 @@ export const $currentWorkspace = createStore<WorkspaceField>({} as WorkspaceFiel
 
 export const getUserProjectsFx = createEffect((workspace: string) => getUserProjects({ params: { workspace } }))
 export const getUserWorkspacesFx = createEffect(getUserWorkspaces)
-getUserWorkspacesFx({ config: {} })
 export const postProjectWorkspaceFx = createEffect(({ params, data }: PostProjectAddConfig) => postProjectAdd({ params, data }))
 
 export const changedWorkspace = createEvent<string>()
-
 export const createdProjects = createEvent<string>()
+export const reloadedWindow = createEvent()
+
+// $isAuth.watch((user) => {
+// 	console.log(user)
+
+// 	getUserWorkspacesFx({ config: {} })
+// })
+// window.onbeforeunload = () => {
+// 	// sample({
+// 	// 	fn: () => ({ config: {} }),
+// 	// 	target: getUserWorkspacesFx
+// 	// })
+// 	getUserWorkspacesFx({ config: {} })
+// }
 
 sample({
-	source: $user,
+	clock: [$user, reloadedWindow],
 	fn: () => ({ config: {} }),
 	target: getUserWorkspacesFx
 })
+
+// chainRoute({
+// 	// route: ,
+// 	beforeOpen: {
+// 		effect: getUserWorkspacesFx,
+// 		mapParams: () => ({
+// 			config: {}
+// 		})
+// 	}
+// })
 
 sample({
 	clock: getUserWorkspacesFx.doneData,

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 
-import { Flex, Menu, NavLink, Skeleton, Text } from '@mantine/core'
+import { Button, Flex, Menu, NavLink, Skeleton, Text } from '@mantine/core'
 import { routes } from '@shared/config'
 import { $projects, getUserProjectsFx, getUserWorkspacesFx } from '@widgets/sidebar/model'
 
@@ -54,7 +54,7 @@ export const Projects = () => {
 		>
 			{!projectsLoading &&
 				projects?.length > 0 &&
-				projects?.slice(0, adaptiveCount - 1)?.map((item) => (
+				projects?.slice(0, adaptiveCount)?.map((item) => (
 					<Menu
 						key={item.id}
 						opened={menuOpened}
@@ -82,7 +82,11 @@ export const Projects = () => {
 					</Menu>
 				))}
 
-			{!projectsLoading && projects?.length > adaptiveCount && <p>Смотреть все</p>}
+			{!projectsLoading && !loadingWorkspaces && projects?.length >= adaptiveCount && (
+				<Button w='100%' variant='light'>
+					Смотреть все
+				</Button>
+			)}
 
 			{projectsLoading && Array.from({ length: adaptiveCount }, (_, index) => <Skeleton key={index} height={40} radius='10' />)}
 
