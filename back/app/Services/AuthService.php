@@ -31,8 +31,8 @@ class AuthService
 
         if (!$user) {
             $user = User::create([
-                'name' => $socialUser->getName(),
-                'email' => $socialUser->getEmail() ?? $socialUser->getNickname(),
+                'name' => $socialUser->getName() ?? $socialUser->getNickname(),
+                'email' => $socialUser->getEmail(),
             ]);
 
             $user->avatar_url = $socialUser->getAvatar()
