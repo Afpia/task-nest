@@ -21,14 +21,16 @@ class TokenService
 
     public function checkDisposableToken($token)
     {
-        $disposableToken = DisposableToken::where('token', $token)->first();
+        $disposableTokens = DisposableToken::all();
 
-        if ($disposableToken && Hash::check($token, $disposableToken->token)) {
-            $user = User::where('id', $disposableToken->user_id)->first();
-            $disposableToken->delete();
-            $newToken = $user->createToken('auth_token')->plainTextToken;
+        foreach ($disposableTokens as $disposableToken) {
+            if (Hash::check($token, $disposableToken->token)) {
+                $user = User::where('id', $disposableToken->user_id)->first();
+                $disposableToken->delete();
+                $newToken = $user->createToken('auth_token')->plainTextToken;
 
-            return response()->json(['access_token' => $newToken, 'user' => $user], 200);
+                return response()->json(['access_token' => $newToken, 'user' => $user], 200);
+            }
         }
 
         return response()->json(['message' => 'Токен устарел'], 401);
