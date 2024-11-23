@@ -9,7 +9,7 @@ import { routes } from '@shared/config'
 export const currentRoute = routes.private.home
 export const $avatar = createStore<string>('')
 export const getUserInfoFx = createEffect(() => getUserInfo({ config: { params: { columns: 'avatar_url' } } }))
-getUserInfoFx()
+// getUserInfoFx()
 
 sample({
 	source: $user,

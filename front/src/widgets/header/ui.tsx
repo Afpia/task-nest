@@ -6,7 +6,7 @@ import { SidebarSearch } from '@features/search'
 import { Avatar, Divider, Flex, Text, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { path, routes } from '@shared/config'
 
-import { $avatar } from './module'
+import { $avatar } from './model'
 
 import styles from './ui.module.css'
 
