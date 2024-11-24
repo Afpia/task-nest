@@ -1,6 +1,7 @@
 import { useUnit } from 'effector-react'
 
 import { Box, Divider, Flex, Text, Title, useMantineTheme } from '@mantine/core'
+import { $projects } from '@widgets/sidebar/model'
 
 import { $countProjects } from './model'
 
@@ -8,7 +9,7 @@ import styles from './ui.module.css'
 
 export const TotalStats = () => {
 	const theme = useMantineTheme()
-	const [countProjects] = useUnit([$countProjects])
+	const [countProjects] = useUnit([$projects])
 
 	return (
 		<Box className={styles.root}>
@@ -18,7 +19,7 @@ export const TotalStats = () => {
 						<Title order={2} size={18} fw={600}>
 							Всего проектов
 						</Title>
-						<Text size='30px'>{countProjects}</Text>
+						<Text size='30px'>{countProjects.length}</Text>
 					</Flex>
 					<Divider orientation='vertical' variant='dashed' size={2} color={theme.colors.gray[3]} />
 				</Flex>

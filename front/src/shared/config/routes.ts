@@ -1,5 +1,5 @@
 import { createHistoryRouter, createRoute, createRouterControls } from 'atomic-router'
-import { sample } from 'effector'
+import { merge, sample } from 'effector'
 import { createBrowserHistory } from 'history'
 
 import { path } from './path'
@@ -59,6 +59,9 @@ export const mappedRoutes = [
 		path: path.PROJECT
 	}
 ]
+
+const privateRoutes = Object.values(routes.private)
+export const privateRouteOpened = merge(privateRoutes.map((route) => route.opened))
 
 export const controls = createRouterControls()
 

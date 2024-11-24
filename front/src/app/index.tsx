@@ -53,7 +53,7 @@ const theme = createTheme({
 	// }
 })
 
-started()
+// started()
 
 export const App = () => (
 	<MantineProvider theme={theme} defaultColorScheme='auto'>

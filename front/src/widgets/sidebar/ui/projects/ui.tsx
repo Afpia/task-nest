@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 
-import { Button, Flex, Menu, NavLink, Skeleton, Text } from '@mantine/core'
+import { Avatar, Button, Flex, Menu, NavLink, Skeleton, Text } from '@mantine/core'
 import { routes } from '@shared/config'
 import { $projects, getUserProjectsFx, getUserWorkspacesFx } from '@widgets/sidebar/model'
 
@@ -71,6 +71,7 @@ export const Projects = () => {
 								onContextMenu={handleContextMenu}
 								label={item.title}
 								variant='filled'
+								leftSection={<Avatar size={25} src={item.image_url} alt={item.title} />}
 								style={{ borderRadius: '10px' }}
 								active={pathname === `${routes.private.project}`}
 							/>

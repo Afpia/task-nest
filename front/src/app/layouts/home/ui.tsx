@@ -1,6 +1,3 @@
-import { useEffect } from 'react'
-import { useUnit } from 'effector-react'
-
 import { Box, Flex, ScrollArea, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { useColorScheme } from '@mantine/hooks'
 import type { Children } from '@shared/types'
@@ -11,13 +8,8 @@ import { reloadedWindow } from '@widgets/sidebar/model'
 import styles from './ui.module.css'
 
 export const LayoutHome = ({ children }: Children) => {
-	const [reloadWindow] = useUnit([reloadedWindow])
 	const { colorScheme } = useMantineColorScheme()
 	const color = colorScheme === 'dark' ? '#1c1b22' : '#f6f6f6'
-
-	// useEffect(() => {
-	// 	reloadWindow()
-	// }, [])
 
 	return (
 		<Flex h='100vh' w='100vw'>
