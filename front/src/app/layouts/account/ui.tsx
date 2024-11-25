@@ -31,7 +31,7 @@ export const AccountLayout = ({ children }: Children) => {
 			<Flex justify='space-between' align='center' mb={20}>
 				<Flex align='center' gap={20}>
 					<Avatar src={avatar} size={60} />
-					<Anchor component={Link} to={routes.private.profile} fz={16} variant='gradient'>
+					<Anchor component={Link} to={routes.private.profile} fz={16} c='pink'>
 						{user}
 					</Anchor>
 				</Flex>
