@@ -9,21 +9,19 @@ export const AvatarChange = ({
 }: {
 	form: UseFormReturnType<
 		{
-			password: string
-			newPassword: string
-			email: string
 			name: string
 			surname: string
 			avatar: string
+			about: string
+			pronouns: string
 		},
 		// eslint-disable-next-line style/member-delimiter-style
-		(values: { password: string; newPassword: string; email: string; name: string; surname: string; avatar: string }) => {
-			password: string
-			newPassword: string
-			email: string
+		(values: { name: string; surname: string; avatar: string; about: string; pronouns: string }) => {
 			name: string
 			surname: string
 			avatar: string
+			about: string
+			pronouns: string
 		}
 	>
 }) => {
@@ -42,7 +40,6 @@ export const AvatarChange = ({
 	return (
 		<Dropzone
 			w='100%'
-			h='100%'
 			multiple={false}
 			maxSize={5 * 1024 ** 2}
 			bg='default'
@@ -65,7 +62,6 @@ export const AvatarChange = ({
 					</Flex>
 				</Flex>
 				<Group justify='center'>
-					{/* eslint-disable-next-line style/multiline-ternary */}
 					<Button radius='md' style={{ pointerEvents: 'all' }} onClick={() => openRef.current?.()}>
 						Выбрать фото
 					</Button>

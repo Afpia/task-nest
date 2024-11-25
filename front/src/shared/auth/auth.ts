@@ -20,6 +20,8 @@ sample({
 	target: $user
 })
 
+// TODO: юзер исчезает при перезагрузки страницы
+
 sample({
 	clock: allUserReceived,
 	fn: (allUser) => allUser.access_token,
