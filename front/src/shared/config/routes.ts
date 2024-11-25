@@ -13,7 +13,8 @@ export const routes = {
 	},
 	private: {
 		profile: createRoute(),
-		settings: createRoute(),
+		account: createRoute(),
+		account_personal: createRoute(),
 		analytics: createRoute(),
 		notices: createRoute(),
 		home: createRoute(),
@@ -39,8 +40,12 @@ export const mappedRoutes = [
 		path: path.PROFILE
 	},
 	{
-		route: routes.private.settings,
-		path: path.SETTINGS
+		route: routes.private.account_personal,
+		path: path.ACCOUNT_PERSONAL
+	},
+	{
+		route: routes.private.account,
+		path: path.ACCOUNT
 	},
 	{
 		route: routes.private.analytics,

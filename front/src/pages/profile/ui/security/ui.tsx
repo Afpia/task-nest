@@ -41,9 +41,6 @@ export const Security = () => {
 						Удалить мой аккаунт
 					</Button>
 				</Flex>
-				{/* <Button type='submit' radius='md' bg='rgb(64, 192, 87)'>
-					Обновить профиль
-				</Button> */}
 			</Flex>
 		</Flex>
 	)

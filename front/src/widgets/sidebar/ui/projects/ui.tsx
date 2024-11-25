@@ -71,7 +71,7 @@ export const Projects = () => {
 								onContextMenu={handleContextMenu}
 								label={item.title}
 								variant='filled'
-								leftSection={<Avatar size={25} src={item.image_url} alt={item.title} />}
+								leftSection={<Avatar size={25} radius='sm' src={item.image_url} alt={item.title} />}
 								style={{ borderRadius: '10px' }}
 								active={pathname === `${routes.private.project}`}
 							/>

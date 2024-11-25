@@ -10,8 +10,6 @@ import { AvatarChange } from './avatar'
 import { Personal } from './personal'
 import { Security } from './security'
 
-import styles from './ui.module.css'
-
 export const Profile = () => {
 	const [user, avatar, loading] = useUnit([$user, $avatar, getUserInfoFx.pending])
 

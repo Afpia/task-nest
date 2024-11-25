@@ -3,10 +3,9 @@ import { useUnit } from 'effector-react'
 
 import { Anchor, Button, Flex, PasswordInput, TextInput } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
+import type { UserRequest } from '@pages/login/api/types'
+import { loginFormed, loginFx, LoginScheme } from '@pages/login/model'
 import { routes } from '@shared/config'
-
-import type { UserRequest } from '../api/types'
-import { loginFormed, loginFx, LoginScheme } from '../model'
 
 export const LoginForm = () => {
 	const [login, loading, loginError] = useUnit([loginFx, loginFx.pending, loginFormed])

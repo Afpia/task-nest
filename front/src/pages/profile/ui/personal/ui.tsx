@@ -1,7 +1,7 @@
 import { useUnit } from 'effector-react'
 import { Lock, Mail, Plus } from 'lucide-react'
 
-import { Box, Button, Divider, Flex, PasswordInput, Select, Text, TextInput, Title } from '@mantine/core'
+import { Box, Button, Divider, Flex, PasswordInput, Select, Text, Textarea, TextInput, Title } from '@mantine/core'
 import type { UseFormReturnType } from '@mantine/form'
 import { $user } from '@pages/profile/model'
 
@@ -55,6 +55,18 @@ export const Personal = ({
 				</Flex>
 				<Flex w='100%' align='flex-end' h='100%' justify='space-between' gap={20} mb={30}>
 					<TextInput radius='md' w='48%' label='Почта' leftSection={<Mail />} {...form.getInputProps('email')} />
+				</Flex>
+			</Box>
+			<Divider w='100%' mb={20} mt={20} />
+			<Box>
+				<Flex w='100%' direction='column'>
+					<Title mb={10} order={3} size={14} fw={600}>
+						О себе
+					</Title>
+					<Text size='14px' mb={14}>
+						Расскажите о немного о себе
+					</Text>
+					<Textarea w='48%' />
 				</Flex>
 			</Box>
 			<Divider w='100%' mb={20} mt={20} />
