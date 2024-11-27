@@ -1,17 +1,16 @@
-import { chainRoute } from 'atomic-router'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 
 import { getUserProjects } from '@shared/api'
-import { $isAuth, $user, allUserExpired, allUserReceived, privateMain } from '@shared/auth'
-import { path, routes } from '@shared/config'
+import { $user, allUserExpired } from '@shared/auth'
+import { privateRouteOpened } from '@shared/config'
 import type { ProjectsResponse } from '@shared/types'
 
 import { getUserWorkspaces, postProjectAdd } from '../api'
 import type { PostProjectAddConfig, WorkspaceField, WorkspacesResponse } from '../api/types'
 
 export const $projects = createStore<ProjectsResponse>([] as ProjectsResponse)
-export const $workspaces = createStore<WorkspacesResponse>([] as WorkspacesResponse)
+export const $workspaces = createStore<WorkspacesResponse>([] as WorkspacesResponse).reset(allUserExpired)
 export const $currentWorkspace = createStore<WorkspaceField>({} as WorkspaceField).reset(allUserExpired)
 
 export const getUserProjectsFx = createEffect((workspace: string) => getUserProjects({ params: { workspace } }))
@@ -20,36 +19,14 @@ export const postProjectWorkspaceFx = createEffect(({ params, data }: PostProjec
 
 export const changedWorkspace = createEvent<string>()
 export const createdProjects = createEvent<string>()
-export const reloadedWindow = createEvent()
-
-// $isAuth.watch((user) => {
-// 	console.log(user)
-
-// 	getUserWorkspacesFx({ config: {} })
-// })
-// window.onbeforeunload = () => {
-// 	// sample({
-// 	// 	fn: () => ({ config: {} }),
-// 	// 	target: getUserWorkspacesFx
-// 	// })
-// 	getUserWorkspacesFx({ config: {} })
-// }
 
 sample({
-	clock: [$user, reloadedWindow],
+	clock: [privateRouteOpened],
+	source: $workspaces,
+	filter: $workspaces.map((workspaces) => !workspaces.length),
 	fn: () => ({ config: {} }),
 	target: getUserWorkspacesFx
 })
-
-// chainRoute({
-// 	// route: ,
-// 	beforeOpen: {
-// 		effect: getUserWorkspacesFx,
-// 		mapParams: () => ({
-// 			config: {}
-// 		})
-// 	}
-// })
 
 sample({
 	clock: getUserWorkspacesFx.doneData,
@@ -86,12 +63,11 @@ sample({
 	target: $currentWorkspace
 })
 
+$workspaces.watch(console.log)
 // Проекты
 
-// TODO: Есть дабл запрос?????
-
 sample({
-	clock: [$currentWorkspace, getUserWorkspacesFx.doneData],
+	clock: [changedWorkspace, getUserWorkspacesFx.doneData],
 	source: $currentWorkspace,
 	fn: (source) => source.id,
 	target: getUserProjectsFx
@@ -115,7 +91,7 @@ sample({
 	target: postProjectWorkspaceFx
 })
 
-// TODO: Сделать без эффекта
+// TODO: Сделать без эффекта без обновления
 
 sample({
 	clock: postProjectWorkspaceFx.doneData,

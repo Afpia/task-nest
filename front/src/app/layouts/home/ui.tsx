@@ -1,23 +1,12 @@
-import { useEffect } from 'react'
-import { useUnit } from 'effector-react'
-
-import { Box, Flex, ScrollArea, useMantineColorScheme, useMantineTheme } from '@mantine/core'
-import { useColorScheme } from '@mantine/hooks'
+import { Box, Flex, ScrollArea, useMantineColorScheme } from '@mantine/core'
+import { ThemeColors } from '@shared/config'
 import type { Children } from '@shared/types'
 import { Header } from '@widgets/header'
 import { Sidebar } from '@widgets/sidebar'
-import { reloadedWindow } from '@widgets/sidebar/model'
-
-import styles from './ui.module.css'
 
 export const LayoutHome = ({ children }: Children) => {
-	const [reloadWindow] = useUnit([reloadedWindow])
 	const { colorScheme } = useMantineColorScheme()
-	const color = colorScheme === 'dark' ? '#1c1b22' : '#f6f6f6'
-
-	// useEffect(() => {
-	// 	reloadWindow()
-	// }, [])
+	const color = colorScheme === 'dark' ? ThemeColors.secondDark : ThemeColors.secondLight
 
 	return (
 		<Flex h='100vh' w='100vw'>

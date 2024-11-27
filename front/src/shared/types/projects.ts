@@ -6,6 +6,7 @@ export type ProjectsResponse = {
 	end_date: string
 	status: string
 	remaining_days: number
+	image_url: string
 }[]
 
 export interface ProjectsParams {

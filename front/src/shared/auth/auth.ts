@@ -9,7 +9,7 @@ import type { UserFieldResponse, UserResponse } from '@shared/types'
 export const allUserReceived = createEvent<UserResponse>()
 export const allUserExpired = createEvent()
 
-export const $user = createStore<string>({} as string).reset(allUserExpired)
+export const $user = createStore<string>('').reset(allUserExpired)
 const $accessToken = createStore<string>('').reset(allUserExpired)
 
 export const $isAuth = $accessToken.map((token) => !!token)
@@ -19,6 +19,8 @@ sample({
 	fn: ({ user }) => user.name,
 	target: $user
 })
+
+// TODO: юзер исчезает при перезагрузки страницы
 
 sample({
 	clock: allUserReceived,
