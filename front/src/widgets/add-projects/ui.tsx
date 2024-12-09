@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useUnit } from 'effector-react'
-import { Plus } from 'lucide-react'
 
 import {
-	closestCenter,
 	closestCorners,
 	DndContext,
 	DragOverlay,
@@ -14,15 +12,11 @@ import {
 	type DragEndEvent,
 	type DragStartEvent
 } from '@dnd-kit/core'
-import {
-	arrayMove,
-	rectSwappingStrategy,
-	SortableContext,
-	sortableKeyboardCoordinates,
-	verticalListSortingStrategy
-} from '@dnd-kit/sortable'
+import { arrayMove, rectSwappingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { Box, Button, Divider, Flex, Grid, ScrollArea, Title } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 
+import { ModalCreateProject } from '@entities/modal.create.project'
 import { $projects } from '@shared/store'
 import { ProjectResponse, ProjectsResponse } from '@shared/types'
 
@@ -31,6 +25,7 @@ import { SortableItem } from './ui/sortable-item'
 
 export const AddProjects = () => {
 	const [projects, getProjectPosition] = useUnit([$projects, getterProjectsPosition])
+	const [opened, { open, close }] = useDisclosure(false)
 
 	const [activeTask, setActiveTask] = useState<number | string | null>(null)
 
@@ -87,7 +82,7 @@ export const AddProjects = () => {
 							<SortableContext items={items} strategy={rectSwappingStrategy}>
 								{items.map((item) => (
 									<Grid.Col span={6} key={item.id}>
-										<SortableItem {...item} />
+										<SortableItem {...item} open={open} />
 									</Grid.Col>
 								))}
 								<DragOverlay>
@@ -102,6 +97,7 @@ export const AddProjects = () => {
 					</Grid>
 				</DndContext>
 			</ScrollArea>
+			<ModalCreateProject opened={opened} close={close} />
 		</Box>
 	)
 }
