@@ -5,10 +5,11 @@ import { Mail, MapPin } from 'lucide-react'
 import { Avatar, Box, Container, Flex, Image, Text, Title } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
 
+import { $username } from '@shared/auth'
 import { $avatar } from '@shared/store'
 
 export const Profile = () => {
-	const [avatar] = useUnit([$avatar])
+	const [avatar, username] = useUnit([$avatar, $username])
 
 	return (
 		<Flex direction='column' gap='20' w='100%' align='center' justify='center'>
@@ -21,7 +22,7 @@ export const Profile = () => {
 					<Flex direction='column'>
 						<Flex direction='column' mb={10}>
 							<Title order={1} size={30}>
-								Никита Галкин
+								{username}
 							</Title>
 							<Text>he/him</Text>
 						</Flex>

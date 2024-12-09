@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import { DndContext, type DragEndEvent, useDraggable, useDroppable } from '@dnd-kit/core'
+import { useEffect, useState } from 'react'
+import { useUnit } from 'effector-react'
 import { Plus } from 'lucide-react'
 
-import { ActionIcon, Box, Button, Divider, Flex, Grid, Title } from '@mantine/core'
+import {
+	closestCenter,
+	closestCorners,
+	DndContext,
+	KeyboardSensor,
+	PointerSensor,
+	useSensor,
+	useSensors,
+	type DragEndEvent
+} from '@dnd-kit/core'
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { Box, Button, Divider, Flex, Grid, Title } from '@mantine/core'
+
+import { $projects } from '@shared/store'
+import { ProjectsResponse } from '@shared/types'
+
+import { SortableItem } from './ui/sortable-item'
 
 export const AddProjects = () => {
-	const [isDropped, setIsDropped] = useState(false)
-
-	const { isOver, setNodeRef } = useDroppable({
-		id: 'droppable'
-	})
-
-	const {
-		attributes,
-		listeners,
-		setNodeRef: dragRef,
-		transform
-	} = useDraggable({
-		id: 'draggable'
-	})
-
-	const styleDroppable = {
-		color: isOver ? 'green' : undefined
-	}
-
-	const style = transform
-		? {
-				transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`
-			}
-		: undefined
-
+	const [projects] = useUnit([$projects])
+	const [items, setItems] = useState<ProjectsResponse | null>(null)
+	console.log(items)
+	const sensors = useSensors(
+		useSensor(PointerSensor),
+		useSensor(KeyboardSensor, {
+			coordinateGetter: sortableKeyboardCoordinates
+		})
+	)
+	useEffect(() => {
+		setItems(projects)
+	}, [projects])
 	// const draggableMarkup = (
 	// 	<Button
 	// 		bd='1px solid #D9D9D9'
@@ -57,31 +60,36 @@ export const AddProjects = () => {
 	// 	</Button>
 	// )
 
-	const draggableMarkup = (
-		<button style={style} ref={dragRef} {...listeners} {...attributes}>
-			hello
-		</button>
-	)
-
 	return (
 		<Box p={20} style={{ borderRadius: '20px' }} w='40%' bd='1px solid #D9D9D9'>
 			<Title order={2} size={20} fw={600}>
 				Проекты
 			</Title>
 			<Divider my='sm' variant='dashed' />
-			<DndContext onDragEnd={handleDragEnd}>
-				<Grid columns={2}>
-					<Grid.Col span={1}>{!isDropped ? draggableMarkup : null}</Grid.Col>
-					<Grid.Col span={1} style={styleDroppable} ref={setNodeRef}>
-						{isDropped ? draggableMarkup : 'Drop here'}
-					</Grid.Col>
-				</Grid>
+			<DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+				<Flex direction='column'>
+					{items && (
+						<SortableContext items={items} strategy={verticalListSortingStrategy}>
+							{items.map((item) => (
+								<SortableItem key={item.id} {...item} />
+							))}
+						</SortableContext>
+					)}
+				</Flex>
 			</DndContext>
 		</Box>
 	)
-	function handleDragEnd(event: DragEndEvent) {
-		if (event.over && event.over.id === 'droppable') {
-			setIsDropped(true)
+
+	function handleDragEnd(event) {
+		const { active, over } = event
+
+		if (active.id !== over.id) {
+			setItems((item) => {
+				const oldIndex = item.indexOf(active.id)
+				const newIndex = item.indexOf(over.id)
+
+				return arrayMove(item, oldIndex, newIndex)
+			})
 		}
 	}
 }
