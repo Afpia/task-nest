@@ -4,13 +4,14 @@ import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 
 import { Avatar, Button, Flex, Menu, NavLink, Skeleton, Text } from '@mantine/core'
+
 import { routes } from '@shared/config'
-import { $projects, getUserProjectsFx, getUserWorkspacesFx } from '@widgets/sidebar/model'
+import { $projects, getProjectsWorkspaceFx, getUserWorkspacesFx } from '@shared/store'
 
 export const Projects = () => {
 	const [projects, projectsLoading, loadingWorkspaces] = useUnit([
 		$projects,
-		getUserProjectsFx.pending,
+		getProjectsWorkspaceFx.pending,
 		getUserWorkspacesFx.pending
 	])
 

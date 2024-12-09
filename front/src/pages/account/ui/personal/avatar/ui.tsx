@@ -1,8 +1,11 @@
 import { useRef, useState } from 'react'
+import { useUnit } from 'effector-react'
 
 import { Avatar, Button, Flex, Group, Text } from '@mantine/core'
 import { Dropzone, type FileWithPath } from '@mantine/dropzone'
 import type { UseFormReturnType } from '@mantine/form'
+
+import { $avatar } from '@shared/store'
 
 export const AvatarChange = ({
 	form
@@ -25,15 +28,27 @@ export const AvatarChange = ({
 		}
 	>
 }) => {
+	const [avatar] = useUnit([$avatar])
 	const [file, setFile] = useState<FileWithPath[]>([])
 	const openRef = useRef<() => void>(null)
 
+	const onDrop = (files: FileWithPath[]) => {
+		setFile(files)
+		form.setValues({
+			avatar: URL.createObjectURL(files[0])
+		})
+	}
+
 	const clearFile = () => {
 		setFile([])
+		form.setValues({
+			avatar
+		})
 	}
 
 	const preview = file.map((first) => {
 		const imageUrl = URL.createObjectURL(first)
+
 		return imageUrl
 	})
 
@@ -50,7 +65,7 @@ export const AvatarChange = ({
 			rejectColor='red'
 			openRef={openRef}
 			accept={['image/png', 'image/jpeg']}
-			onDrop={setFile}
+			onDrop={onDrop}
 			activateOnClick={false}
 		>
 			<Flex w='100%' h='100%' align='center' justify='space-between'>

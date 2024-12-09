@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'atomic-router-react'
 
-import { LoginButton } from '@entities/login.button'
 import { Anchor, Box, Button, CloseButton, Divider, Flex, Space, Text, Title, Transition } from '@mantine/core'
+
+import { LoginButton } from '@entities/login.button'
 import { routes } from '@shared/config'
 
 import { Form } from './form'

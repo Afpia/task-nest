@@ -1,6 +1,12 @@
-import { AccountLayout } from '@app/layouts'
-import { Box, Button, Divider, Flex, Select, Text, Textarea, TextInput, Title } from '@mantine/core'
+import { useEffect } from 'react'
+import { useUnit } from 'effector-react'
+
+import { Box, Button, Divider, Flex, Select, Skeleton, Text, Textarea, TextInput, Title } from '@mantine/core'
 import { useForm } from '@mantine/form'
+
+import { AccountLayout } from '@app/layouts'
+import { $username } from '@shared/auth'
+import { $avatar, getUserAvatarFx } from '@shared/store'
 
 import { AvatarChange } from './avatar'
 
@@ -13,11 +19,27 @@ interface Form {
 }
 
 export const Personal = () => {
+	const [user, avatar, loading] = useUnit([$username, $avatar, getUserAvatarFx.pending])
+
 	const form = useForm({
 		mode: 'controlled',
 		initialValues: { name: '', surname: '', avatar: '', about: '', pronouns: 'Не важно' }
 		// validate: zodResolver(ProfileScheme)
 	})
+
+	useEffect(() => {
+		if (!loading && user) {
+			const surname = user?.split(' ')[1]
+			const name = user?.split(' ')[0]
+			form.setValues({
+				name,
+				surname,
+				avatar
+				// about: '',
+				// newPassword: ''
+			})
+		}
+	}, [user, avatar])
 
 	const onClickForm = (values: Form) => {
 		// loginError(form)
@@ -28,7 +50,8 @@ export const Personal = () => {
 	return (
 		<AccountLayout>
 			<form onSubmit={form.onSubmit((values) => onClickForm(values))}>
-				<AvatarChange form={form} />
+				{form.getValues().avatar === '' && <Skeleton style={{ borderRadius: '10px' }} w='100%' h='127px' mb={20} />}
+				{!(form.getValues().avatar === '') && <AvatarChange form={form} />}
 				<Box>
 					<Flex w='100%' justify='space-between'>
 						<Title mb={10} order={3} size={14} fw={600}>

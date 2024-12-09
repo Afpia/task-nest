@@ -1,7 +1,8 @@
 import { useUnit } from 'effector-react'
 
 import { Box, Divider, Flex, Text, Title, useMantineTheme } from '@mantine/core'
-import { $projects } from '@widgets/sidebar/model'
+
+import { $projects } from '@shared/store'
 
 import { $countProjects } from './model'
 

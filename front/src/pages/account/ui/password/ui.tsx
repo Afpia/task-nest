@@ -1,8 +1,9 @@
 import { Lock } from 'lucide-react'
 
-import { AccountLayout } from '@app/layouts'
 import { Button, Divider, Flex, PasswordInput, Text, Title } from '@mantine/core'
 import { useForm } from '@mantine/form'
+
+import { AccountLayout } from '@app/layouts'
 
 interface Form {
 	password: string
@@ -13,7 +14,9 @@ export const Password = () => {
 	const form = useForm({
 		mode: 'controlled',
 		initialValues: { password: '', newPassword: '' }
-		// validate: zodResolver(ProfileScheme)
+		// validate: {
+		// 	newPassword: (value, values) => (value !== values.password ? 'Пароль не совпадает' : null)
+		// }
 	})
 
 	const onClickForm = (values: Form) => {

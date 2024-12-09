@@ -1,4 +1,5 @@
 import { Flex, useMantineTheme } from '@mantine/core'
+
 import { AddProjects } from '@widgets/add-projects'
 import { TotalStats } from '@widgets/total'
 

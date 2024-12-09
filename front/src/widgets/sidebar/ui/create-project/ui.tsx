@@ -4,7 +4,8 @@ import { CirclePlus } from 'lucide-react'
 
 import { Button, Flex, Modal, TextInput, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { createdProjects } from '@widgets/sidebar/model'
+
+import { createdProjects } from '@shared/store'
 
 export const CreateProject = () => {
 	const [projectName, setProjectName] = useState('Проект')

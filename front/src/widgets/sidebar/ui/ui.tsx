@@ -3,9 +3,9 @@ import { useUnit } from 'effector-react'
 import { Bell, ChartNoAxesCombined, CircleCheck, House } from 'lucide-react'
 
 import { Avatar, Divider, Flex, NavLink, Select, Title, useMantineTheme } from '@mantine/core'
-import { path, routes } from '@shared/config'
 
-import { $currentWorkspace, $workspaces, changedWorkspace } from '../model'
+import { path, routes } from '@shared/config'
+import { $currentWorkspace, $workspaces, changedWorkspace } from '@shared/store'
 
 import { CreateProject } from './create-project'
 import { Projects } from './projects'

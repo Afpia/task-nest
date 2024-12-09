@@ -2,44 +2,28 @@ import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 import { LogOut, Settings } from 'lucide-react'
 
-import { SidebarSearch } from '@features/search'
-import { Avatar, Divider, Flex, Menu, Text, Title } from '@mantine/core'
-import { $user, allUserExpired } from '@shared/auth'
-import { path, routes } from '@shared/config'
+import { Avatar, Divider, Flex, Menu, Skeleton, Text, Title } from '@mantine/core'
 
-import { $avatar } from './model'
+import { SidebarSearch } from '@features/search'
+import { $username, allUserExpired } from '@shared/auth'
+import { path, routes } from '@shared/config'
+import { $avatar, getUserAvatarFx } from '@shared/store'
+
+import { headerSchema } from './model'
 
 import styles from './ui.module.css'
 
-const pageInfo = {
-	[path.HOME]: { title: 'Главная', subtitle: 'Контролируйте все свои проекты и задачи здесь' },
-	[path.ACCOUNT]: {
-		title: 'Настройки',
-		subtitle: 'Настройте свой профиль и предпочтения'
-	},
-	[path.ACCOUNT_PASSWORD]: {
-		title: 'Настройки',
-		subtitle: 'Измените пароль'
-	},
-	[path.ACCOUNT_PERSONAL]: {
-		title: 'Настройки',
-		subtitle: 'Настройте свои персональные данные'
-	},
-	[path.PROFILE]: { title: 'Профиль', subtitle: 'Просмотр своего публичного профиля' },
-	[path.ANALYTICS]: { title: 'Аналитика', subtitle: '' }
-}
-
 export const Header = () => {
-	const [avatar, name, onExit] = useUnit([$avatar, $user, allUserExpired])
+	const [avatar, username, onExit, avatarLoading] = useUnit([$avatar, $username, allUserExpired, getUserAvatarFx.pending])
 	const pathname = window.location.pathname
 
 	return (
 		<Flex w='100%' h={80} px={20} py={10} mt={10} align='center' justify='space-between' className={styles.header}>
 			<Flex direction='column'>
 				<Title order={1} size={28}>
-					{pageInfo?.[pathname]?.title}
+					{headerSchema?.[pathname]?.title}
 				</Title>
-				<Text>{pageInfo?.[pathname]?.subtitle}</Text>
+				<Text>{headerSchema?.[pathname]?.subtitle}</Text>
 			</Flex>
 			<Flex align='center' gap={20}>
 				<SidebarSearch />
@@ -59,14 +43,15 @@ export const Header = () => {
 				>
 					<Menu.Target>
 						<Link to={routes.private.profile} className={styles.link}>
-							<Avatar size='46' src={avatar} radius='xl' variant='default' />
+							{!avatarLoading && <Avatar size='46' src={avatar} radius='xl' variant='default' />}
+							{avatarLoading && <Skeleton width={46} height={46} radius='xl' />}
 						</Link>
 					</Menu.Target>
 					<Menu.Dropdown>
 						<Flex justify='center' align='center' pt={10} direction='column'>
 							<Avatar size='46' src={avatar} radius='xl' variant='default' mb={10} />
 							<Title order={3} size={14} fw={600} mb={10}>
-								{name}
+								{username}
 							</Title>
 						</Flex>
 						<Menu.Item component={Link} to={routes.private.account} leftSection={<Settings />}>

@@ -1,21 +1,20 @@
 import { createEffect, createStore, sample } from 'effector'
 
 import { getUserInfo } from '@shared/api'
-import { privateRouteOpened, routes } from '@shared/config'
+import { privateRouteOpened } from '@shared/config'
 
-export const currentRoute = routes.private.home
 export const $avatar = createStore<string>('')
-export const getUserInfoFx = createEffect(() => getUserInfo({ config: { params: { columns: 'avatar_url' } } }))
+export const getUserAvatarFx = createEffect(() => getUserInfo({ config: { params: { columns: 'avatar_url' } } }))
 
 sample({
 	clock: [privateRouteOpened],
 	source: $avatar,
 	filter: $avatar.map((avatar) => !avatar),
-	target: getUserInfoFx
+	target: getUserAvatarFx
 })
 
 sample({
-	clock: getUserInfoFx.doneData,
+	clock: getUserAvatarFx.doneData,
 	fn: ({ data }) => data.avatar_url,
 	target: $avatar
 })

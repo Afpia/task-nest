@@ -1,8 +1,9 @@
 import { Mail } from 'lucide-react'
 
-import { AccountLayout } from '@app/layouts'
-import { Box, Button, Divider, Flex, Text, TextInput, Title } from '@mantine/core'
+import { Button, Divider, Flex, Text, TextInput, Title } from '@mantine/core'
 import { useForm } from '@mantine/form'
+
+import { AccountLayout } from '@app/layouts'
 
 interface Form {
 	email: string

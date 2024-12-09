@@ -3,14 +3,14 @@ import { useUnit } from 'effector-react'
 
 import { Anchor, Avatar, Box, Button, Container, Divider, Flex, NavLink, Text, Title } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { $user } from '@shared/auth'
+
+import { $username } from '@shared/auth'
 import { routes } from '@shared/config'
+import { $avatar } from '@shared/store'
 import type { Children } from '@shared/types'
-import { $avatar } from '@widgets/header/model'
 
 export const AccountLayout = ({ children }: Children) => {
-	const [user, avatar] = useUnit([$user, $avatar])
-	// TODO: avatar с widjet
+	const [username, avatar] = useUnit([$username, $avatar])
 
 	const openDeleteModal = () =>
 		modals.openConfirmModal({
@@ -32,7 +32,7 @@ export const AccountLayout = ({ children }: Children) => {
 				<Flex align='center' gap={20}>
 					<Avatar src={avatar} size={60} />
 					<Anchor component={Link} to={routes.private.profile} fz={16} c='pink'>
-						{user}
+						{username}
 					</Anchor>
 				</Flex>
 				<Button component={Link} variant='light' to={routes.private.profile}>

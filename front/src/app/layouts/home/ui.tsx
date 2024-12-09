@@ -1,4 +1,5 @@
 import { Box, Flex, ScrollArea, useMantineColorScheme } from '@mantine/core'
+
 import { ThemeColors } from '@shared/config'
 import type { Children } from '@shared/types'
 import { Header } from '@widgets/header'

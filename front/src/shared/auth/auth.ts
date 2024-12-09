@@ -4,12 +4,12 @@ import { persist } from 'effector-storage/local'
 
 import { routes } from '@shared/config'
 import { notifySuccess } from '@shared/notifications'
-import type { UserFieldResponse, UserResponse } from '@shared/types'
+import type { UserResponse } from '@shared/types'
 
 export const allUserReceived = createEvent<UserResponse>()
 export const allUserExpired = createEvent()
 
-export const $user = createStore<string>('').reset(allUserExpired)
+export const $username = createStore<string>('').reset(allUserExpired)
 const $accessToken = createStore<string>('').reset(allUserExpired)
 
 export const $isAuth = $accessToken.map((token) => !!token)
@@ -17,10 +17,8 @@ export const $isAuth = $accessToken.map((token) => !!token)
 sample({
 	clock: allUserReceived,
 	fn: ({ user }) => user.name,
-	target: $user
+	target: $username
 })
-
-// TODO: юзер исчезает при перезагрузки страницы
 
 sample({
 	clock: allUserReceived,
@@ -52,7 +50,7 @@ persist({
 
 persist({
 	key: 'username',
-	store: $user,
+	store: $username,
 	serialize: (state) => state,
 	deserialize: (state) => state
 })
