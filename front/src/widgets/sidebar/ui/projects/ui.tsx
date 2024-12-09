@@ -42,7 +42,6 @@ export const Projects = () => {
 			window.removeEventListener('resize', updateSkeletonCount)
 		}
 	}, [projects])
-
 	return (
 		<Flex
 			direction='column'

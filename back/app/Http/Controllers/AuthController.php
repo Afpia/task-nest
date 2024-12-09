@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\AuthService;
+use App\Services\TokenService;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Str;
@@ -10,10 +11,12 @@ use Str;
 class AuthController extends Controller
 {
     private $authService;
+    private $tokenService;
 
-    public function __construct(AuthService $authService)
+    public function __construct(AuthService $authService, TokenService $tokenService)
     {
         $this->authService = $authService;
+        $this->tokenService = $tokenService;
     }
 
     public function redirectToProvider($provider)
@@ -67,7 +70,7 @@ class AuthController extends Controller
     {
         $token = $request->input('accessToken');
 
-        return $this->checkDisposableToken($token);
+        return $this->tokenService->checkDisposableToken($token);
     }
 }
 
