@@ -1,16 +1,22 @@
 /* eslint-disable style/member-delimiter-style */
 /* eslint-disable style/multiline-ternary */
+import { Link } from 'atomic-router-react'
 import { Plus } from 'lucide-react'
 
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { ActionIcon, Avatar, Button, Flex, Text } from '@mantine/core'
 
+import { routes } from '@shared/config'
 import type { ProjectResponse } from '@shared/types'
 
 export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & { open?: () => void }) => {
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-		id
+		id,
+		transition: {
+			duration: 250,
+			easing: 'ease-in-out'
+		}
 	})
 
 	const style = {
@@ -59,6 +65,9 @@ export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & {
 
 	return (
 		<Button
+			// component={Link}
+			// to={routes.private.project as unknown as string}
+			// params={{ projectId: id.toString() }}
 			type='button'
 			key={id}
 			mih={60}

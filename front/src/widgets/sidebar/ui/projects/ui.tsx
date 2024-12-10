@@ -19,11 +19,11 @@ export const Projects = () => {
 	const pathname = window.location.pathname
 	const wrapper = useRef<HTMLDivElement>(null)
 
-	const [menuOpened, setMenuOpened] = useState(false)
+	const [menuPosition, setMenuPosition] = useState<{ x: number; y: number } | null>(null)
 
 	const handleContextMenu = (event: React.MouseEvent) => {
 		event.preventDefault()
-		setMenuOpened(true)
+		setMenuPosition({ x: event.clientX, y: event.clientY })
 	}
 
 	useEffect(() => {
@@ -42,6 +42,7 @@ export const Projects = () => {
 			window.removeEventListener('resize', updateSkeletonCount)
 		}
 	}, [projects])
+
 	return (
 		<Flex
 			direction='column'
@@ -55,14 +56,7 @@ export const Projects = () => {
 			{!projectsLoading &&
 				projects?.length > 0 &&
 				projects?.slice(0, adaptiveCount)?.map((item) => (
-					<Menu
-						key={item.id}
-						opened={menuOpened}
-						onClose={() => setMenuOpened(false)}
-						shadow='md'
-						width={200}
-						position='right-end'
-					>
+					<Menu key={item.id} opened onClose={() => setMenuPosition(null)} closeOnClickOutside shadow='md' width={200}>
 						<Menu.Target>
 							<NavLink
 								component={Link}
@@ -76,10 +70,11 @@ export const Projects = () => {
 								active={pathname === `${routes.private.project}`}
 							/>
 						</Menu.Target>
-
-						<Menu.Dropdown>
-							<Menu.Item>Изменить название</Menu.Item>
-						</Menu.Dropdown>
+						{menuPosition && (
+							<Menu.Dropdown styles={{ dropdown: { top: menuPosition.y, left: menuPosition.x } }}>
+								<Menu.Item>Изменить название</Menu.Item>
+							</Menu.Dropdown>
+						)}
 					</Menu>
 				))}
 

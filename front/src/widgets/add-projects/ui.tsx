@@ -12,13 +12,18 @@ import {
 	type DragEndEvent,
 	type DragStartEvent
 } from '@dnd-kit/core'
-import { arrayMove, rectSwappingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
+import {
+	arrayMove,
+	rectSortingStrategy,
+	rectSwappingStrategy,
+	SortableContext,
+	sortableKeyboardCoordinates
+} from '@dnd-kit/sortable'
 import { Box, Button, Divider, Flex, Grid, ScrollArea, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { ModalCreateProject } from '@entities/modal.create.project'
 import { $projects } from '@shared/store'
-import { ProjectResponse, ProjectsResponse } from '@shared/types'
 
 import { $projectsWidget, getterProjectsPosition } from './model'
 import { SortableItem } from './ui/sortable-item'
@@ -79,7 +84,7 @@ export const AddProjects = () => {
 				>
 					<Grid h='285px' gutter='10' styles={{ inner: { maxWidth: '558px' } }}>
 						{items && (
-							<SortableContext items={items} strategy={rectSwappingStrategy}>
+							<SortableContext items={items} strategy={rectSortingStrategy}>
 								{items.map((item) => (
 									<Grid.Col span={6} key={item.id}>
 										<SortableItem {...item} open={open} />

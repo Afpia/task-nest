@@ -1,6 +1,7 @@
 import { createEffect, createEvent, createStore, sample } from 'effector'
 
 import { getProjectsWorkspace, postProjectWorkspace } from '@shared/api'
+import { notifyError, notifySuccess } from '@shared/notifications'
 import type { PostProjectWorkspaceConfig, ProjectsResponse } from '@shared/types'
 
 import { $currentWorkspace, changedWorkspace, getUserWorkspacesFx } from '../workspaces'
@@ -41,11 +42,26 @@ sample({
 	target: postProjectWorkspaceFx
 })
 
-// TODO: Сделать без эффекта без обновления (Невозможно, т.к. при обновлении проектов необходимо обновить стор с проектами)
-
 sample({
 	clock: postProjectWorkspaceFx.doneData,
-	source: $currentWorkspace,
-	fn: (source) => source.id,
-	target: getProjectsWorkspaceFx
+	source: $projects,
+	fn: (source, clock) => {
+		notifySuccess({
+			title: 'Успешно',
+			message: 'Проект успешно создан'
+		})
+		return [...source, clock.data]
+	},
+	target: $projects
+})
+
+sample({
+	clock: postProjectWorkspaceFx.failData,
+	source: $projects,
+	fn: () => {
+		notifyError({
+			title: 'Ошибка',
+			message: 'Проект не создан'
+		})
+	}
 })
