@@ -22,6 +22,7 @@ export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & {
 		transform: CSS.Transform.toString(transform),
 		transition
 	}
+
 	if (isDragging) {
 		return (
 			<Button p={10} variant='default' opacity='60%' mih={60} w='100%' radius='md' type='button' ref={setNodeRef} style={style} />
@@ -64,10 +65,8 @@ export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & {
 
 	return (
 		<Button
-			// component={Link}
-			// to={routes.private.project as unknown as string}
-			// params={{ projectId: id.toString() }}
 			type='button'
+			onContextMenu={() => console.log('first')}
 			key={id}
 			mih={60}
 			w='100%'

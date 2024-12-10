@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useUnit } from 'effector-react'
+import { Settings2 } from 'lucide-react'
 
 import {
 	closestCorners,
@@ -9,28 +10,19 @@ import {
 	PointerSensor,
 	useSensor,
 	useSensors,
-	type DragEndEvent,
-	type DragStartEvent
+	type DragEndEvent
 } from '@dnd-kit/core'
-import {
-	arrayMove,
-	rectSortingStrategy,
-	rectSwappingStrategy,
-	SortableContext,
-	sortableKeyboardCoordinates
-} from '@dnd-kit/sortable'
-import { Box, Button, Divider, Flex, Grid, ScrollArea, Title } from '@mantine/core'
+import { arrayMove, rectSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
+import { ActionIcon, Box, Divider, Flex, Grid, ScrollArea, Skeleton, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { ModalCreateProject } from '@entities/modal.create.project'
-import { $projects } from '@shared/store'
-
-import { $projectsWidget, getterProjectsPosition } from '../model'
+import { $projects, getProjectsWorkspaceFx } from '@shared/store'
 
 import { SortableItem } from './sortable-item'
 
 export const AddProjects = () => {
-	const [projects, getProjectPosition] = useUnit([$projects, getterProjectsPosition])
+	const [projects, loading] = useUnit([$projects, getProjectsWorkspaceFx.pending])
 	const [opened, { open, close }] = useDisclosure(false)
 
 	const [activeTask, setActiveTask] = useState<number | string | null>(null)
@@ -66,28 +58,29 @@ export const AddProjects = () => {
 		}
 	}
 
-	function onDragStartEvent(event: DragStartEvent) {
-		setActiveTask(event.active.id)
-	}
-
 	return (
-		<Box p={20} style={{ borderRadius: '20px' }} w='600px' h='350px' bd='1px solid #D9D9D9'>
-			<Title order={2} size={20} fw={600}>
-				Проекты
-			</Title>
+		<Box p={20} style={{ borderRadius: '20px' }} w='100%' h='350px' bd='1px solid #D9D9D9'>
+			<Flex justify='space-between' pr={15} h={36}>
+				<Title order={2} size={20} fw={600}>
+					Проекты
+				</Title>
+				<ActionIcon h='100%' w='35px' variant='default' aria-label='Settings'>
+					<Settings2 style={{ width: '70%', height: '70%' }} />
+				</ActionIcon>
+			</Flex>
 			<Divider my='sm' variant='dashed' />
 			<ScrollArea scrollbars='y'>
 				<DndContext
 					sensors={sensors}
-					onDragStart={onDragStartEvent}
+					onDragStart={(event) => setActiveTask(event.active.id)}
 					collisionDetection={closestCorners}
 					onDragEnd={handleDragEnd}
 				>
-					<Grid h='285px' gutter='10' styles={{ inner: { maxWidth: '558px' } }}>
+					<Grid h='285px' styles={{ inner: { maxWidth: '100%' } }}>
 						{items && (
 							<SortableContext items={items} strategy={rectSortingStrategy}>
 								{items.map((item) => (
-									<Grid.Col span={6} key={item.id}>
+									<Grid.Col span={4} key={item.id}>
 										<SortableItem {...item} open={open} />
 									</Grid.Col>
 								))}
@@ -100,6 +93,13 @@ export const AddProjects = () => {
 								</DragOverlay>
 							</SortableContext>
 						)}
+						{loading &&
+							Array.from({ length: 7 }).map((_, index) => (
+								// eslint-disable-next-line react/no-array-index-key
+								<Grid.Col span={6} key={index}>
+									<Skeleton mih={60} w='100%' radius='md' />
+								</Grid.Col>
+							))}
 					</Grid>
 				</DndContext>
 			</ScrollArea>

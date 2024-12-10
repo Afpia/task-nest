@@ -7,7 +7,7 @@ import type { ProjectsResponse } from '@shared/types'
 export const $projectsWidget = createStore<ProjectsResponse>([] as ProjectsResponse)
 
 export const addedProjects = createEvent<string>()
-export const getterProjectsPosition = createEvent<string | number>()
+export const receivedProjectPosition = createEvent<string | number>()
 
 const currentRoute = routes.private.home
 
@@ -31,8 +31,8 @@ sample({
 	target: $projectsWidget
 })
 
-sample({
-	clock: getterProjectsPosition,
+export const taskPosition = sample({
+	clock: receivedProjectPosition,
 	source: $projects,
 	fn(source, clock) {
 		return source.findIndex((item) => item.id === clock)

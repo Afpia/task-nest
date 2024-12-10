@@ -1,8 +1,8 @@
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
-import { LogOut, Settings } from 'lucide-react'
+import { LogOut, Settings, UserRoundPlus } from 'lucide-react'
 
-import { Avatar, Divider, Flex, Menu, Skeleton, Text, Title } from '@mantine/core'
+import { Avatar, Button, Divider, Flex, Menu, Skeleton, Text, Title } from '@mantine/core'
 
 import { SidebarSearch } from '@features/search'
 import { $username, allUserExpired } from '@shared/auth'
@@ -28,6 +28,7 @@ export const Header = () => {
 			<Flex align='center' gap={20}>
 				<SidebarSearch />
 				<Divider size='xs' my='xs' orientation='vertical' />
+				<UserRoundPlus />
 				<Link to={routes.private.account} className={styles.linkSetting}>
 					<Settings />
 				</Link>
