@@ -5,5 +5,10 @@ import { routes } from '@shared/config'
 export const Project = () => {
 	const [params] = useUnit([routes.private.project.$params])
 
-	return <div>Hello{params.projectId}</div>
+	return (
+		<div>
+			Hello
+			{params.projectId}
+		</div>
+	)
 }

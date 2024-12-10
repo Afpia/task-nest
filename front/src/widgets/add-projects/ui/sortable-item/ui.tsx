@@ -25,7 +25,7 @@ export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & {
 
 	if (isDragging) {
 		return (
-			<Button p={10} variant='default' opacity='60%' mih={60} w='100%' radius='md' type='button' ref={setNodeRef} style={style} />
+			<Button p={10} variant='default' opacity='60%' mih={70} w='100%' radius='md' type='button' ref={setNodeRef} style={style} />
 		)
 	}
 
@@ -34,7 +34,7 @@ export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & {
 			<Button
 				type='button'
 				key={id}
-				mih={60}
+				mih={70}
 				w='100%'
 				radius='md'
 				leftSection={
@@ -42,7 +42,7 @@ export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & {
 						component='div'
 						variant='light'
 						radius='xl'
-						size='lg'
+						size='xl'
 						style={{
 							border: '1px dashed #cccccc',
 							backgroundColor: '#f7f7f7'
@@ -68,7 +68,7 @@ export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & {
 			type='button'
 			onContextMenu={() => console.log('first')}
 			key={id}
-			mih={60}
+			mih={70}
 			w='100%'
 			radius='md'
 			leftSection={<Avatar size={40} src={image_url} radius={10} />}

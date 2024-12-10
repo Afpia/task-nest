@@ -20,6 +20,7 @@ export const routes = {
 		notices: createRoute(),
 		home: createRoute(),
 		tasks: createRoute(),
+		customization: createRoute(),
 		project: createRoute<{ projectId: string }>()
 	}
 }
@@ -72,6 +73,10 @@ export const mappedRoutes = [
 	{
 		route: routes.private.tasks,
 		path: path.TASKS
+	},
+	{
+		route: routes.private.customization,
+		path: path.CUSTOMIZATION
 	}
 ]
 

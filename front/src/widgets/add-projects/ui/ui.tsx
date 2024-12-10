@@ -59,7 +59,7 @@ export const AddProjects = () => {
 	}
 
 	return (
-		<Box p={20} style={{ borderRadius: '20px' }} w='100%' h='350px' bd='1px solid #D9D9D9'>
+		<Box p={20} style={{ borderRadius: '20px', overflow: 'hidden' }} w='100%' h='350px' bd='1px solid #D9D9D9'>
 			<Flex justify='space-between' pr={15} h={36}>
 				<Title order={2} size={20} fw={600}>
 					Проекты
@@ -69,14 +69,14 @@ export const AddProjects = () => {
 				</ActionIcon>
 			</Flex>
 			<Divider my='sm' variant='dashed' />
-			<ScrollArea scrollbars='y'>
+			<ScrollArea scrollbars='y' h='270px'>
 				<DndContext
 					sensors={sensors}
 					onDragStart={(event) => setActiveTask(event.active.id)}
 					collisionDetection={closestCorners}
 					onDragEnd={handleDragEnd}
 				>
-					<Grid h='285px' styles={{ inner: { maxWidth: '100%' } }}>
+					<Grid h='100%' styles={{ inner: { maxWidth: '100%' } }}>
 						{items && (
 							<SortableContext items={items} strategy={rectSortingStrategy}>
 								{items.map((item) => (
@@ -94,10 +94,10 @@ export const AddProjects = () => {
 							</SortableContext>
 						)}
 						{loading &&
-							Array.from({ length: 7 }).map((_, index) => (
+							Array.from({ length: 8 }).map((_, index) => (
 								// eslint-disable-next-line react/no-array-index-key
-								<Grid.Col span={6} key={index}>
-									<Skeleton mih={60} w='100%' radius='md' />
+								<Grid.Col span={4} key={index}>
+									<Skeleton mih={70} w='100%' radius='md' />
 								</Grid.Col>
 							))}
 					</Grid>

@@ -45,6 +45,7 @@ export const AccountLayout = ({ children }: Children) => {
 						component={Link}
 						to={routes.private.account}
 						label='Общие'
+						style={{ borderRadius: '10px 10px 0 0' }}
 						active={routes.private.account.$isOpened.getState()}
 					/>
 					<NavLink
@@ -55,12 +56,19 @@ export const AccountLayout = ({ children }: Children) => {
 					/>
 					<NavLink
 						component={Link}
+						label='Кастомизация'
+						active={routes.private.customization.$isOpened.getState()}
+						to={routes.private.customization}
+					/>
+					<NavLink
+						component={Link}
 						label='Пароль'
+						style={{ borderRadius: '0 0 10px 10px' }}
 						active={routes.private.account_password.$isOpened.getState()}
 						to={routes.private.account_password}
 					/>
 					<Divider my='sm' variant='dashed' />
-					<NavLink onClick={openDeleteModal} variant='subtle' c='red' label='Удалить аккаунт' />
+					<NavLink onClick={openDeleteModal} variant='subtle' c='red' style={{ borderRadius: '10px' }} label='Удалить аккаунт' />
 				</Flex>
 				<Box w='100%' ml={20}>
 					{children}

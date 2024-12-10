@@ -16,6 +16,6 @@ export const myColors: MantineColorsTuple = [
 export const ThemeColors = {
 	dark: '#1c1b22',
 	light: '#fff',
-	secondDark: '#1c1b22',
+	secondDark: '#17141a',
 	secondLight: '#f6f6f6'
 }

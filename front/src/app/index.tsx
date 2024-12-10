@@ -3,6 +3,7 @@ import { RouterProvider } from 'atomic-router-react'
 import { createTheme, MantineProvider, type MantineTheme } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
+
 import { Pages } from '@pages/index'
 import { myColors, router, started } from '@shared/config'
 

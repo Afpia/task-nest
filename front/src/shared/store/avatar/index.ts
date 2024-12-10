@@ -7,7 +7,7 @@ export const $avatar = createStore<string>('')
 export const getUserAvatarFx = createEffect(() => getUserInfo({ config: { params: { columns: 'avatar_url' } } }))
 
 sample({
-	clock: [privateRouteOpened],
+	clock: privateRouteOpened,
 	source: $avatar,
 	filter: $avatar.map((avatar) => !avatar),
 	target: getUserAvatarFx

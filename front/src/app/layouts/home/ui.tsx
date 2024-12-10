@@ -1,4 +1,5 @@
 import { Box, Flex, ScrollArea, useMantineColorScheme } from '@mantine/core'
+import { useColorScheme } from '@mantine/hooks'
 
 import { ThemeColors } from '@shared/config'
 import type { Children } from '@shared/types'
@@ -7,7 +8,13 @@ import { Sidebar } from '@widgets/sidebar'
 
 export const LayoutHome = ({ children }: Children) => {
 	const { colorScheme } = useMantineColorScheme()
-	const color = colorScheme === 'dark' ? ThemeColors.secondDark : ThemeColors.secondLight
+	const colorSchemeSystem = useColorScheme()
+
+	// eslint-disable-next-line style/operator-linebreak
+	const color =
+		colorScheme === 'dark' || (colorScheme === 'auto' && colorSchemeSystem === 'dark')
+			? ThemeColors.secondDark
+			: ThemeColors.secondLight
 
 	return (
 		<Flex h='100vh' w='100vw'>

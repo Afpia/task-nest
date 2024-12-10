@@ -9,10 +9,11 @@ import { ProjectResponse } from '@shared/types'
 import { activeProjected, setMenuPositioned } from '../../model'
 
 export const Target = ({ item }: { item: ProjectResponse }) => {
-	const [currentPath, setActiveProject, setMenuPosition] = useUnit([
-		routes.private.project.$params,
+	const [setActiveProject, setMenuPosition, openPath, currentPath] = useUnit([
 		activeProjected,
-		setMenuPositioned
+		setMenuPositioned,
+		routes.private.project.$isOpened,
+		routes.private.project.$params
 	])
 
 	const handleContextMenu = (event: React.MouseEvent, activeProject: ProjectResponse) => {
@@ -26,14 +27,13 @@ export const Target = ({ item }: { item: ProjectResponse }) => {
 			<NavLink
 				component={Link}
 				to={routes.private.project as unknown as string}
-				onClick={close}
 				params={{ projectId: item.id.toString() }}
 				onContextMenu={(event) => handleContextMenu(event, item)}
 				label={item.title}
 				variant='filled'
 				leftSection={<Avatar size={25} radius='sm' src={item.image_url} alt={item.title} />}
 				style={{ borderRadius: '10px' }}
-				active={item.id.toString() === currentPath.projectId}
+				active={item.id.toString() === currentPath.projectId && openPath}
 			/>
 		</Menu.Target>
 	)
