@@ -1,8 +1,8 @@
 import { createEffect, createEvent, createStore, sample } from 'effector'
 
-import { getProjectsWorkspace, postProjectWorkspace } from '@shared/api'
+import { deleteProject, getProjectsWorkspace, postProjectWorkspace, putProject } from '@shared/api'
 import { notifyError, notifySuccess } from '@shared/notifications'
-import type { PostProjectWorkspaceConfig, ProjectsResponse } from '@shared/types'
+import type { DeleteProjectConfig, PostProjectWorkspaceConfig, ProjectsResponse, PutProjectConfig } from '@shared/types'
 
 import { $currentWorkspace, changedWorkspace, getUserWorkspacesFx } from '../workspaces'
 
@@ -12,8 +12,13 @@ export const getProjectsWorkspaceFx = createEffect((workspaceId: string) => getP
 export const postProjectWorkspaceFx = createEffect(({ params, data }: PostProjectWorkspaceConfig) =>
 	postProjectWorkspace({ params, data })
 )
+export const putProjectFx = createEffect(({ params, data }: PutProjectConfig) => putProject({ params, data }))
+export const deleteProjectFx = createEffect(({ params }: DeleteProjectConfig) => deleteProject({ params }))
 
-export const createdProjects = createEvent<string>()
+export const createdProject = createEvent<string>()
+// eslint-disable-next-line style/member-delimiter-style
+export const updatedProject = createEvent<{ id: number; title: string }>()
+export const deletedProject = createEvent<{ id: number }>()
 
 // Проекты
 
@@ -33,7 +38,7 @@ sample({
 // Создание проекта
 
 sample({
-	clock: createdProjects,
+	clock: createdProject,
 	source: $currentWorkspace,
 	fn: (source, clock) => ({
 		params: { workspaceId: source.id },
@@ -62,6 +67,77 @@ sample({
 		notifyError({
 			title: 'Ошибка',
 			message: 'Проект не создан'
+		})
+	}
+})
+
+// Обновление проекта
+
+sample({
+	clock: updatedProject,
+	fn: (clock) => ({
+		params: { projectId: clock.id },
+		data: { title: clock.title }
+	}),
+	target: putProjectFx
+})
+
+sample({
+	clock: putProjectFx.doneData,
+	source: $currentWorkspace,
+	fn: (source) => {
+		notifySuccess({
+			title: 'Успешно',
+			message: 'Проект успешно обновлен'
+		})
+		return source.id
+	},
+	target: getProjectsWorkspaceFx
+})
+
+// TODO: Сделать без запроса
+
+sample({
+	clock: putProjectFx.failData,
+	fn: () => {
+		notifySuccess({
+			title: 'Ошибка',
+			message: 'Проект не был обновлен'
+		})
+	}
+})
+
+// Удаление проекта
+
+sample({
+	clock: deletedProject,
+	fn: (clock) => ({
+		params: { projectId: clock.id }
+	}),
+	target: deleteProjectFx
+})
+
+sample({
+	clock: deleteProjectFx.doneData,
+	source: $projects,
+	fn: (source, clock) => {
+		notifySuccess({
+			title: 'Успешно',
+			message: 'Проект успешно удален'
+		})
+		return source.filter((project) => project.id !== clock.data.id)
+	},
+	target: $projects
+})
+
+// TODO: Сделать без запроса
+
+sample({
+	clock: deleteProjectFx.failData,
+	fn: () => {
+		notifyError({
+			title: 'Ошибка',
+			message: 'Проект не был удален'
 		})
 	}
 })

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useUnit } from 'effector-react'
 
 import {
@@ -25,8 +25,9 @@ import { useDisclosure } from '@mantine/hooks'
 import { ModalCreateProject } from '@entities/modal.create.project'
 import { $projects } from '@shared/store'
 
-import { $projectsWidget, getterProjectsPosition } from './model'
-import { SortableItem } from './ui/sortable-item'
+import { $projectsWidget, getterProjectsPosition } from '../model'
+
+import { SortableItem } from './sortable-item'
 
 export const AddProjects = () => {
 	const [projects, getProjectPosition] = useUnit([$projects, getterProjectsPosition])
@@ -75,7 +76,7 @@ export const AddProjects = () => {
 				Проекты
 			</Title>
 			<Divider my='sm' variant='dashed' />
-			<ScrollArea scrollbars='y' style={{ overflow: 'hidden' }}>
+			<ScrollArea scrollbars='y'>
 				<DndContext
 					sensors={sensors}
 					onDragStart={onDragStartEvent}

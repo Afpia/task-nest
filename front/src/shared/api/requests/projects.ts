@@ -1,4 +1,11 @@
-import type { GetProjectsWorkspaceConfig, PostProjectWorkspaceConfig, ProjectResponse, ProjectsResponse } from '@shared/types'
+import type {
+	DeleteProjectConfig,
+	GetProjectsWorkspaceConfig,
+	PostProjectWorkspaceConfig,
+	ProjectResponse,
+	ProjectsResponse,
+	PutProjectConfig
+} from '@shared/types'
 
 import { api } from '../instance'
 
@@ -7,3 +14,9 @@ export const getProjectsWorkspace = async ({ config, params }: GetProjectsWorksp
 
 export const postProjectWorkspace = async ({ params, data, config }: PostProjectWorkspaceConfig) =>
 	api.post<ProjectResponse>(`project/${params.workspaceId}/add`, data, config)
+
+export const putProject = async ({ params, data, config }: PutProjectConfig) =>
+	api.put<ProjectResponse>(`project/${params.projectId}/update`, data, config)
+
+export const deleteProject = async ({ params, config }: DeleteProjectConfig) =>
+	api.delete<ProjectResponse>(`project/${params.projectId}/delete`, config)

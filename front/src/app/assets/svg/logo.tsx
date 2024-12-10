@@ -3,8 +3,8 @@ export const Logo = ({ color = '#000' }) => (
 		version='1.0'
 		xmlns='http://www.w3.org/2000/svg'
 		width='150'
-		height='100'
-		viewBox='0 0 200 150'
+		height='50'
+		viewBox='0 0 200 65'
 		preserveAspectRatio='xMidYMid meet'
 	>
 		<g transform='translate(0.000000,86.000000) scale(0.100000,-0.100000)' fill={color} stroke='none'>

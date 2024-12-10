@@ -7,7 +7,6 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { ActionIcon, Avatar, Button, Flex, Text } from '@mantine/core'
 
-import { routes } from '@shared/config'
 import type { ProjectResponse } from '@shared/types'
 
 export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & { open?: () => void }) => {

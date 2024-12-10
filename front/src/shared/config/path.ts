@@ -9,5 +9,6 @@ export const path = {
 	PROJECT: '/project/:projectId',
 	ACCOUNT: '/account',
 	ACCOUNT_PERSONAL: '/account/personal',
-	ACCOUNT_PASSWORD: '/account/password'
+	ACCOUNT_PASSWORD: '/account/password',
+	TASKS: '/my-tasks'
 }

@@ -3,27 +3,26 @@ import { useUnit } from 'effector-react'
 
 import { Button, Flex, Modal, TextInput } from '@mantine/core'
 
-import { createdProject } from '@shared/store'
+import { createdProject, deletedProject } from '@shared/store'
 
 // eslint-disable-next-line style/member-delimiter-style
 export const ModalCreateProject = ({ opened, close }: { opened: boolean; close: () => void }) => {
-	const [projectName, setProjectName] = useState('Проект')
-	const [createProject] = useUnit([createdProject])
+	const [deleteProject] = useUnit([deletedProject])
 
 	const createProjectClick = () => {
 		close()
-		createProject(projectName)
+		deleteProject({ id: 1 })
 	}
 
 	return (
 		<Modal centered opened={opened} onClose={close} title='Вы уверены что хотите создать новый проект?'>
-			<TextInput
+			{/* <TextInput
 				label='Название проекта'
 				value={projectName}
 				onChange={(event) => setProjectName(event.target.value)}
 				data-autofocus
 				mb={20}
-			/>
+			/> */}
 			<Flex align='center' gap='20' justify='flex-end'>
 				<Button variant='light' onClick={close}>
 					Отмена
