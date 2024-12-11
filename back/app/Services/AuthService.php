@@ -7,7 +7,7 @@ use App\Models\DisposableToken;
 use Laravel\Socialite\Facades\Socialite;
 use App\Services\AvatarService;
 use App\Services\TokenService;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use Str;
 
 class AuthService
