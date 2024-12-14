@@ -22,9 +22,9 @@ class TaskController extends Controller
 
     public function index(Request $request, Project $project)
     {
-        $filters = $request->input('filters', []);
-        $columns = $request->input('columns', ['*']);
-        $perPage = $request->input('per_page', 10);
+        $filters = $request->input('filters', '');
+        $columns = $request->input('columns', '*');
+        $perPage = $request->input('per_page', false);
 
         $query = Task::query();
         $query = $this->queryService->applyFilters($query, $filters);
