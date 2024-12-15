@@ -8,7 +8,6 @@
 </head>
 
 <body>
-
     <img src="./storage/app/public/avatars/wBV5mpg02N.jpg" alt="">
 </body>
 

@@ -1,0 +1,77 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: task_nest_mysql
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: task_nest
+
+  proxy:
+    image: traefik:v2.11
+    command: --providers.docker
+    container_name: task_nest_proxy
+    ports:
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  back:
+    build:
+      context: ./back
+      target: back-base
+    container_name: task_nest_back
+    develop:
+      watch:
+        - path: ./back
+          action: sync
+          target: /var/www/laravel
+        - path: ./back/composer.json
+          action: rebuild
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=task_nest
+      - DB_USERNAME=root
+      - DB_PASSWORD=secret
+    labels:
+      traefik.http.routers.back.rule: Host(`back.localhost`)
+      traefik.http.services.back.loadbalancer.server.port: 8000
+    depends_on:
+      - mysql
+      - proxy
+
+  front:
+    build:
+      context: ./front
+      target: client-dev
+    container_name: task_nest_front
+    develop:
+      watch:
+        - path: ./front/src
+          action: sync
+          target: /app/src
+        - path: ./front/package.json
+          action: rebuild
+    labels:
+      traefik.http.routers.client.rule: Host(`localhost`)
+      traefik.http.services.client.loadbalancer.server.port: 5173
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: task_nest_phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: secret
+    labels:
+      traefik.http.routers.phpmyadmin.rule: Host(`db.localhost`)
+      traefik.http.services.phpmyadmin.loadbalancer.server.port: 80
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:
