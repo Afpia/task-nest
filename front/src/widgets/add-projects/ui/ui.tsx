@@ -59,7 +59,14 @@ export const AddProjects = () => {
 	}
 
 	return (
-		<Box p={20} style={{ borderRadius: '20px', overflow: 'hidden' }} w='100%' h='350px' bd='1px solid #D9D9D9'>
+		<Box
+			p={20}
+			style={{ borderRadius: '20px', overflow: 'hidden', position: 'relative' }}
+			w='50%'
+			h='350px'
+			bd='1px solid #D9D9D9'
+			bg='#fff'
+		>
 			<Flex justify='space-between' pr={15} h={36}>
 				<Title order={2} size={20} fw={600}>
 					Проекты
@@ -104,6 +111,18 @@ export const AddProjects = () => {
 				</DndContext>
 			</ScrollArea>
 			<ModalCreateProject opened={opened} close={close} />
+			<Box
+				style={{
+					position: 'absolute',
+					zIndex: 1,
+					bottom: 0,
+					pointerEvents: 'none',
+					left: 0,
+					right: 0,
+					height: '60px',
+					background: 'linear-gradient(to top, white, rgba(255, 255, 255, 0))'
+				}}
+			/>
 		</Box>
 	)
 }

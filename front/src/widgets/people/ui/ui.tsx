@@ -3,7 +3,7 @@ import { Plus, Settings2 } from 'lucide-react'
 import { ActionIcon, Box, Divider, Flex, Select, Title } from '@mantine/core'
 
 export const People = () => (
-	<Box p={20} style={{ borderRadius: '20px' }} w='100%' h='300px' mih='100%' bd='1px solid #D9D9D9'>
+	<Box p={20} style={{ borderRadius: '20px' }} w='50%' h='300px' mih='100%' bd='1px solid #D9D9D9'>
 		<Flex justify='space-between'>
 			<Title order={2} size={20} fw={600}>
 				Люди (0)

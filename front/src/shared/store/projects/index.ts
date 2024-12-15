@@ -71,7 +71,7 @@ sample({
 	}
 })
 
-// Обновление проекта
+// Обновление проекта, только название
 
 sample({
 	clock: updatedProject,
@@ -84,18 +84,17 @@ sample({
 
 sample({
 	clock: putProjectFx.doneData,
-	source: $currentWorkspace,
-	fn: (source) => {
+	source: $projects,
+	fn: (source, clock) => {
 		notifySuccess({
 			title: 'Успешно',
 			message: 'Проект успешно обновлен'
 		})
-		return source.id
-	},
-	target: getProjectsWorkspaceFx
-})
 
-// TODO: Сделать без запроса
+		return source.map((item) => (item.id === clock.data.id ? clock.data : item))
+	},
+	target: $projects
+})
 
 sample({
 	clock: putProjectFx.failData,
@@ -129,8 +128,6 @@ sample({
 	},
 	target: $projects
 })
-
-// TODO: Сделать без запроса
 
 sample({
 	clock: deleteProjectFx.failData,
