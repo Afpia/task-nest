@@ -1,4 +1,18 @@
 services:
+  proxy:
+    image: 'nginx:stable-alpine'
+    container_name: task_nest_proxy
+    ports:
+      - '8081:80'
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./back:/var/www/laravel
+    depends_on:
+      - front
+      - back
+    networks:
+      - main-network
+
   mysql:
     image: mysql:8.0
     container_name: task_nest_mysql
@@ -7,28 +21,30 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: task_nest
+    networks:
+      - main-network
 
-  proxy:
-    image: traefik:v2.11
-    command: --providers.docker
-    container_name: task_nest_proxy
-    ports:
-      - 80:80
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+  # proxy:
+  #   image: traefik:v2.11
+  #   command: --providers.docker
+  #   container_name: task_nest_proxy
+  #   ports:
+  #     - 80:80
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
 
   back:
     build:
       context: ./back
       target: back-base
     container_name: task_nest_back
-    develop:
-      watch:
-        - path: ./back
-          action: sync
-          target: /var/www/laravel
-        - path: ./back/composer.json
-          action: rebuild
+    # develop:
+    #   watch:
+    #     - path: ./back
+    #       action: sync
+    #       target: /var/www/laravel
+    #     - path: ./back/composer.json
+    #       action: rebuild
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
@@ -37,28 +53,38 @@ services:
       - DB_DATABASE=task_nest
       - DB_USERNAME=root
       - DB_PASSWORD=secret
-    labels:
-      traefik.http.routers.back.rule: Host(`back.localhost`)
-      traefik.http.services.back.loadbalancer.server.port: 8000
+    volumes:
+      - ./back:/var/www/laravel
+    # labels:
+    #   traefik.http.routers.back.rule: Host(`back.localhost`)
+    #   traefik.http.services.back.loadbalancer.server.port: 8000
     depends_on:
       - mysql
-      - proxy
+      - phpmyadmin
+    networks:
+      - main-network
 
   front:
     build:
       context: ./front
       target: client-dev
     container_name: task_nest_front
-    develop:
-      watch:
-        - path: ./front/src
-          action: sync
-          target: /app/src
-        - path: ./front/package.json
-          action: rebuild
-    labels:
-      traefik.http.routers.client.rule: Host(`localhost`)
-      traefik.http.services.client.loadbalancer.server.port: 5173
+    volumes:
+      - ./front:/app
+    ports:
+      - 8080:5173
+    # develop:
+    #   watch:
+    #     - path: ./front/src
+    #       action: sync
+    #       target: /app/src
+    #     - path: ./front/package.json
+    #       action: rebuild
+    # labels:
+    #   traefik.http.routers.client.rule: Host(`localhost`)
+    #   traefik.http.services.client.loadbalancer.server.port: 5173
+    networks:
+      - main-network
 
   phpmyadmin:
     image: phpmyadmin
@@ -67,11 +93,18 @@ services:
       PMA_HOST: mysql
       PMA_USER: root
       PMA_PASSWORD: secret
-    labels:
-      traefik.http.routers.phpmyadmin.rule: Host(`db.localhost`)
-      traefik.http.services.phpmyadmin.loadbalancer.server.port: 80
+    ports:
+      - 8083:80
+    # labels:
+    #   traefik.http.routers.phpmyadmin.rule: Host(`db.localhost`)
+    #   traefik.http.services.phpmyadmin.loadbalancer.server.port: 80
     depends_on:
       - mysql
+    networks:
+      - main-network
+
+networks:
+  main-network:
 
 volumes:
   mysql-data:

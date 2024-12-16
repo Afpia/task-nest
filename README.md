@@ -3,7 +3,6 @@
 ```bash
 docker compose up -d
 docker compose exec back php artisan migrate --force
-docker compose up --watch
 ```
 
 # Работа с artisan/tinker
