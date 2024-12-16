@@ -1,3 +1,4 @@
+import { chainRoute } from 'atomic-router'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 
@@ -12,6 +13,13 @@ export const $workspaces = createStore<WorkspacesResponse>([] as WorkspacesRespo
 export const getUserWorkspacesFx = createEffect(getUserWorkspaces)
 
 export const changedWorkspace = createEvent<string>()
+
+// chainRoute({
+// 	route: [privateRouteOpened],
+// 	beforeOpen: {
+// 		effect: getUserWorkspacesFx
+// 	}
+// })
 
 sample({
 	clock: [privateRouteOpened],

@@ -14,10 +14,14 @@ export interface ProjectResponse {
 export interface ProjectParams {
 	workspaceId: string
 }
-export interface ProjectPutParams {
+export interface PutProjectParams {
 	projectId: number
 }
-export interface ProjectDeleteParams {
+export interface DeleteProjectParams {
+	projectId: number
+}
+
+export interface GetProjectParams {
 	projectId: number
 }
 
@@ -33,5 +37,6 @@ export interface ProjectData {
 
 export type GetProjectsWorkspaceConfig = AxiosRequestConfig<ProjectParams>
 export type PostProjectWorkspaceConfig = AxiosRequestConfig<ProjectParams, ProjectData>
-export type PutProjectConfig = AxiosRequestConfig<ProjectPutParams, ProjectData>
-export type DeleteProjectConfig = AxiosRequestConfig<ProjectDeleteParams>
+export type PutProjectConfig = AxiosRequestConfig<PutProjectParams, ProjectData>
+export type DeleteProjectConfig = AxiosRequestConfig<DeleteProjectParams>
+export type GetProjectConfig = AxiosRequestConfig<GetProjectParams>

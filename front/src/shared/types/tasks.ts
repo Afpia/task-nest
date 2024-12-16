@@ -30,7 +30,7 @@ export interface TaskRequest {
 }
 
 export interface ProjectIdParams {
-	projectId: string
+	projectId: number
 }
 
 export interface TaskIdParams {
