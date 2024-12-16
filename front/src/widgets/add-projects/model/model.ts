@@ -6,13 +6,15 @@ import type { ProjectsResponse } from '@shared/types'
 
 export const $projectsWidget = createStore<ProjectsResponse>([] as ProjectsResponse)
 
-export const addedProjects = createEvent<string>()
-export const receivedProjectPosition = createEvent<string | number>()
+export const changedPositionItem = createEvent<ProjectsResponse>()
+export const changedActiveProject = createEvent<string | number | null>()
+
+export const $activeProject = createStore<number | string | null>(null).on(changedActiveProject, (_, id) => id)
 
 const currentRoute = routes.private.home
 
 sample({
-	clock: [currentRoute.opened, getProjectsWorkspaceFx.doneData],
+	clock: [currentRoute.opened, getProjectsWorkspaceFx.doneData, $projects],
 	source: $projects,
 	fn(source) {
 		return [
@@ -31,10 +33,7 @@ sample({
 	target: $projectsWidget
 })
 
-export const taskPosition = sample({
-	clock: receivedProjectPosition,
-	source: $projects,
-	fn(source, clock) {
-		return source.findIndex((item) => item.id === clock)
-	}
+sample({
+	clock: changedPositionItem,
+	target: $projectsWidget
 })
