@@ -1,13 +1,15 @@
 import { Moon, Sun } from 'lucide-react'
 
-import { Flex, Switch, useMantineColorScheme } from '@mantine/core'
-import { useColorScheme } from '@mantine/hooks'
+import { Flex, Switch } from '@mantine/core'
+
+import { isDarkMode } from '@shared/helpers'
 
 export const SwitchTheme = () => {
-	const { colorScheme, toggleColorScheme } = useMantineColorScheme()
-	const colorSchemeSystem = useColorScheme()
+	// const { colorScheme, toggleColorScheme } = useMantineColorScheme()
+	// const colorSchemeSystem = useColorScheme()
 
-	const isDark = colorScheme === 'dark' || (colorScheme === 'auto' && colorSchemeSystem === 'dark')
+	// const isDark = colorScheme === 'dark' || (colorScheme === 'auto' && colorSchemeSystem === 'dark')
+	const { isDark, toggleColorScheme } = isDarkMode()
 
 	return (
 		<Flex align='center' justify='space-between' mb={10}>
