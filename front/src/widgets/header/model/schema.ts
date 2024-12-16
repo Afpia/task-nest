@@ -15,5 +15,9 @@ export const headerSchema = {
 		subtitle: 'Настройте свои персональные данные'
 	},
 	[path.PROFILE]: { title: 'Профиль', subtitle: 'Просмотр своего публичного профиля' },
-	[path.ANALYTICS]: { title: 'Аналитика', subtitle: '' }
+	[path.ANALYTICS]: { title: 'Аналитика', subtitle: '' },
+	[path.PROJECT]: {
+		title: 'Подробности проекта',
+		subtitle: 'Управляйте проектом и задачами здесь'
+	}
 }
