@@ -58,4 +58,8 @@ class UserController extends Controller
         return response()->json($workspaces);
     }
 
+    public function search()
+    {
+        //
+    }
 }

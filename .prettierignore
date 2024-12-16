@@ -1,0 +1,13 @@
+.gitignore
+*.log
+*.tmp
+.DS_Store
+.idea/
+node_modules/
+*.tsbuildinfo
+**/.env
+dist/
+build/
+.temp/
+.turbo
+pnpm-lock.yaml

@@ -1,13 +1,15 @@
 import { redirect } from 'atomic-router'
-import { createEffect, createEvent, sample } from 'effector'
+import { AxiosError } from 'axios'
+import { createEffect, createEvent, createStore, sample } from 'effector'
 
 import type { UseFormReturnType } from '@mantine/form'
 import { allUserReceived } from '@shared/auth'
 import { routes } from '@shared/config'
+import { handleError } from '@shared/handle.error'
 import { notifyError, notifySuccess } from '@shared/notifications'
 
 import { postUser, postUserAccess } from '../api'
-import type { UserRequest } from '../api/types'
+import type { UserRequest, UserSocialRequest } from '../api/types'
 
 export const signupFormed = createEvent<
 	UseFormReturnType<
@@ -26,8 +28,60 @@ export const signupFormed = createEvent<
 	>
 >()
 
+export const $accessToken = createStore<UserSocialRequest>({ accessToken: '' })
+
 export const signupFx = createEffect(postUser)
 export const signupSocialFx = createEffect(postUserAccess)
+
+const currentRoute = routes.auth.signup
+
+sample({
+	clock: currentRoute.opened,
+	fn: () => {
+		const queryHash = window.location.search
+		const params = new URLSearchParams(queryHash.substring(1))
+		const accessToken = params.get('access_token')
+		window.history.replaceState({}, document.title, window.location.pathname)
+		if (accessToken) {
+			return { accessToken } as UserSocialRequest
+		}
+		return { accessToken: '' } as UserSocialRequest
+	},
+	target: $accessToken
+})
+
+sample({
+	clock: $accessToken,
+	filter: ({ accessToken }) => !!accessToken,
+	target: signupSocialFx.prepend(({ accessToken }: UserSocialRequest) => ({ data: { accessToken } }))
+})
+
+redirect({
+	clock: signupSocialFx.doneData,
+	route: routes.private.home
+})
+
+sample({
+	clock: signupSocialFx.doneData,
+	fn: ({ data }) => {
+		notifySuccess({
+			title: 'Поздравляю',
+			message: 'Вы вошли в систему'
+		})
+		return data
+	},
+	target: allUserReceived
+})
+
+sample({
+	clock: signupSocialFx.failData,
+	fn: (clock) => {
+		notifyError({
+			title: 'Мы не смогли войти в систему',
+			message: clock.message
+		})
+	}
+})
 
 sample({
 	clock: signupFx.doneData,
@@ -50,17 +104,30 @@ sample({
 	clock: signupFx.failData,
 	source: signupFormed,
 	fn: (form, error) => {
-		if (error.message === 'Request failed with status code 422') {
-			notifyError({
-				title: 'Мы не смогли войти в систему',
-				message: 'Такой пользователь уже зарегистрирован'
-			})
-			form.setErrors({ email: 'Такой пользователь уже зарегистрирован', password: true, name: true, surname: true })
+		if (error instanceof AxiosError) {
+			const errorMessage = error?.response?.data?.message
+
+			if (errorMessage === 'email уже занят.') {
+				handleError(form, 'Такой пользователь уже зарегистрирован', {
+					email: 'Такой пользователь уже зарегистрирован',
+					password: true,
+					name: true,
+					surname: true
+				})
+			} else {
+				handleError(form, 'Что-то пошло не так AxiosError', {
+					email: true,
+					password: true,
+					name: true,
+					surname: true
+				})
+			}
 		} else {
-			form.setErrors({ name: true, surname: true, email: true, password: true })
-			notifyError({
-				title: 'Мы не смогли войти в систему',
-				message: error.message
+			handleError(form, 'Что-то пошло не так Error', {
+				email: true,
+				password: true,
+				name: true,
+				surname: true
 			})
 		}
 	}

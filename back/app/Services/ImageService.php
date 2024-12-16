@@ -18,7 +18,7 @@ class ImageService
         $avatarPath = 'avatars/' . Str::random(10) . '.jpg';
         Storage::disk('public')->put($avatarPath, $imageContents);
 
-        return Storage::url($avatarPath);
+        return 'http://127.0.0.1:8000' . Storage::url($avatarPath);
     }
 
     public function generateDefaultImage(string $type, $name)

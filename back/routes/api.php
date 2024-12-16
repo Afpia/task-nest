@@ -35,6 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user/{user}', [UserController::class, 'view']);
 
+    Route::get('/search', [UserController::class, 'search']);
+
 
 
     //executor 

@@ -3,9 +3,13 @@ export const path = {
 	SIGNUP: '/signup',
 	PROFILE: '/profile',
 	ANALYTICS: '/analytics',
-	SETTINGS: '/settings',
 	NOTICES: '/notices',
 	FORGOT_PASSWORD: '/forgot-password',
 	HOME: '/',
-	PROJECT: '/project/:projectId'
+	PROJECT: '/project/:projectId',
+	ACCOUNT: '/account',
+	ACCOUNT_PERSONAL: '/account/personal',
+	ACCOUNT_PASSWORD: '/account/password',
+	TASKS: '/my-tasks',
+	CUSTOMIZATION: '/customization'
 }

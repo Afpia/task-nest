@@ -1,7 +1,10 @@
+import { useEffect } from 'react'
 import { Link } from 'atomic-router-react'
+import { useUnit } from 'effector-react'
+
+import { Anchor, Box, Divider, Flex, Space, Text, Title } from '@mantine/core'
 
 import { LoginButton } from '@entities/login.button'
-import { Anchor, Box, Divider, Flex, Space, Text, Title } from '@mantine/core'
 import { routes } from '@shared/config'
 
 import { LoginForm } from './form'

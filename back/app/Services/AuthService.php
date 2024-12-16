@@ -7,7 +7,7 @@ use App\Models\DisposableToken;
 use Laravel\Socialite\Facades\Socialite;
 use App\Services\AvatarService;
 use App\Services\TokenService;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use Str;
 
 class AuthService
@@ -39,6 +39,8 @@ class AuthService
                 ? $this->avatarService->saveAvatarFromUrl($socialUser->getAvatar())
                 : $this->avatarService->generateDefaultImage('avatar', $user->name);
             $user->save();
+
+            $this->workspaceService->createWorkspace("$user->name`s Workspace", $user->id);
         }
 
         return $this->tokenService->generateDisposableToken($user->id);

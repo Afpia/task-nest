@@ -1,20 +1,12 @@
-import { useState } from 'react'
-import { useUnit } from 'effector-react'
 import { CirclePlus } from 'lucide-react'
 
-import { Button, Flex, Modal, TextInput, Title } from '@mantine/core'
+import { Flex, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { createdProjects } from '@widgets/sidebar/model'
+
+import { ModalCreateProject } from '@entities/modal.create.project'
 
 export const CreateProject = () => {
-	const [projectName, setProjectName] = useState('Проект')
 	const [opened, { open, close }] = useDisclosure(false)
-	const [createProject] = useUnit([createdProjects])
-
-	const createProjectClick = () => {
-		close()
-		createProject(projectName)
-	}
 
 	return (
 		<Flex align='center' justify='space-between' mb={18}>
@@ -22,21 +14,7 @@ export const CreateProject = () => {
 				Проекты
 			</Title>
 			<CirclePlus cursor='pointer' size='16' onClick={open} />
-			<Modal centered opened={opened} onClose={close} title='Вы уверены что хотите создать новый проект?'>
-				<TextInput
-					label='Название проекта'
-					value={projectName}
-					onChange={(event) => setProjectName(event.target.value)}
-					data-autofocus
-					mb={20}
-				/>
-				<Flex align='center' gap='20' justify='flex-end'>
-					<Button variant='light' onClick={close}>
-						Отмена
-					</Button>
-					<Button onClick={createProjectClick}>Создать</Button>
-				</Flex>
-			</Modal>
+			<ModalCreateProject opened={opened} close={close} />
 		</Flex>
 	)
 }

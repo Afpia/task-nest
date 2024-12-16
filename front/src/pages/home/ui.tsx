@@ -1,14 +1,19 @@
-import { Flex, useMantineTheme } from '@mantine/core'
-import { AddProjects } from '@widgets/add-projects'
-import { TotalStats } from '@widgets/total'
+import { Flex } from '@mantine/core'
 
-import styles from './ui.module.css'
+import { AddProjects } from '@widgets/add-projects'
+import { AssignedTasks } from '@widgets/assigned-tasks'
+import { People } from '@widgets/people'
+import { TotalStats } from '@widgets/total'
 
 export const Home = () => (
 	<Flex direction='column' gap={20}>
 		<TotalStats />
-		<Flex>
+		<Flex justify='space-between' gap={20}>
+			<AssignedTasks />
 			<AddProjects />
+		</Flex>
+		<Flex justify='space-between' gap={20}>
+			<People />
 		</Flex>
 	</Flex>
 )

@@ -71,16 +71,16 @@ class ProjectController extends Controller
     {
         $validated = $request->validate(self::PROJECT_VALIDATOR);
 
-        $this->projectService->updateProject($project, $validated);
+        $project = $this->projectService->updateProject($project, $validated);
 
-        return response()->json(['message' => 'Проект успешно обнавлен'], 200);
+        return response()->json($project, 200);
     }
 
     public function destroy(Project $project)
     {
         $this->projectService->deleteProject($project);
 
-        return response()->json(['message' => 'Проект успешно удален'], 200);
+        return response()->json( $project, 200);
     }
 
     public function assignProjectManager(Request $request, Project $project)

@@ -35,6 +35,7 @@ class ProjectService
     {
         $project->update($data);
         $project->save();
+        return $project;
     }
 
     public function deleteProject(Project $project): void

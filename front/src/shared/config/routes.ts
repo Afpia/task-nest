@@ -1,5 +1,5 @@
-import { createHistoryRouter, createRoute } from 'atomic-router'
-import { sample } from 'effector'
+import { createHistoryRouter, createRoute, createRouterControls } from 'atomic-router'
+import { merge, sample } from 'effector'
 import { createBrowserHistory } from 'history'
 
 import { path } from './path'
@@ -13,10 +13,14 @@ export const routes = {
 	},
 	private: {
 		profile: createRoute(),
-		settings: createRoute(),
+		account: createRoute(),
+		account_personal: createRoute(),
+		account_password: createRoute(),
 		analytics: createRoute(),
 		notices: createRoute(),
 		home: createRoute(),
+		tasks: createRoute(),
+		customization: createRoute(),
 		project: createRoute<{ projectId: string }>()
 	}
 }
@@ -39,8 +43,16 @@ export const mappedRoutes = [
 		path: path.PROFILE
 	},
 	{
-		route: routes.private.settings,
-		path: path.SETTINGS
+		route: routes.private.account_personal,
+		path: path.ACCOUNT_PERSONAL
+	},
+	{
+		route: routes.private.account_password,
+		path: path.ACCOUNT_PASSWORD
+	},
+	{
+		route: routes.private.account,
+		path: path.ACCOUNT
 	},
 	{
 		route: routes.private.analytics,
@@ -57,11 +69,25 @@ export const mappedRoutes = [
 	{
 		route: routes.private.project,
 		path: path.PROJECT
+	},
+	{
+		route: routes.private.tasks,
+		path: path.TASKS
+	},
+	{
+		route: routes.private.customization,
+		path: path.CUSTOMIZATION
 	}
 ]
 
+const privateRoutes = Object.values(routes.private)
+export const privateRouteOpened = merge(privateRoutes.map((route) => route.opened))
+
+export const controls = createRouterControls()
+
 export const router = createHistoryRouter({
-	routes: mappedRoutes
+	routes: mappedRoutes,
+	controls
 })
 
 sample({

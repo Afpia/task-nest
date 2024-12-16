@@ -1,3 +1,14 @@
+import { useUnit } from 'effector-react'
+
+import { routes } from '@shared/config'
+
 export const Project = () => {
-	return <div>Hello</div>
+	const [params] = useUnit([routes.private.project.$params])
+
+	return (
+		<div>
+			Hello
+			{params.projectId}
+		</div>
+	)
 }
