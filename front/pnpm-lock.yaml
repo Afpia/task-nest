@@ -41,6 +41,9 @@ importers:
       '@mantine/notifications':
         specifier: ^7.13.2
         version: 7.13.4(@mantine/core@7.13.4(@mantine/hooks@7.13.4(react@18.3.1))(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.13.4(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mantine/nprogress':
+        specifier: ^7.15.1
+        version: 7.15.1(@mantine/core@7.13.4(@mantine/hooks@7.13.4(react@18.3.1))(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.13.4(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mantine/spotlight':
         specifier: ^7.13.3
         version: 7.13.4(@mantine/core@7.13.4(@mantine/hooks@7.13.4(react@18.3.1))(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.13.4(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -589,6 +592,14 @@ packages:
       react: ^18.2.0
       react-dom: ^18.2.0
 
+  '@mantine/nprogress@7.15.1':
+    resolution: {integrity: sha512-nojAIdALTePfT0l0+ksaFeGmc2HssjUXX6Dakf7FqPbuUT3eT0AVBae/zdhlWJGzCZLOJDggzOYsWCRn/Nr7eQ==}
+    peerDependencies:
+      '@mantine/core': 7.15.1
+      '@mantine/hooks': 7.15.1
+      react: ^18.x || ^19.x
+      react-dom: ^18.x || ^19.x
+
   '@mantine/spotlight@7.13.4':
     resolution: {integrity: sha512-rplcuOa9tSia8WmWjdqQvn/WG76BQ9d2/Gy6t3e5wHM3TURPPFYCcwUHp9HUvNELj98Hx6TUJ9BmZqyi/TxIPg==}
     peerDependencies:
@@ -601,6 +612,11 @@ packages:
     resolution: {integrity: sha512-DUlnXizE7aCjbVg2J3XLLKsOzt2c2qfQl2Xmx9l/BPE4FFZZKUqGDkYaTDbTAmnN3FVZ9xXycL7bAlq9udO8mA==}
     peerDependencies:
       react: ^18.2.0
+
+  '@mantine/store@7.15.1':
+    resolution: {integrity: sha512-+jwsCE0x0BoeNYhto/Y9PQtHu86BxBNsc3Jw+dNwPP2oeVCbpspopHN+JsTrLR9ZCvsy8N8hxOX7T3ZUGZLYFQ==}
+    peerDependencies:
+      react: ^18.x || ^19.x
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3687,6 +3703,14 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       react-transition-group: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
+  '@mantine/nprogress@7.15.1(@mantine/core@7.13.4(@mantine/hooks@7.13.4(react@18.3.1))(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.13.4(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@mantine/core': 7.13.4(@mantine/hooks@7.13.4(react@18.3.1))(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mantine/hooks': 7.13.4(react@18.3.1)
+      '@mantine/store': 7.15.1(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   '@mantine/spotlight@7.13.4(@mantine/core@7.13.4(@mantine/hooks@7.13.4(react@18.3.1))(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.13.4(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@mantine/core': 7.13.4(@mantine/hooks@7.13.4(react@18.3.1))(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3696,6 +3720,10 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
 
   '@mantine/store@7.13.4(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+
+  '@mantine/store@7.15.1(react@18.3.1)':
     dependencies:
       react: 18.3.1
 
