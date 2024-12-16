@@ -62,7 +62,6 @@ export const Projects = () => {
 				projects?.length > 0 &&
 				projects?.slice(0, adaptiveCount)?.map((item) => (
 					<Menu
-						withArrow
 						key={item.id}
 						opened={menuPosition !== null && activeProject?.id === item.id}
 						shadow='md'

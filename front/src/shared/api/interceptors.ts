@@ -1,3 +1,5 @@
+import { completeNavigationProgress } from '@mantine/nprogress'
+
 import { api } from './instance'
 
 api.interceptors.request.use((config) => {
@@ -9,3 +11,14 @@ api.interceptors.request.use((config) => {
 		return config
 	}
 })
+
+api.interceptors.response.use(
+	(response) => {
+		completeNavigationProgress()
+		return response
+	},
+	(error) => {
+		completeNavigationProgress()
+		return Promise.reject(error)
+	}
+)

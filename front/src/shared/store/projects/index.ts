@@ -1,5 +1,7 @@
 import { createEffect, createEvent, createStore, sample } from 'effector'
 
+import { incrementNavigationProgress, setNavigationProgress, startNavigationProgress } from '@mantine/nprogress'
+
 import { deleteProject, getCurrentProject, getProjectsWorkspace, postProjectWorkspace, putProject } from '@shared/api'
 import { privateRouteParams } from '@shared/config'
 import { notifyError, notifySuccess } from '@shared/notifications'
@@ -71,10 +73,14 @@ sample({
 sample({
 	clock: createdProject,
 	source: $currentWorkspace,
-	fn: (source, clock) => ({
-		params: { workspaceId: source.id },
-		data: { title: clock }
-	}),
+	fn: (source, clock) => {
+		startNavigationProgress()
+
+		return {
+			params: { workspaceId: source.id },
+			data: { title: clock }
+		}
+	},
 	target: postProjectWorkspaceFx
 })
 
@@ -106,10 +112,14 @@ sample({
 
 sample({
 	clock: updatedProject,
-	fn: (clock) => ({
-		params: { projectId: clock.id },
-		data: { title: clock.title }
-	}),
+	fn: (clock) => {
+		startNavigationProgress()
+
+		return {
+			params: { projectId: clock.id },
+			data: { title: clock.title }
+		}
+	},
 	target: putProjectFx
 })
 
@@ -141,9 +151,13 @@ sample({
 
 sample({
 	clock: deletedProject,
-	fn: (clock) => ({
-		params: { projectId: clock.id }
-	}),
+	fn: (clock) => {
+		startNavigationProgress()
+
+		return {
+			params: { projectId: clock.id }
+		}
+	},
 	target: deleteProjectFx
 })
 

@@ -1,7 +1,6 @@
 import { createEffect, createStore, sample } from 'effector'
 
 import { deleteTaskProject, getTasksProject, postTaskProject, putTaskStatusProject } from '@shared/api'
-import { privateRouteOpened, routes } from '@shared/config'
 import type { PostTaskProjectConfig, TasksResponse } from '@shared/types'
 
 import { $currentProject } from '../projects'
