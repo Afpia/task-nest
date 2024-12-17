@@ -16,7 +16,7 @@ import styles from './ui.module.css'
 export const Header = () => {
 	const [avatar, username, onExit, avatarLoading] = useUnit([$avatar, $username, allUserExpired, getUserAvatarFx.pending])
 	const pathname = window.location.pathname
-
+	console.log(pathname)
 	return (
 		<Flex w='100%' h={80} px={20} py={10} mt={10} align='center' justify='space-between' className={styles.header}>
 			<Flex direction='column'>

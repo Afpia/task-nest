@@ -1,5 +1,6 @@
 import type {
 	DeleteProjectConfig,
+	GetProjectConfig,
 	GetProjectsWorkspaceConfig,
 	PostProjectWorkspaceConfig,
 	ProjectResponse,
@@ -11,6 +12,9 @@ import { api } from '../instance'
 
 export const getProjectsWorkspace = async ({ config, params }: GetProjectsWorkspaceConfig) =>
 	api.get<ProjectsResponse>(`projects/${params.workspaceId}`, config)
+
+export const getCurrentProject = async ({ config, params }: GetProjectConfig) =>
+	api.get<{ project: ProjectResponse }>(`project/${params.projectId}`, config)
 
 export const postProjectWorkspace = async ({ params, data, config }: PostProjectWorkspaceConfig) =>
 	api.post<ProjectResponse>(`project/${params.workspaceId}/add`, data, config)

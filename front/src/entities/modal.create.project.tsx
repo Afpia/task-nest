@@ -12,6 +12,7 @@ export const ModalCreateProject = ({ opened, close }: { opened: boolean; close: 
 
 	const createProjectClick = () => {
 		close()
+		setProjectName('Проект')
 		createProject(projectName)
 	}
 

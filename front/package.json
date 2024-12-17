@@ -1,5 +1,5 @@
 {
-	"name": "front",
+	"name": "task-nest",
 	"type": "module",
 	"version": "0.0.0",
 	"private": true,
@@ -21,6 +21,7 @@
 		"@mantine/hooks": "^7.13.2",
 		"@mantine/modals": "^7.13.2",
 		"@mantine/notifications": "^7.13.2",
+		"@mantine/nprogress": "^7.15.1",
 		"@mantine/spotlight": "^7.13.3",
 		"atomic-router": "^0.10.1",
 		"atomic-router-react": "^0.10.0",

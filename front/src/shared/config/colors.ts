@@ -17,5 +17,7 @@ export const ThemeColors = {
 	dark: '#1c1b22',
 	light: '#fff',
 	secondDark: '#17141a',
-	secondLight: '#f6f6f6'
+	secondLight: '#f6f6f6',
+	thirdDark: 'rgba(255, 255, 255, 0)',
+	thirdLight: 'rgba(255, 255, 255, 0)'
 }
