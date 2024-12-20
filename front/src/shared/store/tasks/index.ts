@@ -6,6 +6,7 @@ import { deleteTaskProject, getTasksProject, postTaskProject, putTaskStatusProje
 import { notifyError } from '@shared/notifications'
 import type { PostTaskProjectConfig, TaskRequest, TasksResponse } from '@shared/types'
 
+
 import { $currentProject } from '../projects'
 
 export const $tasks = createStore([] as TasksResponse)
@@ -19,6 +20,7 @@ export const postTaskProjectFx = createEffect(({ params, data }: PostTaskProject
 export const putTaskStatusProjectFx = createEffect((taskId: string) => putTaskStatusProject({ params: { taskId } }))
 
 export const deleteTaskProjectFx = createEffect((taskId: string) => deleteTaskProject({ params: { taskId } }))
+
 
 export const createdTask = createEvent<TaskRequest>()
 
