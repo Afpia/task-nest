@@ -7,10 +7,14 @@ export interface TaskResponse {
 	start_date: string
 	end_date?: string
 	status: string
-	project_name: number
+	project_id: number
 	progress: number
+	who_set: string
+	users: Assignee[]
 	assignee: Assignee[]
 }
+
+// TODO: Исправить типы
 
 export interface Assignee {
 	id: number
@@ -23,10 +27,10 @@ export interface TaskRequest {
 	description?: string
 	start_date: string
 	end_date?: string
-	priority: string
+	// priority: string
 	// status: string
-	project_id: number
-	user_id: number
+	// project_id: number
+	// user_id: number
 }
 
 export interface ProjectIdParams {

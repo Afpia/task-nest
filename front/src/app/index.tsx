@@ -13,6 +13,7 @@ import '@mantine/spotlight/styles.css'
 import '@mantine/dropzone/styles.css'
 import '@mantine/core/styles.css'
 import '@mantine/nprogress/styles.css'
+import '@mantine/dates/styles.css'
 import '@assets/styles/global.css'
 
 const theme = createTheme({

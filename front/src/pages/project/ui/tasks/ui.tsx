@@ -1,4 +1,18 @@
-import { ArrowDown, ChevronDown, Maximize2, Minimize2, Plus, ScreenShare, Settings2 } from 'lucide-react'
+import { useUnit } from 'effector-react'
+import {
+	ArrowDown,
+	CalendarFold,
+	ChevronDown,
+	FolderPen,
+	List,
+	Maximize2,
+	Minimize2,
+	Plus,
+	ScreenShare,
+	Scroll,
+	Settings2,
+	Users
+} from 'lucide-react'
 
 import {
 	ActionIcon,
@@ -11,53 +25,54 @@ import {
 	Drawer,
 	Flex,
 	Group,
+	Input,
+	MultiSelect,
 	Progress,
 	Table,
 	Text,
+	Textarea,
 	Title
 } from '@mantine/core'
+import { DateInput } from '@mantine/dates'
+import { useForm } from '@mantine/form'
 import { useDisclosure, useFullscreen } from '@mantine/hooks'
 
+import { $username } from '@shared/auth'
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
-
-const elements = [
-	{ position: 6, mass: 12.011, symbol: 'C', name: 'Carbon', progress: 100 },
-	{ position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen', progress: 100 },
-	{ position: 39, mass: 88.906, symbol: 'Y', name: 'Yttrium', progress: 100 },
-	{ position: 56, mass: 137.33, symbol: 'Ba', name: 'Barium', progress: 100 }
-]
+import { $tasks, createdTask } from '@shared/store'
 
 export const Tasks = () => {
+	const [tasks, user, createTask] = useUnit([$tasks, $username, createdTask])
 	const [opened, { open, close }] = useDisclosure(false)
 	const { toggle, fullscreen } = useFullscreen()
 	const { isDark } = isDarkMode()
 
-	const rows = elements.map((element) => (
-		<Table.Tr key={element.name} h={50}>
+	const rows = tasks.map((element) => (
+		<Table.Tr key={element.id} h={50}>
 			<Table.Td>
 				<Checkbox aria-label='Select row' />
 			</Table.Td>
 			<Table.Td>
-				<Text>Чистить вилкой</Text>
+				<Text>{element.title}</Text>
 			</Table.Td>
 			<Table.Td>
 				<Flex align='center' gap={8}>
-					<Avatar size={30} />
+					<Avatar size={30} src={element.users[0].avatar_url} />
 					<Text fw='bold' fz={14}>
-						Филипп Алесандрович
+						{element.users.map((username) => username.name).join(', ')}
 					</Text>
 				</Flex>
 			</Table.Td>
-			<Table.Td>Январь 24 2024, 18:00</Table.Td>
+			<Table.Td>{element.end_date}</Table.Td>
 			<Table.Td>
-				<Badge color='lime'>Завершен</Badge>
+				<Badge color={element.status === 'Завершена' ? 'lime' : 'blue'}>{element.status}</Badge>
 			</Table.Td>
 			<Table.Td>
 				<Flex justify='space-between' gap={20}>
 					<Flex align='center' gap={60}>
-						<Text fw='bold'>100%</Text>
-						<Progress value={70} w={100} />
+						<Text fw='bold'>0%</Text>
+						<Progress value={0} w={100} />
 					</Flex>
 					<ActionIcon h='100%' w='30px' variant='default' aria-label='Settings'>
 						<ChevronDown style={{ width: '70%', height: '70%' }} />
@@ -66,6 +81,20 @@ export const Tasks = () => {
 			</Table.Td>
 		</Table.Tr>
 	))
+
+	const form = useForm({
+		mode: 'controlled',
+		initialValues: { title: '', description: '', end_date: '' }
+		// validate: zodResolver(LoginScheme)
+	})
+
+	// eslint-disable-next-line style/member-delimiter-style
+	const onClickForm = (values: { title?: string; description?: string; end_date: any }) => {
+		// loginError(form)
+		const formattedDate = values.end_date.toISOString().split('T')[0]
+
+		createTask({ title: values.title, description: values.description, end_date: formattedDate })
+	}
 
 	return (
 		<>
@@ -125,7 +154,45 @@ export const Tasks = () => {
 					<Drawer.CloseButton />
 				</Flex>
 				<Divider variant='dashed' mb={20} />
-				<Title>Создание задачи</Title>
+				<Title mb={20}>Создание задачи</Title>
+				<form onSubmit={form.onSubmit((values) => onClickForm(values))}>
+					<Flex direction='column' gap={20} mb={20}>
+						<Flex>
+							<Flex align='center' gap={8} w={160}>
+								<FolderPen />
+								<Text fz={14}>Название задачи</Text>
+							</Flex>
+							<Input {...form.getInputProps('title')} placeholder='Название задачи' />
+						</Flex>
+						<Flex>
+							<Flex align='center' gap={8} w={160}>
+								<CalendarFold />
+								<Text fz={14}>Дата завершения</Text>
+							</Flex>
+							<DateInput
+								{...form.getInputProps('end_date')}
+								variant='default'
+								placeholder='Дата завершения'
+								valueFormat='YYYY-MM-DD'
+							/>
+						</Flex>
+						<Flex>
+							<Flex align='center' gap={8} w={160}>
+								<Users />
+								<Text fz={14}>Назначенные</Text>
+							</Flex>
+							<MultiSelect placeholder='Назначенные' data={[user]} />
+						</Flex>
+						<Flex direction='column'>
+							<Flex align='center' mb={10} gap={8} w={160}>
+								<Scroll />
+								<Text fz={14}>Описание</Text>
+							</Flex>
+							<Textarea {...form.getInputProps('description')} placeholder='Описание задачи' />
+						</Flex>
+					</Flex>
+					<Button type='submit'>Создать задачу</Button>
+				</form>
 			</Drawer>
 		</>
 	)
