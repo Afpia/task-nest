@@ -9,7 +9,7 @@ COPY . .
 
 RUN composer install --optimize-autoloader
 
-RUN chown -R www-data:www-data /var/www/laravel
+# RUN chown -R www-data:www-data /var/www/laravel
 
 EXPOSE 8000
 

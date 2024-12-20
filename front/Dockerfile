@@ -1,5 +1,6 @@
 FROM node:22 AS base
 RUN npm install -g pnpm
+RUN apt-get update && apt-get install -y xdg-utils
 WORKDIR /app
 
 FROM base AS client-base

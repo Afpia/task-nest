@@ -22,15 +22,18 @@ class TaskController extends Controller
 
     public function index(Request $request, Project $project)
     {
-        $filters = $request->input('filters', []);
-        $columns = $request->input('columns', ['*']);
-        $perPage = $request->input('per_page', 10);
+        $filters = $request->input('filters', '');
+        $columns = $request->input('columns', '*');
+        $perPage = $request->input('per_page', false);
 
-        $query = Task::query();
+        $query = Task::where('project_id', $project->id);
         $query = $this->queryService->applyFilters($query, $filters);
         $query = $this->queryService->selectColumns($query, $columns);
         $tasks = $this->queryService->paginateResults($query, $perPage);
 
+        foreach($tasks as $task){
+            $task->users()->sync($task->users->pluck('id'));
+        }
         return response()->json($tasks);
     }
 
@@ -56,9 +59,9 @@ class TaskController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $this->taskService->createTask($validate, $project);
+        $task = $this->taskService->createTask($validate, $project);
 
-        return response()->json([__('messages.add_success')], 201);
+        return response()->json($task, 201);
     }
 
     public function update(Request $request, Task $task)
@@ -73,16 +76,16 @@ class TaskController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $this->taskService->updateTask($validate, $task);
+        $task = $this->taskService->updateTask($validate, $task);
 
-        return response()->json(['message' => __('messages.update_success')], 200);
+        return response()->json($task, 200);
     }
 
     public function destroy(Task $task)
     {
         $task->delete();
 
-        return response()->json(['message' => __('messages.delete_success')], 200);
+        return response()->json($task, 200);
     }
 
     public function addUserToTask(Request $request, Task $task)
@@ -99,6 +102,7 @@ class TaskController extends Controller
             return [
                 'id' => $user->id,
                 'name' => $user->name,
+                'avatar_url' => $user->avatar_url,
                 'role' => $role,
             ];
         });

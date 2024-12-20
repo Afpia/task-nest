@@ -26,12 +26,14 @@ class TaskService
         ]);
 
         $this->addUserToTask($task, $data['user_id'], 'respectively');
+        return $task;
     }
 
     public function updateTask(array $data, Task $task)
     {
         $task->update($data);
         $task->save();
+        return $task;
     }
     public function addUserToTask(Task $task, $user_id, $role = 'co-executor')
     {
