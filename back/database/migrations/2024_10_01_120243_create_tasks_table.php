@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->foreignIdFor(Project::class)->constrained()->onDelete('cascade');
             $table->enum('priority', ['Низкий', 'Средний', 'Высокий']);
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->enum('status', ['Назначена', 'Выполняется', 'Завершена']);
             $table->timestamps();
         });

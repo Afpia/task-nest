@@ -25,6 +25,11 @@ class Project extends Model
         return $this->belongsTo(Workspace::class);
     }
 
+    public function countTasks()
+    {
+        //
+    }
+
     public function tasks()
     {
         return $this->hasMany(Task::class, 'user_tasks')
