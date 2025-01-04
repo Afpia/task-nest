@@ -1,16 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 
-import { Avatar, Button, Flex, Menu, NavLink, Skeleton, Text } from '@mantine/core'
+import { Button, Flex, Menu, Skeleton, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { ModalUpdateProject } from '@entities/modal.update.project'
-import { routes } from '@shared/config'
-import { $projects, deletedProject, getProjectsWorkspaceFx, getUserWorkspacesFx } from '@shared/store'
-import { openDeleteModal } from '@widgets/sidebar/ui/projects/model/index'
+import { $projects, getProjectsWorkspaceFx, getUserWorkspacesFx } from '@shared/store'
 
-import { $activeProject, $menuPosition, activeProjected, setMenuPositioned } from '../model'
+import { $activeProject, $menuPosition, setMenuPositioned } from '../model'
 
 import { Dropdown } from './dropdown'
 import { Target } from './target'
