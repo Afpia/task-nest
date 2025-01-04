@@ -2,7 +2,7 @@ import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 
 import { Anchor, Avatar, Box, Button, Container, Divider, Flex, NavLink, Text, Title } from '@mantine/core'
-import { modals } from '@mantine/modals'
+import { modals, openConfirmModal } from '@mantine/modals'
 
 import { $username } from '@shared/auth'
 import { routes } from '@shared/config'

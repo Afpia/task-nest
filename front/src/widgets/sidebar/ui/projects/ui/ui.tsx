@@ -1,4 +1,3 @@
-/* eslint-disable style/operator-linebreak */
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'

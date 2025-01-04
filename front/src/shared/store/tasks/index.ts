@@ -3,7 +3,7 @@ import { createEffect, createEvent, createStore, sample } from 'effector'
 import { startNavigationProgress } from '@mantine/nprogress'
 
 import { deleteTaskProject, getTasksProject, postTaskProject, putTaskStatusProject } from '@shared/api'
-import { notifyError } from '@shared/notifications'
+import { notifyError } from '@shared/helpers/notification'
 import type { PostTaskProjectConfig, TaskRequest, TasksResponse } from '@shared/types'
 
 import { $currentProject } from '../projects'

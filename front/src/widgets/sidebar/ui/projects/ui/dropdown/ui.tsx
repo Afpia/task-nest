@@ -7,7 +7,6 @@ import { ProjectResponse } from '@shared/types'
 
 import { $menuPosition, openDeleteModal } from '../../model'
 
-// eslint-disable-next-line style/member-delimiter-style
 export const Dropdown = ({ item, open }: { item: ProjectResponse; open: () => void }) => {
 	const [deleteProject, menuPosition] = useUnit([deletedProject, $menuPosition])
 

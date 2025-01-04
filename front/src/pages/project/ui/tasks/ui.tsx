@@ -14,7 +14,6 @@ import {
 	Users
 } from 'lucide-react'
 
-
 import {
 	ActionIcon,
 	Avatar,
@@ -89,7 +88,6 @@ export const Tasks = () => {
 		// validate: zodResolver(LoginScheme)
 	})
 
-	// eslint-disable-next-line style/member-delimiter-style
 	const onClickForm = (values: { title?: string; description?: string; end_date: any }) => {
 		// loginError(form)
 		const formattedDate = values.end_date.toISOString().split('T')[0]

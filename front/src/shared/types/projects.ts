@@ -22,7 +22,7 @@ export interface DeleteProjectParams {
 }
 
 export interface GetProjectParams {
-	projectId: number
+	projectId: string
 }
 
 export interface ProjectRequest {

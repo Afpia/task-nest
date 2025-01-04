@@ -10,7 +10,6 @@ export const LayoutHome = ({ children }: Children) => {
 	const { colorScheme } = useMantineColorScheme()
 	const colorSchemeSystem = useColorScheme()
 
-	// eslint-disable-next-line style/operator-linebreak
 	const color =
 		colorScheme === 'dark' || (colorScheme === 'auto' && colorSchemeSystem === 'dark')
 			? ThemeColors.secondDark

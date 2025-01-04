@@ -29,7 +29,6 @@ const theme = createTheme({
 					'&:hover': {
 						textDecoration: 'underline'
 					},
-					// eslint-disable-next-line style/quote-props
 					color: style.colors.pink[2]
 				}
 			})

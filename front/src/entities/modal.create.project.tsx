@@ -5,7 +5,6 @@ import { Button, Flex, Modal, TextInput } from '@mantine/core'
 
 import { createdProject } from '@shared/store'
 
-// eslint-disable-next-line style/member-delimiter-style
 export const ModalCreateProject = ({ opened, close }: { opened: boolean; close: () => void }) => {
 	const [projectName, setProjectName] = useState('Проект')
 	const [createProject] = useUnit([createdProject])

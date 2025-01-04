@@ -3,10 +3,11 @@ import { AxiosError } from 'axios'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 
 import type { UseFormReturnType } from '@mantine/form'
+
 import { allUserReceived } from '@shared/auth'
 import { routes } from '@shared/config'
-import { handleError } from '@shared/handle.error'
-import { notifyError, notifySuccess } from '@shared/notifications'
+import { handleError } from '@shared/helpers/handle.error'
+import { notifyError, notifySuccess } from '@shared/helpers/notification'
 
 import { postUser, postUserAccess } from '../api'
 import type { UserRequest, UserSocialRequest } from '../api/types'

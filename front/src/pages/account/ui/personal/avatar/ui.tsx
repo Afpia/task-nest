@@ -18,7 +18,6 @@ export const AvatarChange = ({
 			about: string
 			pronouns: string
 		},
-		// eslint-disable-next-line style/member-delimiter-style
 		(values: { name: string; surname: string; avatar: string; about: string; pronouns: string }) => {
 			name: string
 			surname: string
