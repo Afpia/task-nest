@@ -1,16 +1,16 @@
-# Запуск проекта
+# Launch of the project
 
 ```bash
 docker compose up -d
 docker compose exec back php artisan migrate --force
 ```
 
-# Работа с artisan/tinker
+# Working with artisan/tinker
 
 ```bash
 docker compose exec back php artisan
 ```
-# Работа с composer
+# Working with composer
 
 ```bash
 docker compose exec back composer install
