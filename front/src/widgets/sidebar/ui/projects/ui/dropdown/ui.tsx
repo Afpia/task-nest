@@ -4,7 +4,7 @@ import { Menu, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
 
 import { deletedProject } from '@shared/store'
-import { ProjectResponse } from '@shared/types'
+import type { ProjectResponse } from '@shared/types'
 
 import { $menuPosition } from '../../model'
 

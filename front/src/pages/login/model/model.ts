@@ -1,6 +1,6 @@
 import { redirect } from 'atomic-router'
 import { AxiosError } from 'axios'
-import { createEffect, createEvent, createStore, sample, type EventCallable } from 'effector'
+import { createEffect, createEvent, createStore, sample } from 'effector'
 
 import type { UseFormReturnType } from '@mantine/form'
 

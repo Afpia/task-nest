@@ -53,24 +53,24 @@ export const AvatarChange = ({
 
 	return (
 		<Dropzone
-			w='100%'
-			multiple={false}
-			maxSize={5 * 1024 ** 2}
+			accept={['image/png', 'image/jpeg']}
+			activateOnClick={false}
 			bg='default'
+			maxSize={5 * 1024 ** 2}
+			mb={20}
+			multiple={false}
 			p={20}
 			style={{ borderRadius: '10px' }}
-			mb={20}
+			w='100%'
 			acceptColor='green'
-			rejectColor='red'
-			openRef={openRef}
-			accept={['image/png', 'image/jpeg']}
 			onDrop={onDrop}
-			activateOnClick={false}
+			openRef={openRef}
+			rejectColor='red'
 		>
-			<Flex w='100%' h='100%' align='center' justify='space-between'>
-				<Flex align='center' justify='start' gap={20}>
-					<Avatar size='85' src={preview[0] || form.getValues().avatar} radius='100%' variant='default' />
-					<Flex direction='column' align='flex-start' h='100%' justify='center' gap={10}>
+			<Flex align='center' h='100%' justify='space-between' w='100%'>
+				<Flex align='center' gap={20} justify='start'>
+					<Avatar radius='100%' size='85' src={preview[0] || form.getValues().avatar} variant='default' />
+					<Flex align='flex-start' gap={10} h='100%' justify='center' direction='column'>
 						<Text>Фотография профиля</Text>
 						<Text>PNG, JPG меньше 5 МБ</Text>
 					</Flex>
@@ -79,7 +79,7 @@ export const AvatarChange = ({
 					<Button radius='md' style={{ pointerEvents: 'all' }} onClick={() => openRef.current?.()}>
 						Выбрать фото
 					</Button>
-					<Button radius='md' style={{ pointerEvents: 'all' }} disabled={file.length === 0} color='red' onClick={clearFile}>
+					<Button disabled={file.length === 0} radius='md' style={{ pointerEvents: 'all' }} color='red' onClick={clearFile}>
 						Удалить
 					</Button>
 				</Group>

@@ -2,65 +2,72 @@ import { useUnit } from 'effector-react'
 
 import { Box, Divider, Flex, Text, Title, useMantineTheme } from '@mantine/core'
 
-import { $projects, $tasks, $tasksUser } from '@shared/store'
+import { Loading } from '@app/assets/svg'
+import { $projects, $tasks, $tasksUser, getProjectsWorkspaceFx } from '@shared/store'
 
 export const TotalStats = () => {
 	const theme = useMantineTheme()
-	const [countProjects, countTasks, countUserTasks] = useUnit([$projects, $tasks, $tasksUser])
+	const [countProjects, countProjectsLoading, countTasks, countUserTasks] = useUnit([
+		$projects,
+		getProjectsWorkspaceFx.pending,
+		$tasks,
+		$tasksUser
+	])
 
 	return (
-		<Box style={{ borderRadius: '16px' }} w='100%' h='120px' bd={`1px solid ${theme.colors.gray[3]}`}>
-			<Flex w='100%' gap={30} p={20} align='center' h='100%'>
-				<Flex w='20%' justify='space-between'>
-					<Flex direction='column' align='start' h='100%' justify='center' gap={10}>
-						<Title order={2} size={18} fw={600} c={theme.colors.gray[6]}>
+		<Box bd={`1px solid ${theme.colors.gray[3]}`} h='120px' style={{ borderRadius: '16px' }} w='100%'>
+			<Flex align='center' gap={30} h='100%' p={20} w='100%'>
+				<Flex justify='space-between' w='20%'>
+					<Flex align='start' gap={10} h='100%' justify='center' direction='column'>
+						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Всего проектов
 						</Title>
-						<Text size='30px' c={countProjects.length === 0 ? `${theme.colors.gray[6]}` : ''}>
-							{countProjects.length}
+						<Text c={countProjects.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
+							{countProjectsLoading && <Loading height={35} width={35} />}
+							{!countProjectsLoading && countProjects.length}
 						</Text>
 					</Flex>
-					<Divider orientation='vertical' variant='dashed' size={2} color={theme.colors.gray[3]} />
+					<Divider size={2} variant='dashed' color={theme.colors.gray[3]} orientation='vertical' />
 				</Flex>
-				<Flex w='20%' justify='space-between'>
-					<Flex direction='column' align='start' h='100%' justify='center' gap={10}>
-						<Title order={2} size={18} fw={600} c={theme.colors.gray[6]}>
+				<Flex justify='space-between' w='20%'>
+					<Flex align='start' gap={10} h='100%' justify='center' direction='column'>
+						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Всего задач
 						</Title>
-						<Text size='30px' c={countTasks.length === 0 ? `${theme.colors.gray[6]}` : ''}>
+						<Text c={countTasks.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
 							{countTasks.length}
 						</Text>
 					</Flex>
-					<Divider orientation='vertical' variant='dashed' size={2} color={theme.colors.gray[3]} />
+					<Divider size={2} variant='dashed' color={theme.colors.gray[3]} orientation='vertical' />
 				</Flex>
-				<Flex w='20%' justify='space-between'>
-					<Flex direction='column' align='start' h='100%' justify='center' gap={10}>
-						<Title order={2} size={18} fw={600} c={theme.colors.gray[6]}>
+				<Flex justify='space-between' w='20%'>
+					<Flex align='start' gap={10} h='100%' justify='center' direction='column'>
+						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Выпол. задачи
 						</Title>
-						<Text size='30px' c={theme.colors.gray[6]}>
+						<Text c={theme.colors.gray[6]} size='30px'>
 							0
 						</Text>
 					</Flex>
-					<Divider orientation='vertical' variant='dashed' size={2} color={theme.colors.gray[3]} />
+					<Divider size={2} variant='dashed' color={theme.colors.gray[3]} orientation='vertical' />
 				</Flex>
-				<Flex w='20%' justify='space-between'>
-					<Flex direction='column' align='start' h='100%' justify='center' gap={10}>
-						<Title order={2} size={18} fw={600} c={theme.colors.gray[6]}>
+				<Flex justify='space-between' w='20%'>
+					<Flex align='start' gap={10} h='100%' justify='center' direction='column'>
+						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Просроч. задачи
 						</Title>
-						<Text size='30px' c={theme.colors.gray[6]}>
+						<Text c={theme.colors.gray[6]} size='30px'>
 							0
 						</Text>
 					</Flex>
-					<Divider orientation='vertical' variant='dashed' size={2} color={theme.colors.gray[3]} />
+					<Divider size={2} variant='dashed' color={theme.colors.gray[3]} orientation='vertical' />
 				</Flex>
-				<Flex w='20%' justify='space-between'>
-					<Flex direction='column' align='start' h='100%' justify='center' gap={10}>
-						<Title order={2} size={18} fw={600} c={theme.colors.gray[6]}>
+				<Flex justify='space-between' w='20%'>
+					<Flex align='start' gap={10} h='100%' justify='center' direction='column'>
+						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Мои задачи
 						</Title>
-						<Text size='30px' c={countUserTasks.length === 0 ? `${theme.colors.gray[6]}` : ''}>
+						<Text c={countUserTasks.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
 							{countUserTasks.length}
 						</Text>
 					</Flex>

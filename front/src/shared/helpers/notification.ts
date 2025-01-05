@@ -1,8 +1,8 @@
 import { notifications } from '@mantine/notifications'
 
 interface NotificationProps {
-	title: string
 	message: string
+	title: string
 }
 
 export const notifySuccess = ({ title, message }: NotificationProps) => {

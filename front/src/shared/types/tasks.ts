@@ -1,32 +1,32 @@
 export type TasksResponse = TaskResponse[]
 
 export interface TaskResponse {
-	id: number
-	title: string
-	description?: string
-	start_date: string
-	end_date?: string
-	status: string
-	project_id: number
-	progress: number
-	who_set: string
-	users: Assignee[]
 	assignee: Assignee[]
+	description?: string
+	end_date?: string
+	id: number
+	progress: number
+	project_id: number
+	start_date: string
+	status: string
+	title: string
+	users: Assignee[]
+	who_set: string
 }
 
 // TODO: Исправить типы
 
 export interface Assignee {
+	avatar_url: string
 	id: number
 	name: string
-	avatar_url: string
 }
 
 export interface TaskRequest {
-	title: string
 	description?: string
-	start_date: string
 	end_date?: string
+	start_date: string
+	title: string
 	// priority: string
 	// status: string
 	// project_id: number

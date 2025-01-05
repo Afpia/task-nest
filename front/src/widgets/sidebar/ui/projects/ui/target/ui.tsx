@@ -4,7 +4,7 @@ import { useUnit } from 'effector-react'
 import { Avatar, Menu, NavLink } from '@mantine/core'
 
 import { routes } from '@shared/config'
-import { ProjectResponse } from '@shared/types'
+import type { ProjectResponse } from '@shared/types'
 
 import { activeProjected, setMenuPositioned } from '../../model'
 
@@ -25,15 +25,15 @@ export const Target = ({ item }: { item: ProjectResponse }) => {
 	return (
 		<Menu.Target>
 			<NavLink
-				component={Link}
-				to={routes.private.project as unknown as string}
-				params={{ projectId: item.id.toString() }}
-				onContextMenu={(event) => handleContextMenu(event, item)}
-				label={item.title}
-				variant='filled'
-				leftSection={<Avatar size={25} radius='sm' src={item.image_url} alt={item.title} />}
-				style={{ borderRadius: '10px' }}
 				active={item.id.toString() === currentPath.projectId && openPath}
+				label={item.title}
+				params={{ projectId: item.id.toString() }}
+				style={{ borderRadius: '10px' }}
+				variant='filled'
+				component={Link}
+				leftSection={<Avatar alt={item.title} radius='sm' size={25} src={item.image_url} />}
+				onContextMenu={(event) => handleContextMenu(event, item)}
+				to={routes.private.project as unknown as string}
 			/>
 		</Menu.Target>
 	)

@@ -1,7 +1,4 @@
-import { createEffect, createStore, sample } from 'effector'
-
-import { getUserProjects } from '@shared/api'
-import { $currentWorkspace, getUserWorkspacesFx } from '@widgets/sidebar/ui/projects/model/index'
+import { createStore } from 'effector'
 
 export const $countProjects = createStore<number>(0)
 

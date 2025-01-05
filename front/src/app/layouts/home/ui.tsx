@@ -18,10 +18,10 @@ export const LayoutHome = ({ children }: Children) => {
 	return (
 		<Flex h='100vh' w='100vw'>
 			<Sidebar />
-			<Flex direction='column' w='calc(100% - 230px)' h='100%' mih='100%'>
+			<Flex h='100%' mih='100%' w='calc(100% - 230px)' direction='column'>
 				<ScrollArea>
 					<Header />
-					<Box p={20} bg={color} style={{ borderRadius: '20px 0px 0px 0px' }} mih='calc(100vh - 90px)' h='100%'>
+					<Box bg={color} h='100%' mih='calc(100vh - 90px)' p={20} style={{ borderRadius: '20px 0px 0px 0px' }}>
 						{children}
 					</Box>
 				</ScrollArea>

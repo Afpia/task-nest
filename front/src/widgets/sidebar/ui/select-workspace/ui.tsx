@@ -9,17 +9,17 @@ export const SelectWorkspace = () => {
 
 	return (
 		<Select
-			value={currentWorkspace.title}
-			onChange={(current) => change(current!)}
-			allowDeselect={false}
 			data={workspaces.map((workspace) => ({ value: workspace.title, label: workspace.title }))}
-			comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
-			leftSection={<Avatar size={20} src={currentWorkspace.image_url} />}
+			value={currentWorkspace.title}
 			styles={{
 				input: {
 					borderRadius: '10px'
 				}
 			}}
+			allowDeselect={false}
+			comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
+			leftSection={<Avatar size={20} src={currentWorkspace.image_url} />}
+			onChange={(current) => change(current!)}
 		/>
 	)
 }

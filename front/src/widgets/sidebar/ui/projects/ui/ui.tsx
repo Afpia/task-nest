@@ -46,24 +46,24 @@ export const Projects = () => {
 
 	return (
 		<Flex
-			direction='column'
-			gap='xs'
-			ref={wrapper}
-			h='100%'
-			wrap='wrap'
 			align='center'
+			gap='xs'
+			h='100%'
 			justify={!projectsLoading && !loadingWorkspaces && projects?.length === 0 ? 'center' : 'flex-start'}
+			ref={wrapper}
+			wrap='wrap'
+			direction='column'
 		>
 			{!projectsLoading &&
 				projects?.length > 0 &&
 				projects?.slice(0, adaptiveCount)?.map((item) => (
 					<Menu
 						key={item.id}
-						opened={menuPosition !== null && activeProject?.id === item.id}
-						shadow='md'
 						trigger='click'
 						width={200}
 						onClose={() => setMenuPosition(null)}
+						opened={menuPosition !== null && activeProject?.id === item.id}
+						shadow='md'
 					>
 						<Target item={item} />
 						<Dropdown item={item} open={open} />
@@ -71,16 +71,16 @@ export const Projects = () => {
 				))}
 
 			{!projectsLoading && !loadingWorkspaces && projects?.length >= adaptiveCount && (
-				<Button w='100%' variant='light'>
+				<Button variant='light' w='100%'>
 					Смотреть все
 				</Button>
 			)}
 
-			{projectsLoading && Array.from({ length: adaptiveCount }, (_, index) => <Skeleton key={index} height={40} radius='10' />)}
+			{projectsLoading && Array.from({ length: adaptiveCount }, (_, index) => <Skeleton height={40} key={index} radius='10' />)}
 
 			{!projectsLoading && !loadingWorkspaces && projects?.length === 0 && <Text>У вас нет проектов</Text>}
 
-			<ModalUpdateProject opened={opened} close={close} item={activeProject} />
+			<ModalUpdateProject item={activeProject} close={close} opened={opened} />
 		</Flex>
 	)
 }

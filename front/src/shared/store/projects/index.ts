@@ -1,4 +1,4 @@
-import { createEffect, createEvent, createStore, is, sample } from 'effector'
+import { createEffect, createEvent, createStore, sample } from 'effector'
 
 import { setNavigationProgress } from '@mantine/nprogress'
 

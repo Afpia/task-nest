@@ -1,14 +1,14 @@
 export type ProjectsResponse = ProjectResponse[]
 
 export interface ProjectResponse {
-	id: number
-	title: string
 	description: string
-	start_date: string
 	end_date?: string
-	status: string
-	remaining_days: number
+	id: number
 	image_url: string
+	remaining_days: number
+	start_date: string
+	status: string
+	title: string
 }
 
 export interface ProjectParams {
@@ -26,9 +26,9 @@ export interface GetProjectParams {
 }
 
 export interface ProjectRequest {
-	title: string
-	start_date: string
 	end_date: string
+	start_date: string
+	title: string
 }
 
 export interface ProjectData {

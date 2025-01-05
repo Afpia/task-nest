@@ -1,8 +1,8 @@
 export interface WorkspaceResponse {
-	id: string
-	title: string
 	description: string
+	id: string
 	image_url: string
+	title: string
 }
 
 export type WorkspacesResponse = WorkspaceResponse[]

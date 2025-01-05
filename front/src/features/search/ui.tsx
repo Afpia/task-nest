@@ -29,28 +29,28 @@ const actions = [
 export const SidebarSearch = () => (
 	<>
 		<Button
-			fullWidth
-			variant='outline'
-			leftSection={<Search />}
-			justify='left'
 			className={styles.search__input}
+			justify='left'
 			radius='md'
-			onClick={spotlight.open}
+			variant='outline'
 			w={280}
+			fullWidth
+			leftSection={<Search />}
+			onClick={spotlight.open}
 			rightSection={
-				<Kbd h='25px' w='60px' size='xs'>
+				<Kbd h='25px' size='xs' w='60px'>
 					Ctrl + K
 				</Kbd>
 			}
 		>
-			<Text w={156} className={styles.search}>
+			<Text className={styles.search} w={156}>
 				Поиск
 			</Text>
 		</Button>
 		<Spotlight
+			highlightQuery
 			actions={actions}
 			nothingFound='Ничего не найдено...'
-			highlightQuery
 			searchProps={{
 				leftSection: <Search />,
 				placeholder: 'Поиск...'
