@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Link } from 'atomic-router-react'
 
 import { Anchor, Box, Button, Flex, Text, TextInput, Title } from '@mantine/core'
@@ -6,7 +5,7 @@ import { Anchor, Box, Button, Flex, Text, TextInput, Title } from '@mantine/core
 import { routes } from '@shared/config'
 
 export const ForgotPassword = () => {
-	const [loading, setLoading] = useState(false)
+	// const [loading, setLoading] = useState(false)
 
 	return (
 		<Flex justify='flex-start' w='100%'>
@@ -21,9 +20,9 @@ export const ForgotPassword = () => {
 					В целях безопасности мы НЕ сохраняем ваш пароль, поэтому вы можете быть уверены, что пароль не будет отправлен по
 					электронной почте.
 				</Text>
-				<TextInput disabled={loading} label='Почта' mb={14} radius='md' size='lg' />
+				<TextInput label='Почта' mb={14} radius='md' size='lg' />
 				<Flex align='center' gap={20} mt={20}>
-					<Button fz={14} h={50} radius='xl' size='lg' type='submit' variant='filled' w={220} color='pink' loading={loading}>
+					<Button fz={14} h={50} radius='xl' size='lg' type='submit' variant='filled' w={220} color='pink'>
 						Отправить инструкции
 					</Button>
 					<Anchor component={Link} to={routes.auth.login}>

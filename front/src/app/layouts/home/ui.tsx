@@ -1,19 +1,14 @@
-import { Box, Flex, ScrollArea, useMantineColorScheme } from '@mantine/core'
-import { useColorScheme } from '@mantine/hooks'
+import { Box, Flex, ScrollArea } from '@mantine/core'
 
 import { ThemeColors } from '@shared/config'
+import { isDarkMode } from '@shared/helpers'
 import type { Children } from '@shared/types'
 import { Header } from '@widgets/header'
 import { Sidebar } from '@widgets/sidebar'
 
 export const LayoutHome = ({ children }: Children) => {
-	const { colorScheme } = useMantineColorScheme()
-	const colorSchemeSystem = useColorScheme()
-
-	const color =
-		colorScheme === 'dark' || (colorScheme === 'auto' && colorSchemeSystem === 'dark')
-			? ThemeColors.secondDark
-			: ThemeColors.secondLight
+	const { isDark } = isDarkMode()
+	const color = isDark ? ThemeColors.secondDark : ThemeColors.secondLight
 
 	return (
 		<Flex h='100vh' w='100vw'>

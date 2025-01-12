@@ -7,6 +7,7 @@ interface NotificationProps {
 
 export const notifySuccess = ({ title, message }: NotificationProps) => {
 	notifications.show({
+		withBorder: true,
 		color: 'green',
 		title,
 		message
@@ -15,6 +16,7 @@ export const notifySuccess = ({ title, message }: NotificationProps) => {
 
 export const notifyError = ({ title, message }: NotificationProps) => {
 	notifications.show({
+		withBorder: true,
 		color: 'red',
 		title,
 		message

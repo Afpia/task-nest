@@ -71,8 +71,8 @@ export const Header = () => {
 						<Menu.Item component={Link} leftSection={<Settings />} to={routes.private.account}>
 							Настройки
 						</Menu.Item>
-						<Menu.Divider />
-						<Menu.Item variant='outline' leftSection={<LogOut />} onClick={onExit}>
+						<Divider my={4} variant='dashed' />
+						<Menu.Item c='red' variant='outline' leftSection={<LogOut />} onClick={onExit}>
 							Выйти
 						</Menu.Item>
 					</Menu.Dropdown>

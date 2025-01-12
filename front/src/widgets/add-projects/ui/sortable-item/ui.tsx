@@ -4,6 +4,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { ActionIcon, Avatar, Button, Flex, Text } from '@mantine/core'
 
+import { ThemeColors } from '@shared/config'
 import type { ProjectResponse } from '@shared/types'
 
 export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & { open?: () => void }) => {
@@ -17,12 +18,31 @@ export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & {
 
 	const style = {
 		transform: CSS.Transform.toString(transform),
-		transition
+		transition,
+		'--button-hover': 'none'
 	}
 
 	if (isDragging) {
 		return (
-			<Button mih={70} p={10} radius='md' ref={setNodeRef} style={style} type='button' variant='default' w='100%' opacity='60%' />
+			<Button
+				justify='left'
+				mih={70}
+				radius='md'
+				ref={setNodeRef}
+				style={style}
+				type='button'
+				variant='default'
+				w='100%'
+				leftSection={<Avatar radius={10} size={40} src={image_url} />}
+				opacity='60%'
+			>
+				<Flex align='start' justify='center' direction='column'>
+					<Text fw={600}>{title}</Text>
+					<Text c='gray' fz={12}>
+						Задач нет
+					</Text>
+				</Flex>
+			</Button>
 		)
 	}
 
@@ -38,17 +58,8 @@ export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & {
 				variant='default'
 				w='100%'
 				leftSection={
-					<ActionIcon
-						radius='xl'
-						size='xl'
-						variant='light'
-						style={{
-							border: '1px dashed #cccccc',
-							backgroundColor: '#f7f7f7'
-						}}
-						component='div'
-					>
-						<Plus size={18} color='#cccccc' />
+					<ActionIcon radius='xl' size='xl' variant='light' component='div'>
+						<Plus size={18} />
 					</ActionIcon>
 				}
 				onClick={open}

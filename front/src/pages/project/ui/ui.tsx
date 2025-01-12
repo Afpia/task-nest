@@ -18,9 +18,9 @@ export const Project = () => (
 				<Tasks />
 			</Tabs.Panel>
 
-			<Tabs.Panel value='members'></Tabs.Panel>
+			<Tabs.Panel value='members'>hello1</Tabs.Panel>
 
-			<Tabs.Panel value='discussions'></Tabs.Panel>
+			<Tabs.Panel value='discussions'>hello2</Tabs.Panel>
 		</Tabs>
 	</>
 )

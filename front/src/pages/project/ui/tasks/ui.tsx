@@ -75,11 +75,16 @@ export const Tasks = () => {
 		// validate: zodResolver(LoginScheme)
 	})
 
-	const onClickForm = (values: { title?: string; description?: string; end_date: any }) => {
+	const onClickForm = (values: { title: string; description?: string; end_date: any }) => {
 		// loginError(form)
 		const formattedDate = values.end_date.toISOString().split('T')[0]
 
-		createTask({ title: values.title, description: values.description, end_date: formattedDate })
+		createTask({
+			title: values.title,
+			description: values.description,
+			end_date: formattedDate,
+			start_date: ''
+		})
 	}
 
 	return (
