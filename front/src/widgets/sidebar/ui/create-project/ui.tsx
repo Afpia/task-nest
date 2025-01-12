@@ -3,7 +3,7 @@ import { CirclePlus } from 'lucide-react'
 import { Flex, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
-import { ModalCreateProject } from '@entities/create-modal'
+import { ModalCreateProject } from '@entities/create-project-modal'
 
 export const CreateProject = () => {
 	const [opened, { open, close }] = useDisclosure(false)

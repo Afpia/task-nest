@@ -7,7 +7,7 @@ import { arrayMove, rectSortingStrategy, SortableContext, sortableKeyboardCoordi
 import { ActionIcon, Box, Divider, Flex, Grid, ScrollArea, Skeleton, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
-import { ModalCreateProject } from '@entities/create-modal'
+import { ModalCreateProject } from '@entities/create-project-modal'
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
 import { getProjectsWorkspaceFx } from '@shared/store'
