@@ -36,7 +36,9 @@ export const deletedProject = createEvent<{ id: number }>()
 
 sample({
 	clock: privateProjectRouteParams,
-	fn: (clk) => clk.projectId,
+	source: $currentProject,
+	filter: ({ project }, { projectId }) => project?.id !== Number(projectId),
+	fn: (_, clk) => clk.projectId,
 	target: getCurrentProjectFx
 })
 

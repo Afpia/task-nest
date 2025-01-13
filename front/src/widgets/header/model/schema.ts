@@ -16,7 +16,7 @@ export const headerSchema = {
 	},
 	[path.PROFILE]: { title: 'Профиль', subtitle: 'Просмотр своего публичного профиля' },
 	[path.ANALYTICS]: { title: 'Аналитика', subtitle: '' },
-	[path.PROJECT]: {
+	[path.PROJECT.replace(/\/:projectId$/, '')]: {
 		title: 'Подробности проекта',
 		subtitle: 'Управляйте проектом и задачами здесь'
 	}

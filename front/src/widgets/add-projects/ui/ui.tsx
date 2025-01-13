@@ -56,7 +56,7 @@ export const AddProjects = () => {
 			style={{ borderRadius: '20px', overflow: 'hidden', position: 'relative' }}
 			w='50%'
 		>
-			<Flex h={36} justify='space-between' pr={15}>
+			<Flex h={36} justify='space-between'>
 				<Title fw={600} size={20} order={2}>
 					Проекты
 				</Title>
@@ -72,11 +72,11 @@ export const AddProjects = () => {
 					onDragStart={(event) => changeActive(event.active.id)}
 					sensors={sensors}
 				>
-					<Grid h='100%' styles={{ inner: { maxWidth: '100%' } }}>
+					<Grid h='100%' styles={{ inner: { maxWidth: '100%', margin: '0 auto' } }}>
 						{projects && (
 							<SortableContext items={projects} strategy={rectSortingStrategy}>
 								{projects.map((item) => (
-									<Grid.Col key={item.id} span={4}>
+									<Grid.Col key={item.id} p={5} span={4}>
 										<SortableItem {...item} open={open} />
 									</Grid.Col>
 								))}
@@ -91,7 +91,7 @@ export const AddProjects = () => {
 						)}
 						{loading &&
 							Array.from({ length: 8 }).map((_, index) => (
-								<Grid.Col key={index} span={4}>
+								<Grid.Col key={index} p={5} span={4}>
 									<Skeleton mih={70} radius='md' w='100%' />
 								</Grid.Col>
 							))}
