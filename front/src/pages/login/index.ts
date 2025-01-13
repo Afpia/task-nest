@@ -9,9 +9,3 @@ export const LoginRoute = {
 	route: privateAuth(routes.auth.login),
 	layout: LayoutLogin
 }
-
-// chainRoute({
-// 	route: privateMain(routes.auth.login),
-// 	// beforeOpen: privateAuth
-// 	opened: privateAuth
-// })

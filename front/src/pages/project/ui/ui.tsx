@@ -1,12 +1,12 @@
 import { Tabs } from '@mantine/core'
 
-import { TotalStats } from '@widgets/total'
+import { TotalTaskStats } from '@widgets/total-task'
 
 import { Tasks } from './tasks'
 
 export const Project = () => (
 	<>
-		<TotalStats />
+		<TotalTaskStats />
 		<Tabs defaultValue='tasks' mt={30}>
 			<Tabs.List mb={20}>
 				<Tabs.Tab value='tasks'>Задачи</Tabs.Tab>

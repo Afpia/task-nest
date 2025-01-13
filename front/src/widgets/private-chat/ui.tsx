@@ -9,14 +9,12 @@ import StarterKit from '@tiptap/starter-kit'
 
 import { isDarkMode } from '@shared/helpers'
 
-// const content = '<p>Subtle rich text editor variant</p>'
-
 export const PrivateChat = () => {
 	const editor = useEditor({
 		extensions: [StarterKit, Underline, Highlight],
 
 		content: `
-        <p>The Text extension is required, at least if you want to have text in your text editor and that’s very likely.</p>
+        <p>Напиши здесь что-нибудь...</p>
       `
 	})
 
@@ -51,7 +49,7 @@ export const PrivateChat = () => {
 						<RichTextEditor.Code />
 					</RichTextEditor.ControlsGroup>
 				</RichTextEditor.Toolbar>
-				<ScrollArea mah='165px' type='always' scrollbars='y'>
+				<ScrollArea mah='165px' type='never' scrollbars='y'>
 					<RichTextEditor.Content mih='165px' />
 				</ScrollArea>
 			</RichTextEditor>

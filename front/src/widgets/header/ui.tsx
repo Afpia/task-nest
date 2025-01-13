@@ -6,26 +6,27 @@ import { Avatar, Divider, Flex, Menu, Skeleton, Text, Title } from '@mantine/cor
 
 import { SidebarSearch } from '@features/search'
 import { $username, allUserExpired } from '@shared/auth'
-import { routes } from '@shared/config'
+import { router, routes } from '@shared/config'
 import { $avatar, getUserAvatarFx } from '@shared/store'
 
 import { headerSchema } from './model'
 
-import styles from './ui.module.css'
-
 export const Header = () => {
 	const [avatar, username, onExit, avatarLoading] = useUnit([$avatar, $username, allUserExpired, getUserAvatarFx.pending])
-	const pathname = window.location.pathname
+	const [currentPath] = useUnit([router.$path])
+
+	const normalizedPath = currentPath.replace(/\/\d+$/, '')
 
 	return (
 		<Flex
 			align='center'
-			className={styles.header}
 			h={80}
 			justify='space-between'
 			mt={10}
 			px={20}
 			py={10}
+			// className={styles.header}
+			// style={{ borderRadius: '10px 10px 0 0' }}
 			// pos='sticky'
 			// bg={'#fff'}
 			// style={{ zIndex: 100 }}
@@ -34,15 +35,15 @@ export const Header = () => {
 		>
 			<Flex direction='column'>
 				<Title size={28} order={1}>
-					{headerSchema?.[pathname]?.title}
+					{headerSchema?.[normalizedPath]?.title}
 				</Title>
-				<Text>{headerSchema?.[pathname]?.subtitle}</Text>
+				<Text>{headerSchema?.[normalizedPath]?.subtitle}</Text>
 			</Flex>
 			<Flex align='center' gap={20}>
 				<SidebarSearch />
 				<Divider my='xs' size='xs' orientation='vertical' />
 				<UserRoundPlus />
-				<Link className={styles.linkSetting} to={routes.private.account}>
+				<Link style={{ color: 'inherit', height: '24px' }} to={routes.private.account}>
 					<Settings />
 				</Link>
 				<Divider my='xs' size='xs' orientation='vertical' />
@@ -56,7 +57,7 @@ export const Header = () => {
 					// offset={16}
 				>
 					<Menu.Target>
-						<Link className={styles.link} to={routes.private.profile}>
+						<Link to={routes.private.profile}>
 							{!avatarLoading && <Avatar radius='xl' size='46' src={avatar} variant='default' />}
 							{avatarLoading && <Skeleton height={46} radius='xl' width={46} />}
 						</Link>
