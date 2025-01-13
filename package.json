@@ -35,12 +35,5 @@
 			"path": "@commitlint/cz-commitlint"
 		}
 	},
-	"packageManager": "pnpm@9.10.0",
-	"dependencies": {
-		"@mantine/tiptap": "^7.15.3",
-		"@tiptap/extension-highlight": "^2.11.2",
-		"@tiptap/extension-underline": "^2.11.2",
-		"@tiptap/react": "^2.11.2",
-		"@tiptap/starter-kit": "^2.11.2"
-	}
+	"packageManager": "pnpm@9.10.0"
 }
