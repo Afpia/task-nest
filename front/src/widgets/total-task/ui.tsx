@@ -4,6 +4,8 @@ import { Box, Divider, Flex, Skeleton, Text, Title, useMantineTheme } from '@man
 
 import { Loading } from '@app/assets/svg'
 import { Loading2 } from '@app/assets/svg/loading-2'
+import { ThemeColors } from '@shared/config'
+import { isDarkMode } from '@shared/helpers'
 import {
 	$projects,
 	$tasks,
@@ -16,6 +18,7 @@ import {
 
 export const TotalTaskStats = () => {
 	const theme = useMantineTheme()
+	const { isDark } = isDarkMode()
 	const [countTasks, tasksProjectLoading, currentProjectLoading] = useUnit([
 		$tasks,
 		getTasksProjectFx.pending,
@@ -23,7 +26,12 @@ export const TotalTaskStats = () => {
 	])
 
 	return (
-		<Box bd={`1px solid ${theme.colors.gray[3]}`} h='120px' style={{ borderRadius: '16px' }} w='100%'>
+		<Box
+			bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
+			h='120px'
+			style={{ borderRadius: '16px' }}
+			w='100%'
+		>
 			<Flex align='center' gap={30} h='100%' p={20} w='100%'>
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
@@ -37,7 +45,12 @@ export const TotalTaskStats = () => {
 							</Text>
 						)}
 					</Flex>
-					<Divider size={2} variant='dashed' color={theme.colors.gray[3]} orientation='vertical' />
+					<Divider
+						size={2}
+						variant='dashed'
+						color={isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}
+						orientation='vertical'
+					/>
 				</Flex>
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
@@ -48,7 +61,12 @@ export const TotalTaskStats = () => {
 							0
 						</Text>
 					</Flex>
-					<Divider size={2} variant='dashed' color={theme.colors.gray[3]} orientation='vertical' />
+					<Divider
+						size={2}
+						variant='dashed'
+						color={isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}
+						orientation='vertical'
+					/>
 				</Flex>
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
@@ -59,7 +77,12 @@ export const TotalTaskStats = () => {
 							0
 						</Text>
 					</Flex>
-					<Divider size={2} variant='dashed' color={theme.colors.gray[3]} orientation='vertical' />
+					<Divider
+						size={2}
+						variant='dashed'
+						color={isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}
+						orientation='vertical'
+					/>
 				</Flex>
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
@@ -70,7 +93,12 @@ export const TotalTaskStats = () => {
 							0
 						</Text>
 					</Flex>
-					<Divider size={2} variant='dashed' color={theme.colors.gray[3]} orientation='vertical' />
+					<Divider
+						size={2}
+						variant='dashed'
+						color={isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}
+						orientation='vertical'
+					/>
 				</Flex>
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>

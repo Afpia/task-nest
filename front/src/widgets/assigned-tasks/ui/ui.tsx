@@ -38,7 +38,13 @@ export const AssignedTasks = () => {
 	}
 
 	return (
-		<Box bd='1px solid #D9D9D9' h='350px' p={20} style={{ borderRadius: '20px' }} w='50%'>
+		<Box
+			bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
+			h='350px'
+			p={20}
+			style={{ borderRadius: '20px' }}
+			w='50%'
+		>
 			<Flex h={36} justify='space-between'>
 				<Title fw={600} size={20} order={2}>
 					Назначенные задачи

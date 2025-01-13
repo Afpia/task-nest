@@ -4,10 +4,13 @@ import { Box, Divider, Flex, Skeleton, Text, Title, useMantineTheme } from '@man
 
 import { Loading } from '@app/assets/svg'
 import { Loading2 } from '@app/assets/svg/loading-2'
+import { ThemeColors } from '@shared/config'
+import { isDarkMode } from '@shared/helpers'
 import { $projects, getProjectsWorkspaceFx, getUserWorkspacesFx } from '@shared/store'
 
 export const TotalStats = () => {
 	const theme = useMantineTheme()
+	const { isDark } = isDarkMode()
 	const [countProjects, countProjectsLoading, userWorkspacesLoading] = useUnit([
 		$projects,
 		getProjectsWorkspaceFx.pending,
@@ -15,19 +18,31 @@ export const TotalStats = () => {
 	])
 
 	return (
-		<Box bd={`1px solid ${theme.colors.gray[3]}`} h='120px' style={{ borderRadius: '16px' }} w='100%'>
+		<Box
+			bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
+			h='120px'
+			style={{ borderRadius: '16px' }}
+			w='100%'
+		>
 			<Flex align='center' gap={30} h='100%' p={20} w='100%'>
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Всего проектов
 						</Title>
-						<Text c={countProjects.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
-							{(countProjectsLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
-							{!(countProjectsLoading || userWorkspacesLoading) && countProjects.length}
-						</Text>
+						{(countProjectsLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
+						{!(countProjectsLoading || userWorkspacesLoading) && (
+							<Text c={countProjects.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
+								{countProjects.length}
+							</Text>
+						)}
 					</Flex>
-					<Divider size={2} variant='dashed' color={theme.colors.gray[3]} orientation='vertical' />
+					<Divider
+						size={2}
+						variant='dashed'
+						color={isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}
+						orientation='vertical'
+					/>
 				</Flex>
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
@@ -38,7 +53,12 @@ export const TotalStats = () => {
 							0
 						</Text>
 					</Flex>
-					<Divider size={2} variant='dashed' color={theme.colors.gray[3]} orientation='vertical' />
+					<Divider
+						size={2}
+						variant='dashed'
+						color={isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}
+						orientation='vertical'
+					/>
 				</Flex>
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
@@ -49,7 +69,12 @@ export const TotalStats = () => {
 							0
 						</Text>
 					</Flex>
-					<Divider size={2} variant='dashed' color={theme.colors.gray[3]} orientation='vertical' />
+					<Divider
+						size={2}
+						variant='dashed'
+						color={isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}
+						orientation='vertical'
+					/>
 				</Flex>
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
@@ -60,7 +85,12 @@ export const TotalStats = () => {
 							0
 						</Text>
 					</Flex>
-					<Divider size={2} variant='dashed' color={theme.colors.gray[3]} orientation='vertical' />
+					<Divider
+						size={2}
+						variant='dashed'
+						color={isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}
+						orientation='vertical'
+					/>
 				</Flex>
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
