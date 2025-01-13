@@ -83,7 +83,7 @@ export const mappedRoutes = [
 const privateRoutes = Object.values(routes.private)
 export const privateRouteOpened = merge(privateRoutes.map((route) => route.opened))
 
-export const privateRouteParams = merge<{ projectId: string } | object>(privateRoutes.map((route) => route.$params))
+export const privateProjectRouteParams = routes.private.project.$params
 
 export const controls = createRouterControls()
 

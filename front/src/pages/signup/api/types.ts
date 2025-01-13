@@ -1,6 +1,6 @@
 export interface UserRequest {
-	name: string
 	email: string
+	name: string
 	password: string
 }
 

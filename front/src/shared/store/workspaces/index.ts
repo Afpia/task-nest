@@ -1,4 +1,3 @@
-import { chainRoute } from 'atomic-router'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 

@@ -1,5 +1,6 @@
 export * from './github'
 export * from './google'
 export * from './loading'
+export * from './loading-2'
 export * from './logo'
 export * from './yandex'

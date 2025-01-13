@@ -10,6 +10,7 @@ docker compose exec back php artisan migrate --force
 ```bash
 docker compose exec back php artisan
 ```
+
 # Working with composer
 
 ```bash

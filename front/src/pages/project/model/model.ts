@@ -1,7 +1,4 @@
-import { chainRoute } from 'atomic-router'
 import { createEffect } from 'effector'
-
-import { routes } from '@shared/config'
 
 import { getUserProject } from '../api'
 

@@ -1,19 +1,5 @@
 import { useUnit } from 'effector-react'
-import {
-	ArrowDown,
-	CalendarFold,
-	ChevronDown,
-	FolderPen,
-	List,
-	Maximize2,
-	Minimize2,
-	Plus,
-	ScreenShare,
-	Scroll,
-	Settings2,
-	Users
-} from 'lucide-react'
-
+import { CalendarFold, ChevronDown, FolderPen, Maximize2, Minimize2, Plus, Scroll, Settings2, Users } from 'lucide-react'
 
 import {
 	ActionIcon,
@@ -50,7 +36,7 @@ export const Tasks = () => {
 	const { isDark } = isDarkMode()
 
 	const rows = tasks.map((element) => (
-		<Table.Tr key={element.id} h={50}>
+		<Table.Tr h={50} key={element.id}>
 			<Table.Td>
 				<Checkbox aria-label='Select row' />
 			</Table.Td>
@@ -70,12 +56,12 @@ export const Tasks = () => {
 				<Badge color={element.status === 'Завершена' ? 'lime' : 'blue'}>{element.status}</Badge>
 			</Table.Td>
 			<Table.Td>
-				<Flex justify='space-between' gap={20}>
+				<Flex gap={20} justify='space-between'>
 					<Flex align='center' gap={60}>
 						<Text fw='bold'>0%</Text>
 						<Progress value={0} w={100} />
 					</Flex>
-					<ActionIcon h='100%' w='30px' variant='default' aria-label='Settings'>
+					<ActionIcon aria-label='Settings' h='100%' variant='default' w='30px'>
 						<ChevronDown style={{ width: '70%', height: '70%' }} />
 					</ActionIcon>
 				</Flex>
@@ -89,39 +75,43 @@ export const Tasks = () => {
 		// validate: zodResolver(LoginScheme)
 	})
 
-	// eslint-disable-next-line style/member-delimiter-style
-	const onClickForm = (values: { title?: string; description?: string; end_date: any }) => {
+	const onClickForm = (values: { title: string; description?: string; end_date: any }) => {
 		// loginError(form)
 		const formattedDate = values.end_date.toISOString().split('T')[0]
 
-		createTask({ title: values.title, description: values.description, end_date: formattedDate })
+		createTask({
+			title: values.title,
+			description: values.description,
+			end_date: formattedDate,
+			start_date: ''
+		})
 	}
 
 	return (
 		<>
-			<Box p={20} style={{ borderRadius: '20px' }} w='100%' h='100%' mih='500px' bd='1px solid #D9D9D9'>
-				<Flex justify='space-between' align='center'>
-					<Group justify='center' gap={8}>
-						<Button variant='filled' radius='md' size='xs'>
+			<Box bd='1px solid #D9D9D9' h='100%' mih='500px' p={20} style={{ borderRadius: '20px' }} w='100%'>
+				<Flex align='center' justify='space-between'>
+					<Group gap={8} justify='center'>
+						<Button radius='md' size='xs' variant='filled'>
 							Таблица
 						</Button>
 
-						<Button variant='default' radius='md' size='xs'>
+						<Button radius='md' size='xs' variant='default'>
 							Канбан доска
 						</Button>
 					</Group>
 					<Flex gap={10}>
-						<Button leftSection={<Plus />} variant='filled' radius='md' size='xs' onClick={open}>
+						<Button radius='md' size='xs' variant='filled' leftSection={<Plus />} onClick={open}>
 							Добавить
 						</Button>
-						<ActionIcon h='100%' w='30px' variant='default' aria-label='Settings'>
+						<ActionIcon aria-label='Settings' h='100%' variant='default' w='30px'>
 							<Settings2 style={{ width: '70%', height: '70%' }} />
 						</ActionIcon>
 					</Flex>
 				</Flex>
 				<Divider my='lg' variant='dashed' />
 				<Box bd='1px solid #D9D9D9' style={{ borderRadius: '10px', overflow: 'hidden' }}>
-					<Table highlightOnHover stickyHeader>
+					<Table stickyHeader highlightOnHover>
 						<Table.Thead bg={isDark ? ThemeColors.dark : ThemeColors.light}>
 							<Table.Tr h={40}>
 								<Table.Th w={20}>
@@ -139,25 +129,25 @@ export const Tasks = () => {
 				</Box>
 			</Box>
 			<Drawer
-				opened={opened}
-				position='right'
+				radius='20px 0 0 20px'
 				size='lg'
 				onClose={close}
+				opened={opened}
 				overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+				position='right'
 				withCloseButton={false}
-				radius='20px 0 0 20px'
 			>
 				<Flex mb={10}>
-					<Flex gap={10} align='center'>
-						{fullscreen ? <Minimize2 onClick={toggle} cursor='pointer' /> : <Maximize2 onClick={toggle} cursor='pointer' />}
-						<Divider orientation='vertical' variant='dashed' />
+					<Flex align='center' gap={10}>
+						{fullscreen ? <Minimize2 cursor='pointer' onClick={toggle} /> : <Maximize2 cursor='pointer' onClick={toggle} />}
+						<Divider variant='dashed' orientation='vertical' />
 					</Flex>
 					<Drawer.CloseButton />
 				</Flex>
-				<Divider variant='dashed' mb={20} />
+				<Divider mb={20} variant='dashed' />
 				<Title mb={20}>Создание задачи</Title>
 				<form onSubmit={form.onSubmit((values) => onClickForm(values))}>
-					<Flex direction='column' gap={20} mb={20}>
+					<Flex gap={20} mb={20} direction='column'>
 						<Flex>
 							<Flex align='center' gap={8} w={160}>
 								<FolderPen />
@@ -182,10 +172,10 @@ export const Tasks = () => {
 								<Users />
 								<Text fz={14}>Назначенные</Text>
 							</Flex>
-							<MultiSelect placeholder='Назначенные' data={[user]} />
+							<MultiSelect data={[user]} placeholder='Назначенные' />
 						</Flex>
 						<Flex direction='column'>
-							<Flex align='center' mb={10} gap={8} w={160}>
+							<Flex align='center' gap={8} mb={10} w={160}>
 								<Scroll />
 								<Text fz={14}>Описание</Text>
 							</Flex>

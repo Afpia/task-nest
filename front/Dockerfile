@@ -12,5 +12,4 @@ COPY src src
 EXPOSE 5173
 
 FROM client-base AS client-dev
-# CMD ["pnpm", "install"]
 CMD ["pnpm", "dev", "--host"]

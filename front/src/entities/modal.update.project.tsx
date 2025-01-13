@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useUnit } from 'effector-react'
 
 import { Button, Flex, Modal, TextInput } from '@mantine/core'
 
-import { createdProject, updatedProject } from '@shared/store'
-import { ProjectResponse } from '@shared/types'
+import { updatedProject } from '@shared/store'
+import type { ProjectResponse } from '@shared/types'
 
 export const ModalUpdateProject = ({
 	opened,
@@ -28,13 +28,13 @@ export const ModalUpdateProject = ({
 	}, [item])
 
 	return (
-		<Modal centered opened={opened} onClose={close} title='Вы уверены что хотите изменить название проекту?'>
+		<Modal title='Вы уверены что хотите изменить название проекту?' centered onClose={close} opened={opened}>
 			<TextInput
 				label='Новое название проекта'
-				value={projectName}
-				onChange={(event) => setProjectName(event.target.value)}
-				data-autofocus
 				mb={20}
+				value={projectName}
+				data-autofocus
+				onChange={(event) => setProjectName(event.target.value)}
 			/>
 			<Flex align='center' gap='20' justify='flex-end'>
 				<Button variant='light' onClick={close}>

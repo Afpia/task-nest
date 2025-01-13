@@ -6,7 +6,7 @@ import { Notifications } from '@mantine/notifications'
 import { NavigationProgress } from '@mantine/nprogress'
 
 import { Pages } from '@pages/index'
-import { myColors, router } from '@shared/config'
+import { myColors, router, ThemeColors } from '@shared/config'
 
 import '@mantine/notifications/styles.css'
 import '@mantine/spotlight/styles.css'
@@ -18,7 +18,8 @@ import '@assets/styles/global.css'
 
 const theme = createTheme({
 	colors: {
-		pink: myColors
+		pink: myColors,
+		dark: ['#f5f3f6', '#e6e5e6', '#cbc8cd', '#afa9b5', '#423d47', '#2c2631', '#1c1b22', '#2c2631', '#63596e', '#574b62']
 	},
 	primaryColor: 'pink',
 	defaultGradient: { from: 'pink', to: 'blue' },
@@ -29,7 +30,6 @@ const theme = createTheme({
 					'&:hover': {
 						textDecoration: 'underline'
 					},
-					// eslint-disable-next-line style/quote-props
 					color: style.colors.pink[2]
 				}
 			})

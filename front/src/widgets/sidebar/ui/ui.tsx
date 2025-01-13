@@ -11,52 +11,52 @@ import { SelectWorkspace } from './select-workspace'
 import { SwitchTheme } from './switch-theme'
 
 export const Sidebar = () => (
-	<Flex direction='column' w='230px' h='100vh' p={10} justify='space-between'>
+	<Flex h='100vh' justify='space-between' p={10} w='230px' direction='column'>
 		<Flex direction='column'>
-			<Title ff='Pacifico' order={1} size={34} style={{ textAlign: 'center' }}>
-				<Link to={routes.private.home} style={{ textDecoration: 'none', color: 'inherit' }}>
+			<Title ff='Pacifico' size={34} style={{ textAlign: 'center' }} order={1}>
+				<Link style={{ textDecoration: 'none', color: 'inherit' }} to={routes.private.home}>
 					TaskNest
 				</Link>
 			</Title>
 			<Divider my='sm' variant='dashed' />
 			<SelectWorkspace />
 			<Divider my='sm' variant='dashed' />
-			<Flex direction='column' gap='xs'>
+			<Flex gap='xs' direction='column'>
 				<NavLink
-					component={Link}
-					to={routes.private.home}
-					label='Главная'
-					variant='filled'
-					leftSection={<House />}
-					style={{ borderRadius: '10px' }}
 					active={routes.private.home.$isOpened.getState()}
+					label='Главная'
+					style={{ borderRadius: '10px' }}
+					variant='filled'
+					component={Link}
+					leftSection={<House />}
+					to={routes.private.home}
 				/>
 				<NavLink
-					component={Link}
-					to={routes.private.notices}
-					label='Уведомления'
-					variant='filled'
-					leftSection={<Bell />}
-					style={{ borderRadius: '10px' }}
 					active={routes.private.notices.$isOpened.getState()}
+					label='Уведомления'
+					style={{ borderRadius: '10px' }}
+					variant='filled'
+					component={Link}
+					leftSection={<Bell />}
+					to={routes.private.notices}
 				/>
 				<NavLink
-					component={Link}
-					to={routes.private.tasks}
-					label='Мои задачи'
-					variant='filled'
-					leftSection={<CircleCheck />}
-					style={{ borderRadius: '10px' }}
 					active={routes.private.tasks.$isOpened.getState()}
+					label='Мои задачи'
+					style={{ borderRadius: '10px' }}
+					variant='filled'
+					component={Link}
+					leftSection={<CircleCheck />}
+					to={routes.private.tasks}
 				/>
 				<NavLink
-					component={Link}
-					to={routes.private.analytics}
-					label='Аналитика'
-					variant='filled'
-					leftSection={<ChartNoAxesCombined />}
-					style={{ borderRadius: '10px' }}
 					active={routes.private.analytics.$isOpened.getState()}
+					label='Аналитика'
+					style={{ borderRadius: '10px' }}
+					variant='filled'
+					component={Link}
+					leftSection={<ChartNoAxesCombined />}
+					to={routes.private.analytics}
 				/>
 			</Flex>
 			<Divider my='sm' variant='dashed' />

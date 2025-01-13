@@ -1,11 +1,11 @@
 export interface ProjectResponse {
-	id: string
-	title: string
 	description: string
-	start_date: string
 	end_date?: string
-	status: string
+	id: string
 	image_url: string
+	start_date: string
+	status: string
+	title: string
 }
 
 export interface ProjectParams {

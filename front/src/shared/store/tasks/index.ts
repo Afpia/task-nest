@@ -3,9 +3,8 @@ import { createEffect, createEvent, createStore, sample } from 'effector'
 import { startNavigationProgress } from '@mantine/nprogress'
 
 import { deleteTaskProject, getTasksProject, postTaskProject, putTaskStatusProject } from '@shared/api'
-import { notifyError } from '@shared/notifications'
+import { notifyError } from '@shared/helpers/notification'
 import type { PostTaskProjectConfig, TaskRequest, TasksResponse } from '@shared/types'
-
 
 import { $currentProject } from '../projects'
 
@@ -20,7 +19,6 @@ export const postTaskProjectFx = createEffect(({ params, data }: PostTaskProject
 export const putTaskStatusProjectFx = createEffect((taskId: string) => putTaskStatusProject({ params: { taskId } }))
 
 export const deleteTaskProjectFx = createEffect((taskId: string) => deleteTaskProject({ params: { taskId } }))
-
 
 export const createdTask = createEvent<TaskRequest>()
 
@@ -54,14 +52,10 @@ sample({
 sample({
 	clock: createdTask,
 	source: $currentProject,
-	fn: (src, clk) => {
-		startNavigationProgress()
-
-		return {
-			params: { projectId: src.project.id },
-			data: { ...clk, project_id: src.project.id, user_id: 1, priority: 'Средний', start_date: '2024-12-21' }
-		}
-	},
+	fn: (src, clk) => ({
+		params: { projectId: src.project.id },
+		data: { ...clk, project_id: src.project.id, user_id: 1, priority: 'Средний', start_date: '2024-12-21' }
+	}),
 	target: postTaskProjectFx
 })
 

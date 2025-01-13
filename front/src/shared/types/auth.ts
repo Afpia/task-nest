@@ -4,10 +4,10 @@ export interface UserResponse {
 }
 
 export interface UserFieldResponse {
-	id: number
-	name: string
-	email: string
 	avatar_url: string
 	created_at: string
+	email: string
+	id: number
+	name: string
 	updated_at: string
 }

@@ -1,18 +1,18 @@
 export const Yandex = ({ width = 48, height = 48 }) => (
-	<svg viewBox='0,0,256,256' width={width} height={height} fillRule='nonzero'>
+	<svg fillRule='nonzero' height={height} width={width} viewBox='0,0,256,256'>
 		<g
 			fill='#ff0000'
 			fillRule='nonzero'
+			fontFamily='none'
+			fontSize='none'
+			fontWeight='none'
 			stroke='none'
-			strokeWidth='1'
+			strokeDasharray=''
+			strokeDashoffset='0'
 			strokeLinecap='butt'
 			strokeLinejoin='miter'
 			strokeMiterlimit='10'
-			strokeDasharray=''
-			strokeDashoffset='0'
-			fontFamily='none'
-			fontWeight='none'
-			fontSize='none'
+			strokeWidth='1'
 			textAnchor='none'
 		>
 			<g transform='scale(5.33333,5.33333)'>

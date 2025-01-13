@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+
+import { Button, type ButtonVariant } from '@mantine/core'
 
 import { Github, Google, Yandex } from '@app/assets/svg'
-import { Button, type ButtonVariant } from '@mantine/core'
 import { redirects } from '@shared/config'
 
 interface LoginButtonProps {
-	type: 'github' | 'yandex' | 'google'
-	variant: ButtonVariant
 	loadingProp?: boolean
+	type: 'github' | 'google' | 'yandex'
+	variant: ButtonVariant
 }
 
 export const LoginButton = ({ type, variant, loadingProp }: LoginButtonProps) => {
@@ -31,16 +32,16 @@ export const LoginButton = ({ type, variant, loadingProp }: LoginButtonProps) =>
 
 	const getIcon = () => {
 		if (type === 'github') {
-			return <Github width={30} height={30} />
+			return <Github height={30} width={30} />
 		} else if (type === 'yandex') {
-			return <Yandex width={30} height={30} />
+			return <Yandex height={30} width={30} />
 		} else {
-			return <Google width={30} height={30} />
+			return <Google height={30} width={30} />
 		}
 	}
 
 	return (
-		<Button w={120} variant={variant} size='lg' radius='lg' onClick={callback} h={50} loading={loading[type] || loadingProp}>
+		<Button h={50} radius='lg' size='lg' variant={variant} w={120} loading={loading[type] || loadingProp} onClick={callback}>
 			{getIcon()}
 		</Button>
 	)
