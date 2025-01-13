@@ -24,13 +24,12 @@ import { DateInput } from '@mantine/dates'
 import { useForm } from '@mantine/form'
 import { useDisclosure, useFullscreen } from '@mantine/hooks'
 
-import { $username } from '@shared/auth'
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
 import { $tasks, createdTask } from '@shared/store'
 
 export const Tasks = () => {
-	const [tasks, user, createTask] = useUnit([$tasks, $username, createdTask])
+	const [tasks, createTask] = useUnit([$tasks, createdTask])
 	const [opened, { open, close }] = useDisclosure(false)
 	const { toggle, fullscreen } = useFullscreen()
 	const { isDark } = isDarkMode()
@@ -89,7 +88,14 @@ export const Tasks = () => {
 
 	return (
 		<>
-			<Box bd='1px solid #D9D9D9' h='100%' mih='500px' p={20} style={{ borderRadius: '20px' }} w='100%'>
+			<Box
+				bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
+				h='100%'
+				mih='500px'
+				p={20}
+				style={{ borderRadius: '20px' }}
+				w='100%'
+			>
 				<Flex align='center' justify='space-between'>
 					<Group gap={8} justify='center'>
 						<Button radius='md' size='xs' variant='filled'>
@@ -110,7 +116,10 @@ export const Tasks = () => {
 					</Flex>
 				</Flex>
 				<Divider my='lg' variant='dashed' />
-				<Box bd='1px solid #D9D9D9' style={{ borderRadius: '10px', overflow: 'hidden' }}>
+				<Box
+					bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
+					style={{ borderRadius: '10px', overflow: 'hidden' }}
+				>
 					<Table stickyHeader highlightOnHover>
 						<Table.Thead bg={isDark ? ThemeColors.dark : ThemeColors.light}>
 							<Table.Tr h={40}>
@@ -172,7 +181,7 @@ export const Tasks = () => {
 								<Users />
 								<Text fz={14}>Назначенные</Text>
 							</Flex>
-							<MultiSelect data={[user]} placeholder='Назначенные' />
+							<MultiSelect placeholder='Назначенные' />
 						</Flex>
 						<Flex direction='column'>
 							<Flex align='center' gap={8} mb={10} w={160}>

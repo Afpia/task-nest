@@ -13,11 +13,26 @@ export const myColors: MantineColorsTuple = [
 	'#a00063'
 ]
 
+export const Dark: MantineColorsTuple = [
+	'#f5f3f6',
+	'#e6e5e6',
+	'#cbc8cd',
+	'#afa9b5',
+	'#423d47',
+	'#2c2631',
+	'#1c1b22',
+	'#2c2631',
+	'#63596e',
+	'#574b62'
+]
+
 export const ThemeColors = {
 	dark: '#1c1b22',
 	light: '#fff',
 	secondDark: '#17141a',
 	secondLight: '#f6f6f6',
+	accentLightBorder: '#D9D9D9',
+	accentDarkBorder: '#423d47',
 	thirdDark: 'rgba(255, 255, 255, 0)',
 	thirdLight: 'rgba(255, 255, 255, 0)'
 }

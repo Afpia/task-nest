@@ -7,9 +7,12 @@ import Highlight from '@tiptap/extension-highlight'
 import Underline from '@tiptap/extension-underline'
 import StarterKit from '@tiptap/starter-kit'
 
+import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
 
 export const PrivateChat = () => {
+	const { isDark } = isDarkMode()
+
 	const editor = useEditor({
 		extensions: [StarterKit, Underline, Highlight],
 
@@ -19,7 +22,14 @@ export const PrivateChat = () => {
 	})
 
 	return (
-		<Box bd='1px solid #D9D9D9' h='300px' mih='100%' p={20} style={{ borderRadius: '20px' }} w='50%'>
+		<Box
+			bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
+			h='300px'
+			mih='100%'
+			p={20}
+			style={{ borderRadius: '20px' }}
+			w='50%'
+		>
 			<Flex justify='space-between'>
 				<Title fw={600} size={20} order={2}>
 					Личный блокнот

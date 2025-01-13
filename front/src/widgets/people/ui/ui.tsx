@@ -10,7 +10,7 @@ export const People = () => {
 
 	return (
 		<Box
-			bd='1px solid #D9D9D9'
+			bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
 			bg={isDark ? ThemeColors.dark : ThemeColors.light}
 			h='300px'
 			mih='100%'
