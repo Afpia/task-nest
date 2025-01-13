@@ -53,9 +53,12 @@ export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & {
 				key={id}
 				mih={70}
 				radius='md'
+				ref={setNodeRef}
+				style={style}
 				title={title}
 				type='button'
 				variant='default'
+				{...attributes}
 				w='100%'
 				leftSection={
 					<ActionIcon radius='xl' size='xl' variant='light' component='div'>
