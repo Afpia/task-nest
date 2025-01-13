@@ -2,6 +2,7 @@
 
 ```bash
 docker compose up -d
+docker compose exec back php artisan migrate --force
 ```
 
 # Работа с artisan/tinker
@@ -9,6 +10,7 @@ docker compose up -d
 ```bash
 docker compose exec back php artisan
 ```
+
 # Работа с composer
 
 ```bash
