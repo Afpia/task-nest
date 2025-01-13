@@ -2,7 +2,8 @@ import { useRef, useState } from 'react'
 import { useUnit } from 'effector-react'
 
 import { Avatar, Button, Flex, Group, Modal, MultiSelect, Select, Text, TextInput } from '@mantine/core'
-import { Dropzone, FileWithPath } from '@mantine/dropzone'
+import type { FileWithPath } from '@mantine/dropzone'
+import { Dropzone } from '@mantine/dropzone'
 
 import { createdProject } from '@shared/store'
 
