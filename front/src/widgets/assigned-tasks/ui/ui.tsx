@@ -47,7 +47,7 @@ export const AssignedTasks = () => {
 		>
 			<Flex h={36} justify='space-between'>
 				<Title fw={600} size={20} order={2}>
-					Назначенные задачи
+					Задачи в работе
 				</Title>
 				<Flex gap={10}>
 					<Select data={['По дате возрастания', 'По дате убывания']} defaultValue='По дате возрастания' allowDeselect={false} />

@@ -55,7 +55,7 @@ export const TotalTaskStats = () => {
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
-							Назнач. задачи
+							Приост. задачи
 						</Title>
 						<Text c={theme.colors.gray[6]} size='30px'>
 							0
@@ -71,7 +71,7 @@ export const TotalTaskStats = () => {
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
-							Невып. задачи
+							Задачи в работе
 						</Title>
 						<Text c={theme.colors.gray[6]} size='30px'>
 							0

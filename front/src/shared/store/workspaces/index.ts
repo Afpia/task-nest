@@ -1,9 +1,10 @@
+import { redirect } from 'atomic-router'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 
 import { getUserWorkspaces } from '@shared/api'
 import { allUserExpired } from '@shared/auth'
-import { privateRouteOpened } from '@shared/config'
+import { privateRouteOpened, routes } from '@shared/config'
 import type { WorkspaceResponse, WorkspacesResponse } from '@shared/types'
 
 export const $currentWorkspace = createStore<WorkspaceResponse>({} as WorkspaceResponse).reset(allUserExpired)
@@ -12,13 +13,6 @@ export const $workspaces = createStore<WorkspacesResponse>([] as WorkspacesRespo
 export const getUserWorkspacesFx = createEffect(getUserWorkspaces)
 
 export const changedWorkspace = createEvent<string>()
-
-// chainRoute({
-// 	route: [privateRouteOpened],
-// 	beforeOpen: {
-// 		effect: getUserWorkspacesFx
-// 	}
-// })
 
 sample({
 	clock: [privateRouteOpened],
@@ -61,4 +55,8 @@ sample({
 	target: $currentWorkspace
 })
 
-$workspaces.watch(console.log)
+redirect({
+	clock: $currentWorkspace,
+	replace: true,
+	route: routes.private.home
+})

@@ -1,4 +1,4 @@
-import { Tabs } from '@mantine/core'
+import { ScrollArea, Tabs } from '@mantine/core'
 
 import { TotalTaskStats } from '@widgets/total-task'
 
