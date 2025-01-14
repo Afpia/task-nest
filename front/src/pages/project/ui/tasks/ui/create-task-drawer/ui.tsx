@@ -21,12 +21,15 @@ import { DateInput } from '@mantine/dates'
 import { useForm } from '@mantine/form'
 import { useFullscreen } from '@mantine/hooks'
 
+import { isDarkMode } from '@shared/helpers'
 import { createdTask } from '@shared/store'
 
 export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened: boolean }) => {
 	const [createTask] = useUnit([createdTask])
 	const { toggle, fullscreen } = useFullscreen()
+
 	const theme = useMantineTheme()
+	const isDark = isDarkMode()
 
 	const form = useForm({
 		mode: 'controlled',
@@ -123,7 +126,14 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 								Тэги
 							</Text>
 						</Flex>
-						<TagsInput maxTags={3} variant='unstyled' w='calc(100% - 160px)' clearable placeholder='Введите максимум 3 тэга' />
+						<TagsInput
+							maxTags={3}
+							// styles={{ pill: { background: theme.colors.dark[5] } }}
+							variant='unstyled'
+							w='calc(100% - 160px)'
+							clearable
+							placeholder='Введите максимум 3 тэга'
+						/>
 					</Flex>
 					<Tabs defaultValue='description'>
 						<Tabs.List>
@@ -141,9 +151,9 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 							/>
 						</Tabs.Panel>
 
-						<Tabs.Panel value='comments'>Messages tab content</Tabs.Panel>
+						<Tabs.Panel value='comments'>hello1</Tabs.Panel>
 
-						<Tabs.Panel value='settings'>Settings tab content</Tabs.Panel>
+						<Tabs.Panel value='settings'>hello2</Tabs.Panel>
 					</Tabs>
 					<Flex>
 						<Flex align='center' gap={8} w={160}>
@@ -151,7 +161,12 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 								Вложения
 							</Text>
 						</Flex>
-						<FileInput placeholder='Загрузить файлы' />
+						<FileInput
+							accept='application/pdf,application/application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/zip,application/x-rar-compressed,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+							clearable
+							multiple
+							placeholder='Загрузить файлы'
+						/>
 					</Flex>
 				</Flex>
 				<Button right={20} type='submit' bottom={20} pos='absolute'>
