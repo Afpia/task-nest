@@ -1,11 +1,13 @@
+import { useRef, useState } from 'react'
 import { useUnit } from 'effector-react'
-import { CalendarFold, FolderPen, Maximize2, Minimize2, Scroll, Users } from 'lucide-react'
+import { CalendarFold, FolderPen, Maximize2, Minimize2, Plus, Scroll, Users } from 'lucide-react'
 
 import {
 	Box,
 	Button,
 	Divider,
 	Drawer,
+	FileButton,
 	FileInput,
 	Flex,
 	Input,
@@ -21,15 +23,24 @@ import { DateInput } from '@mantine/dates'
 import { useForm } from '@mantine/form'
 import { useFullscreen } from '@mantine/hooks'
 
-import { isDarkMode } from '@shared/helpers'
+import { Word } from '@app/assets/svg'
 import { createdTask } from '@shared/store'
+
+const mimeToReadableType = {
+	'application/pdf': 'PDF',
+	'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Word',
+	'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'Excel',
+	'application/zip': 'ZIP',
+	'application/x-rar-compressed': 'RAR'
+}
 
 export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened: boolean }) => {
 	const [createTask] = useUnit([createdTask])
 	const { toggle, fullscreen } = useFullscreen()
+	const resetRef = useRef<() => void>(null)
+	const [file, setFile] = useState<File[]>([])
 
 	const theme = useMantineTheme()
-	const isDark = isDarkMode()
 
 	const form = useForm({
 		mode: 'controlled',
@@ -37,9 +48,9 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 	})
 
 	// TODO: Добавить валидацию
-
+	console.log(file)
 	const onClickForm = (values: { title: string; description?: string; end_date: any }) => {
-		const formattedDate = values.end_date.toISOString().split('T')[0]
+		const formattedDate = values.end_date?.toISOString().split('T')[0]
 		close()
 		createTask({
 			title: values.title,
@@ -48,6 +59,11 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 			start_date: ''
 		})
 		form.reset()
+	}
+
+	const clearFile = () => {
+		setFile([])
+		resetRef.current?.()
 	}
 
 	return (
@@ -126,14 +142,51 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 								Тэги
 							</Text>
 						</Flex>
-						<TagsInput
-							maxTags={3}
-							// styles={{ pill: { background: theme.colors.dark[5] } }}
-							variant='unstyled'
-							w='calc(100% - 160px)'
-							clearable
-							placeholder='Введите максимум 3 тэга'
-						/>
+						<TagsInput maxTags={3} variant='unstyled' w='calc(100% - 160px)' clearable placeholder='Введите максимум 3 тэга' />
+					</Flex>
+					<Flex gap={10} direction='column'>
+						<Flex align='center' gap={8} w={160}>
+							<Text c={theme.colors.gray[6]} fz={16}>
+								Вложения
+							</Text>
+						</Flex>
+						<Flex gap={10}>
+							{file.map((item) => (
+								<Button
+									h={55}
+									key={item.name}
+									variant='default'
+									leftSection={
+										item.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' && (
+											<Word height={30} width={30} />
+										)
+									}
+								>
+									<Flex align='flex-start' direction='column'>
+										<Text>{item.name}</Text>
+										<Text c={theme.colors.gray[6]} fz={14}>
+											{/*  eslint-disable-next-line style/jsx-one-expression-per-line */}
+											{mimeToReadableType[item.type as keyof typeof mimeToReadableType]}{' '}
+											{item.size < 1024 * 1024 && `${(item.size / 1024).toFixed(2)} КБ`}
+										</Text>
+									</Flex>
+								</Button>
+							))}
+							<FileButton
+								accept='application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/zip,application/x-rar-compressed,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+								multiple
+								onChange={setFile}
+							>
+								{(props) => (
+									<Button h={55} variant='gradient' w={55} {...props}>
+										<Plus height={20} width={20} />
+									</Button>
+								)}
+							</FileButton>
+						</Flex>
+						{/* <Button disabled={file.length === 0} w={200} color='red' onClick={clearFile}>
+							Удалить все файлы
+						</Button> */}
 					</Flex>
 					<Tabs defaultValue='description'>
 						<Tabs.List>
@@ -146,7 +199,7 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 							<Textarea
 								{...form.getInputProps('description')}
 								resize='vertical'
-								styles={{ input: { minHeight: '200px', maxHeight: '400px' } }}
+								styles={{ input: { minHeight: '200px', maxHeight: '300px' } }}
 								placeholder='Описание задачи'
 							/>
 						</Tabs.Panel>
@@ -155,19 +208,6 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 
 						<Tabs.Panel value='settings'>hello2</Tabs.Panel>
 					</Tabs>
-					<Flex>
-						<Flex align='center' gap={8} w={160}>
-							<Text c={theme.colors.gray[6]} fz={16}>
-								Вложения
-							</Text>
-						</Flex>
-						<FileInput
-							accept='application/pdf,application/application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/zip,application/x-rar-compressed,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-							clearable
-							multiple
-							placeholder='Загрузить файлы'
-						/>
-					</Flex>
 				</Flex>
 				<Button right={20} type='submit' bottom={20} pos='absolute'>
 					Создать задачу
