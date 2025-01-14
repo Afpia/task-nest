@@ -20,14 +20,14 @@ export const Dark: MantineColorsTuple = [
 	'#afa9b5',
 	'#423d47',
 	'#2c2631',
+	'#17161b',
 	'#1c1b22',
-	'#2c2631',
-	'#63596e',
-	'#574b62'
+	'#151324',
+	'#0d0c13'
 ]
 
 export const ThemeColors = {
-	dark: '#1c1b22',
+	dark: '#17161b',
 	light: '#fff',
 	secondDark: '#17141a',
 	secondLight: '#f6f6f6',

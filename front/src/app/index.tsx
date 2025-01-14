@@ -23,19 +23,7 @@ const theme = createTheme({
 		dark: Dark
 	},
 	primaryColor: 'pink',
-	defaultGradient: { from: 'pink', to: 'blue' },
-	components: {
-		Anchor: {
-			styles: (style: MantineTheme) => ({
-				root: {
-					'&:hover': {
-						textDecoration: 'underline'
-					},
-					color: style.colors.pink[2]
-				}
-			})
-		}
-	}
+	defaultGradient: { from: 'pink', to: 'blue' }
 })
 
 export const App = () => (
