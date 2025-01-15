@@ -1,7 +1,7 @@
 import { useUnit } from 'effector-react'
 import { UserRoundPlus } from 'lucide-react'
 
-import { Avatar, Button, Flex, ScrollArea, Skeleton, Tabs, Title } from '@mantine/core'
+import { Avatar, Button, Flex, Skeleton, Tabs, Title } from '@mantine/core'
 
 import { $currentProject, getCurrentProjectFx } from '@shared/store'
 import { TotalTaskStats } from '@widgets/total-task'

@@ -26,7 +26,7 @@ import { useFullscreen } from '@mantine/hooks'
 import { isDarkMode } from '@shared/helpers'
 import { createdTask } from '@shared/store'
 
-import { CreateTaskSchema, iconMap, MAX_FILES, mimeToReadableType } from '../../model'
+import { ACCEPT, CreateTaskSchema, formatFileSize, iconMap, MAX_FILES, mimeToReadableType } from '../../model'
 
 export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened: boolean }) => {
 	const [createTask] = useUnit([createdTask])
@@ -183,14 +183,13 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 										<Text>{item.name}</Text>
 										<Text c={theme.colors.gray[6]} fz={14}>
 											{/*  eslint-disable-next-line style/jsx-one-expression-per-line */}
-											{mimeToReadableType[item.type as keyof typeof mimeToReadableType]}{' '}
-											{item.size < 1024 * 1024 && `${(item.size / 1024).toFixed(2)} КБ`}
+											{mimeToReadableType[item.type as keyof typeof mimeToReadableType]} {formatFileSize(item.size)}
 										</Text>
 									</Flex>
 								</Button>
 							))}
 							<FileButton
-								accept='application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/zip,application/x-rar-compressed,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+								accept={ACCEPT}
 								multiple
 								onChange={(selectedFiles) => {
 									if (selectedFiles.length > MAX_FILES) return

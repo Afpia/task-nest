@@ -17,3 +17,17 @@ export const iconMap = {
 	'application/x-rar-compressed': <File height={30} width={30} />,
 	'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': <Excel height={30} width={30} />
 }
+
+export function formatFileSize(size: number) {
+	if (size < 1024) {
+		return `${size} B`
+	} else if (size < 1024 * 1024) {
+		return `${(size / 1024).toFixed(2)} KB`
+	} else if (size < 1024 * 1024 * 1024) {
+		return `${(size / (1024 * 1024)).toFixed(2)} MB`
+	} else {
+		return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`
+	}
+}
+export const ACCEPT =
+	'application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/zip,application/x-rar-compressed,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
