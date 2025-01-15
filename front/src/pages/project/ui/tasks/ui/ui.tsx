@@ -88,7 +88,7 @@ export const Tasks = () => {
 					bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
 					style={{ borderRadius: '10px', overflow: 'hidden' }}
 				>
-					<Table.ScrollContainer mah={500} mih={90} minWidth={0} type='native'>
+					<Table.ScrollContainer mah={440} mih={90} minWidth={0} type='native'>
 						<Table stickyHeader highlightOnHover>
 							<Table.Thead bg={isDark ? ThemeColors.dark : ThemeColors.light}>
 								<Table.Tr h={40}>
