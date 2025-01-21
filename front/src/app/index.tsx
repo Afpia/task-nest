@@ -6,64 +6,31 @@ import { Notifications } from '@mantine/notifications'
 import { NavigationProgress } from '@mantine/nprogress'
 
 import { Pages } from '@pages/index'
-import { myColors, router } from '@shared/config'
+import { Dark, myColors, router } from '@shared/config'
 
 import '@mantine/notifications/styles.css'
 import '@mantine/spotlight/styles.css'
 import '@mantine/dropzone/styles.css'
 import '@mantine/core/styles.css'
 import '@mantine/nprogress/styles.css'
+import '@mantine/dates/styles.css'
+import '@mantine/tiptap/styles.css'
 import '@assets/styles/global.css'
 
 const theme = createTheme({
 	colors: {
-		pink: myColors
+		pink: myColors,
+		dark: Dark
 	},
 	primaryColor: 'pink',
-	defaultGradient: { from: 'pink', to: 'blue' },
-	components: {
-		Anchor: {
-			styles: (style: MantineTheme) => ({
-				root: {
-					'&:hover': {
-						textDecoration: 'underline'
-					},
-					// eslint-disable-next-line style/quote-props
-					color: style.colors.pink[2]
-				}
-			})
-		}
-	}
-	// components: {
-	// 	Input: Input.extend({
-	// 		styles: (style) => ({
-	// 			input: {
-	// 				borderColor: style.colors.pink[3]
-	// 			}
-	// 		})
-	// 	}),
-	// 	NavLink: NavLink.extend({
-	// 		styles: (style, { active }) => ({
-	// 			root: {
-	// 				// eslint-disable-next-line style/quote-props
-	// 				backgroundColor: active ? style.colors.pink[5] : undefined,
-	// 				'&:hover': {
-	// 					backgroundColor: style.colors.gray[2]
-	// 				}
-	// 			}
-	// 		})
-	// 	})
-	// }
+	defaultGradient: { from: 'pink', to: 'blue' }
 })
-
-// started()
 
 export const App = () => (
 	<MantineProvider theme={theme} defaultColorScheme='auto'>
 		<ModalsProvider>
 			{/* <AuthProvider> */}
 			<Notifications />
-			{/* <Router /> */}
 			<RouterProvider router={router}>
 				<Pages />
 			</RouterProvider>

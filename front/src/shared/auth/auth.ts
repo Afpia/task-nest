@@ -3,7 +3,7 @@ import { createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 
 import { routes } from '@shared/config'
-import { notifySuccess } from '@shared/notifications'
+import { notifySuccess } from '@shared/helpers/notification'
 import type { UserResponse } from '@shared/types'
 
 export const allUserReceived = createEvent<UserResponse>()

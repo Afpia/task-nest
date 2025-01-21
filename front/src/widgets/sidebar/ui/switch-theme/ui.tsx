@@ -17,7 +17,7 @@ export const SwitchTheme = () => {
 				{isDark ? <Moon /> : <Sun />}
 				{isDark ? 'Темная тема' : 'Светлая тема'}
 			</Flex>
-			<Switch color='pink' onClick={toggleColorScheme} checked={isDark} size='md' />
+			<Switch checked={isDark} size='md' color='pink' onClick={toggleColorScheme} />
 		</Flex>
 	)
 }

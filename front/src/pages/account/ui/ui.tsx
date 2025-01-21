@@ -41,19 +41,19 @@ export const Account = () => {
 		<AccountLayout>
 			<form onSubmit={form.onSubmit((values) => onClickForm(values))}>
 				<Flex w='100%' direction='column'>
-					<Title mb={10} order={3} size={14} fw={600}>
+					<Title fw={600} mb={10} size={14} order={3}>
 						Контактный адрес электронной почты
 					</Title>
-					<Text size='14px' mb={14}>
+					<Text mb={14} size='14px'>
 						Управление адресом электронной почты учетной записи для восстановления
 					</Text>
 				</Flex>
 				<Flex w='100%'>
-					<TextInput radius='md' w='48%' label='Почта' leftSection={<Mail />} {...form.getInputProps('email')} />
+					<TextInput label='Почта' radius='md' w='48%' leftSection={<Mail />} {...form.getInputProps('email')} />
 				</Flex>
-				<Divider w='100%' mb={20} mt={20} />
-				<Flex w='100%' justify='flex-end'>
-					<Button type='submit' radius='lg' bg='rgb(64, 192, 87)'>
+				<Divider mb={20} mt={20} w='100%' />
+				<Flex justify='flex-end' w='100%'>
+					<Button bg='rgb(64, 192, 87)' radius='lg' type='submit'>
 						Сохранить
 					</Button>
 				</Flex>

@@ -3,17 +3,19 @@ import { Flex } from '@mantine/core'
 import { AddProjects } from '@widgets/add-projects'
 import { AssignedTasks } from '@widgets/assigned-tasks'
 import { People } from '@widgets/people'
+import { PrivateChat } from '@widgets/private-chat'
 import { TotalStats } from '@widgets/total'
 
 export const Home = () => (
-	<Flex direction='column' gap={20}>
+	<Flex gap={20} direction='column'>
 		<TotalStats />
-		<Flex justify='space-between' gap={20}>
+		<Flex gap={20} justify='space-between'>
 			<AssignedTasks />
 			<AddProjects />
 		</Flex>
-		<Flex justify='space-between' gap={20}>
+		<Flex gap={20} justify='space-between'>
 			<People />
+			<PrivateChat />
 		</Flex>
 	</Flex>
 )

@@ -12,11 +12,11 @@ export const LayoutLogin = ({ children }: Children) => {
 
 	return (
 		<Flex>
-			<video className={styles.video} playsInline src={video} autoPlay loop muted />
-			<Text fs='italic' pos='absolute' fz='30' top='30px' left='30px'>
+			<video className={styles.video} src={video} muted playsInline autoPlay loop />
+			<Text fs='italic' fz='30' left='30px' pos='absolute' top='30px'>
 				<Logo color={colorScheme === 'dark' ? '#fff' : '#000'} />
 			</Text>
-			<Flex gap='xs' h='100vh' w='78vw' justify='center' align='center' direction='column'>
+			<Flex align='center' gap='xs' h='100vh' justify='center' w='78vw' direction='column'>
 				{children}
 			</Flex>
 		</Flex>

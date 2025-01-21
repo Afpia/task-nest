@@ -3,14 +3,12 @@ import { z } from 'zod'
 export const ProfileScheme = z.object({
 	name: z
 		.string()
-		// eslint-disable-next-line regexp/no-obscure-range
-		.regex(/^[а-я]+$/i, { message: 'Строка должна содержать только кириллицу' })
+		// .regex(/^[\u0430-\u044F]+$/i, { message: 'Строка должна содержать только кириллицу' })
 		.min(1, { message: 'Это поле обязательно' })
 		.trim(),
 	surname: z
 		.string()
-		// eslint-disable-next-line regexp/no-obscure-range
-		.regex(/^[а-я]+$/i, { message: 'Строка должна содержать только кириллицу' })
+		// .regex(/^[\u0430-\u044F]+$/i, { message: 'Строка должна содержать только кириллицу' })
 		.min(1, { message: 'Это поле обязательно' })
 		.trim(),
 	// password: z

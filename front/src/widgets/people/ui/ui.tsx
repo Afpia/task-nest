@@ -1,6 +1,6 @@
 import { Plus, Settings2 } from 'lucide-react'
 
-import { ActionIcon, Box, Divider, Flex, Select, Title, useMantineTheme } from '@mantine/core'
+import { ActionIcon, Box, Divider, Flex, Select, Title } from '@mantine/core'
 
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
@@ -10,16 +10,16 @@ export const People = () => {
 
 	return (
 		<Box
-			p={20}
+			bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
 			bg={isDark ? ThemeColors.dark : ThemeColors.light}
-			style={{ borderRadius: '20px' }}
-			w='50%'
 			h='300px'
 			mih='100%'
-			bd='1px solid #D9D9D9'
+			p={20}
+			style={{ borderRadius: '20px' }}
+			w='50%'
 		>
 			<Flex justify='space-between'>
-				<Title order={2} size={20} fw={600}>
+				<Title fw={600} size={20} order={2}>
 					Люди (0)
 				</Title>
 				<Flex gap={10}>
@@ -28,10 +28,10 @@ export const People = () => {
 						defaultValue='По должности'
 						allowDeselect={false}
 					/>
-					<ActionIcon h='100%' w='35px' variant='default' aria-label='Settings'>
+					<ActionIcon aria-label='Settings' h='100%' variant='default' w='35px'>
 						<Settings2 style={{ width: '70%', height: '70%' }} />
 					</ActionIcon>
-					<ActionIcon h='100%' w='35px' variant='filled' aria-label='Plus'>
+					<ActionIcon aria-label='Plus' h='100%' variant='filled' w='35px'>
 						<Plus style={{ width: '70%', height: '70%' }} />
 					</ActionIcon>
 				</Flex>

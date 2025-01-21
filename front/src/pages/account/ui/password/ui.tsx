@@ -6,8 +6,8 @@ import { useForm } from '@mantine/form'
 import { AccountLayout } from '@app/layouts'
 
 interface Form {
-	password: string
 	newPassword: string
+	password: string
 }
 
 export const Password = () => {
@@ -29,20 +29,20 @@ export const Password = () => {
 		<AccountLayout>
 			<form onSubmit={form.onSubmit((values) => onClickForm(values))}>
 				<Flex w='100%' direction='column'>
-					<Title mb={10} order={3} size={14} fw={600}>
+					<Title fw={600} mb={10} size={14} order={3}>
 						Пароль
 					</Title>
-					<Text size='14px' mb={14}>
+					<Text mb={14} size='14px'>
 						Изменение текущего пароля
 					</Text>
 				</Flex>
-				<Flex w='100%' align='start' justify='start' gap={20}>
+				<Flex align='start' gap={20} justify='start' w='100%'>
 					<PasswordInput label='Текущий пароль' radius='md' w='48%' {...form.getInputProps('password')} leftSection={<Lock />} />
 					<PasswordInput label='Новый пароль' radius='md' w='48%' {...form.getInputProps('newPassword')} leftSection={<Lock />} />
 				</Flex>
-				<Divider w='100%' mb={20} mt={20} />
-				<Flex w='100%' justify='flex-end'>
-					<Button type='submit' radius='lg' bg='rgb(64, 192, 87)'>
+				<Divider mb={20} mt={20} w='100%' />
+				<Flex justify='flex-end' w='100%'>
+					<Button bg='rgb(64, 192, 87)' radius='lg' type='submit'>
 						Сохранить
 					</Button>
 				</Flex>

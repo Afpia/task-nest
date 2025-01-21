@@ -1,10 +1,8 @@
 import { createEffect, createEvent, createStore, sample } from 'effector'
 
-import { incrementNavigationProgress, setNavigationProgress, startNavigationProgress } from '@mantine/nprogress'
-
 import { deleteProject, getCurrentProject, getProjectsWorkspace, postProjectWorkspace, putProject } from '@shared/api'
-import { privateRouteParams } from '@shared/config'
-import { notifyError, notifySuccess } from '@shared/notifications'
+import { privateProjectRouteParams } from '@shared/config'
+import { notifyError, notifySuccess } from '@shared/helpers/notification'
 import type {
 	DeleteProjectConfig,
 	PostProjectWorkspaceConfig,
@@ -20,7 +18,7 @@ export const $currentProject = createStore<{ project: ProjectResponse }>({} as {
 
 export const getProjectsWorkspaceFx = createEffect((workspaceId: string) => getProjectsWorkspace({ params: { workspaceId } }))
 
-export const getCurrentProjectFx = createEffect((projectId: number) => getCurrentProject({ params: { projectId } }))
+export const getCurrentProjectFx = createEffect((projectId: string) => getCurrentProject({ params: { projectId } }))
 
 export const postProjectWorkspaceFx = createEffect(({ params, data }: PostProjectWorkspaceConfig) =>
 	postProjectWorkspace({ params, data })
@@ -31,19 +29,16 @@ export const putProjectFx = createEffect(({ params, data }: PutProjectConfig) =>
 export const deleteProjectFx = createEffect(({ params }: DeleteProjectConfig) => deleteProject({ params }))
 
 export const createdProject = createEvent<string>()
-// eslint-disable-next-line style/member-delimiter-style
 export const updatedProject = createEvent<{ id: number; title: string }>()
 export const deletedProject = createEvent<{ id: number }>()
 
 // Получение текущего проекта
-// TODO: исправить типы
+
 sample({
-	clock: privateRouteParams,
+	clock: privateProjectRouteParams,
 	source: $currentProject,
-	filter(_, clk) {
-		return clk?.projectId
-	},
-	fn: (_, clock: { projectId: string }) => clock.projectId,
+	filter: ({ project }, { projectId }) => project?.id !== Number(projectId),
+	fn: (_, clk) => clk.projectId,
 	target: getCurrentProjectFx
 })
 
@@ -73,14 +68,10 @@ sample({
 sample({
 	clock: createdProject,
 	source: $currentWorkspace,
-	fn: (source, clock) => {
-		startNavigationProgress()
-
-		return {
-			params: { workspaceId: source.id },
-			data: { title: clock }
-		}
-	},
+	fn: (source, clock) => ({
+		params: { workspaceId: source.id },
+		data: { title: clock }
+	}),
 	target: postProjectWorkspaceFx
 })
 
@@ -112,14 +103,10 @@ sample({
 
 sample({
 	clock: updatedProject,
-	fn: (clock) => {
-		startNavigationProgress()
-
-		return {
-			params: { projectId: clock.id },
-			data: { title: clock.title }
-		}
-	},
+	fn: (clock) => ({
+		params: { projectId: clock.id },
+		data: { title: clock.title }
+	}),
 	target: putProjectFx
 })
 
@@ -151,13 +138,9 @@ sample({
 
 sample({
 	clock: deletedProject,
-	fn: (clock) => {
-		startNavigationProgress()
-
-		return {
-			params: { projectId: clock.id }
-		}
-	},
+	fn: (clock) => ({
+		params: { projectId: clock.id }
+	}),
 	target: deleteProjectFx
 })
 

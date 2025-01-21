@@ -1,20 +1,32 @@
 import { useUnit } from 'effector-react'
 
-import { Menu } from '@mantine/core'
+import { Menu, Text } from '@mantine/core'
+import { modals } from '@mantine/modals'
 
 import { deletedProject } from '@shared/store'
-import { ProjectResponse } from '@shared/types'
+import type { ProjectResponse } from '@shared/types'
 
-import { $menuPosition, openDeleteModal } from '../../model'
+import { $menuPosition } from '../../model'
 
-// eslint-disable-next-line style/member-delimiter-style
 export const Dropdown = ({ item, open }: { item: ProjectResponse; open: () => void }) => {
 	const [deleteProject, menuPosition] = useUnit([deletedProject, $menuPosition])
+
+	const openDeleteModal = ({ id }: { id: number }) =>
+		modals.openConfirmModal({
+			title: 'Удалить проект',
+			centered: true,
+			children: (
+				<Text size='sm'>Вы уверены, что хотите удалить проект? Это действие удалит проект без права на восстановление.</Text>
+			),
+			labels: { confirm: 'Удалить проект', cancel: 'Отмена' },
+			confirmProps: { color: 'red' },
+			onConfirm: () => deleteProject({ id })
+		})
 
 	return (
 		<Menu.Dropdown styles={{ dropdown: { top: menuPosition?.y, left: menuPosition?.x } }}>
 			<Menu.Item onClick={open}>Изменить название</Menu.Item>
-			<Menu.Item onClick={() => openDeleteModal({ id: item.id, deleteProject })}>Удалить проект</Menu.Item>
+			<Menu.Item onClick={() => openDeleteModal({ id: item.id })}>Удалить проект</Menu.Item>
 		</Menu.Dropdown>
 	)
 }

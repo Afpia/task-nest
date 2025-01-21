@@ -1,13 +1,34 @@
-import { Tabs } from '@mantine/core'
+import { useUnit } from 'effector-react'
+import { UserRoundPlus } from 'lucide-react'
 
-import { TotalStats } from '@widgets/total'
+import { Avatar, Button, Flex, Skeleton, Tabs, Title } from '@mantine/core'
+
+import { $currentProject, getCurrentProjectFx } from '@shared/store'
+import { TotalTaskStats } from '@widgets/total-task'
 
 import { Tasks } from './tasks'
 
 export const Project = () => {
+	const [{ project }, currentProjectLoading] = useUnit([$currentProject, getCurrentProjectFx.pending])
+
 	return (
 		<>
-			<TotalStats />
+			<Flex align='center' justify='space-between' mb={20} w='100%'>
+				<Flex align='center' gap={16}>
+					{!currentProjectLoading && (
+						<>
+							<Avatar radius='md' src={project.image_url} />
+							<Title order={3}>{project.title}</Title>
+						</>
+					)}
+					{currentProjectLoading && <Skeleton height={38} width={200} />}
+				</Flex>
+				<Button variant='light' leftSection={<UserRoundPlus />}>
+					Пригласить на проект
+				</Button>
+			</Flex>
+
+			<TotalTaskStats />
 			<Tabs defaultValue='tasks' mt={30}>
 				<Tabs.List mb={20}>
 					<Tabs.Tab value='tasks'>Задачи</Tabs.Tab>
@@ -19,9 +40,9 @@ export const Project = () => {
 					<Tasks />
 				</Tabs.Panel>
 
-				<Tabs.Panel value='members'></Tabs.Panel>
+				<Tabs.Panel value='members'>hello1</Tabs.Panel>
 
-				<Tabs.Panel value='discussions'></Tabs.Panel>
+				<Tabs.Panel value='discussions'>hello2</Tabs.Panel>
 			</Tabs>
 		</>
 	)

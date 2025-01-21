@@ -1,10 +1,3 @@
 import { eslint } from '@afpia/eslint'
 
-export default eslint(
-	{ typescript: true, jsx: true, jsxA11y: true, react: true },
-	{
-		rules: {
-			'antfu/if-newline': 'off'
-		}
-	}
-)
+export default eslint({ react: true, jsxA11y: true })

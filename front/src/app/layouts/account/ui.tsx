@@ -1,7 +1,7 @@
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 
-import { Anchor, Avatar, Box, Button, Container, Divider, Flex, NavLink, Text, Title } from '@mantine/core'
+import { Anchor, Avatar, Box, Button, Container, Divider, Flex, NavLink, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
 
 import { $username } from '@shared/auth'
@@ -28,49 +28,49 @@ export const AccountLayout = ({ children }: Children) => {
 
 	return (
 		<Container w={860}>
-			<Flex justify='space-between' align='center' mb={20}>
+			<Flex align='center' justify='space-between' mb={20}>
 				<Flex align='center' gap={20}>
-					<Avatar src={avatar} size={60} />
-					<Anchor component={Link} to={routes.private.profile} fz={16} c='pink'>
+					<Avatar size={60} src={avatar} />
+					<Anchor c='pink' fz={16} component={Link} to={routes.private.profile}>
 						{username}
 					</Anchor>
 				</Flex>
-				<Button component={Link} variant='light' to={routes.private.profile}>
+				<Button variant='light' component={Link} to={routes.private.profile}>
 					Перейти в профиль
 				</Button>
 			</Flex>
 			<Flex>
-				<Flex direction='column' miw='210'>
+				<Flex miw='210' direction='column'>
 					<NavLink
-						component={Link}
-						to={routes.private.account}
+						active={routes.private.account.$isOpened.getState()}
 						label='Общие'
 						style={{ borderRadius: '10px 10px 0 0' }}
-						active={routes.private.account.$isOpened.getState()}
+						component={Link}
+						to={routes.private.account}
 					/>
 					<NavLink
-						component={Link}
-						label='Персональные'
 						active={routes.private.account_personal.$isOpened.getState()}
+						label='Персональные'
+						component={Link}
 						to={routes.private.account_personal}
 					/>
 					<NavLink
-						component={Link}
-						label='Кастомизация'
 						active={routes.private.customization.$isOpened.getState()}
+						label='Кастомизация'
+						component={Link}
 						to={routes.private.customization}
 					/>
 					<NavLink
-						component={Link}
+						active={routes.private.account_password.$isOpened.getState()}
 						label='Пароль'
 						style={{ borderRadius: '0 0 10px 10px' }}
-						active={routes.private.account_password.$isOpened.getState()}
+						component={Link}
 						to={routes.private.account_password}
 					/>
 					<Divider my='sm' variant='dashed' />
-					<NavLink onClick={openDeleteModal} variant='subtle' c='red' style={{ borderRadius: '10px' }} label='Удалить аккаунт' />
+					<NavLink c='red' label='Удалить аккаунт' style={{ borderRadius: '10px' }} variant='subtle' onClick={openDeleteModal} />
 				</Flex>
-				<Box w='100%' ml={20}>
+				<Box ml={20} w='100%'>
 					{children}
 				</Box>
 			</Flex>

@@ -7,7 +7,7 @@ import type { ProjectsResponse } from '@shared/types'
 export const $projectsWidget = createStore<ProjectsResponse>([] as ProjectsResponse)
 
 export const changedPositionItem = createEvent<ProjectsResponse>()
-export const changedActiveProject = createEvent<string | number | null>()
+export const changedActiveProject = createEvent<number | string | null>()
 
 export const $activeProject = createStore<number | string | null>(null).on(changedActiveProject, (_, id) => id)
 
