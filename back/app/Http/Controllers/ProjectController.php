@@ -2,7 +2,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use App\Models\User;
 use App\Models\Workspace;
 use App\Services\ProjectService;
 use App\Services\QueryService;

@@ -6,7 +6,6 @@ use App\Services\AuthService;
 use App\Services\TokenService;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
-use Str;
 
 class AuthController extends Controller
 {

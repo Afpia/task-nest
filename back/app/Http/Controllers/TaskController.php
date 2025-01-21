@@ -34,12 +34,13 @@ class TaskController extends Controller
         foreach($tasks as $task){
             $task->users()->sync($task->users->pluck('id'));
         }
+        
         return response()->json($tasks);
     }
 
     public function view(Request $request, Task $task)
     {
-        $columns = $request->input('columns', ['*']);
+        $columns = $request->input('columns', '*');
         $task = $this->queryService->selectColumns($task->newQuery(), $columns)->find($task->id);
 
         return response()->json([

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\DisposableToken;
 use App\Models\User;
-use Dotenv\Exception\ValidationException;
 use Hash;
 use Illuminate\Http\Request;
 use Str;
