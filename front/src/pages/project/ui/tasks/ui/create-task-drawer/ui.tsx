@@ -1,14 +1,14 @@
-import { useRef, useState } from 'react'
+// eslint-disable-next-line simple-import-sort/imports
 import { useUnit } from 'effector-react'
-import { CalendarFold, FolderPen, Maximize2, Minimize2, Plus, Scroll, Users } from 'lucide-react'
+import { Maximize2, Minimize2, Plus } from 'lucide-react'
+
+import 'dayjs/locale/ru'
 
 import {
-	Box,
 	Button,
 	Divider,
 	Drawer,
 	FileButton,
-	FileInput,
 	Flex,
 	Input,
 	MultiSelect,
@@ -20,50 +20,54 @@ import {
 	useMantineTheme
 } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
-import { useForm } from '@mantine/form'
+import { useForm, zodResolver } from '@mantine/form'
 import { useFullscreen } from '@mantine/hooks'
 
-import { Word } from '@app/assets/svg'
+import { isDarkMode } from '@shared/helpers'
 import { createdTask } from '@shared/store'
 
-const mimeToReadableType = {
-	'application/pdf': 'PDF',
-	'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Word',
-	'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'Excel',
-	'application/zip': 'ZIP',
-	'application/x-rar-compressed': 'RAR'
-}
+import { ACCEPT, CreateTaskSchema, formatFileSize, iconMap, MAX_FILES, mimeToReadableType } from '../../model'
 
 export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened: boolean }) => {
 	const [createTask] = useUnit([createdTask])
 	const { toggle, fullscreen } = useFullscreen()
-	const resetRef = useRef<() => void>(null)
-	const [file, setFile] = useState<File[]>([])
 
+	const isDark = isDarkMode()
 	const theme = useMantineTheme()
 
 	const form = useForm({
 		mode: 'controlled',
-		initialValues: { title: '', description: '', end_date: '' }
+		initialValues: { title: '', description: '', end_date: '', tags: [], assignees: [], files: [] as File[] },
+		validate: zodResolver(CreateTaskSchema)
 	})
 
-	// TODO: Добавить валидацию
-	console.log(file)
-	const onClickForm = (values: { title: string; description?: string; end_date: any }) => {
-		const formattedDate = values.end_date?.toISOString().split('T')[0]
-		close()
+	const onClickForm = (values: {
+		title: string
+		description?: string
+		end_date: any
+		tags: string[]
+		assignees: string[]
+		files: File[]
+	}) => {
+		const formData = new FormData()
+		form.values.files.forEach((f) => {
+			formData.append(`file`, f)
+		})
+		console.log(values, formData)
+		const formattedDate = values?.end_date?.toISOString().split('T')[0]
 		createTask({
 			title: values.title,
 			description: values.description,
 			end_date: formattedDate,
+			// tags: values.tags,
 			start_date: ''
 		})
+		close()
 		form.reset()
 	}
 
 	const clearFile = () => {
-		setFile([])
-		resetRef.current?.()
+		form.setValues({ files: [] })
 	}
 
 	return (
@@ -81,12 +85,12 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 				<Flex align='center' gap={10}>
 					{/*  eslint-disable-next-line style/multiline-ternary */}
 					{fullscreen ? (
-						<Minimize2 color={theme.colors.gray[7]} cursor='pointer' onClick={toggle} />
+						<Minimize2 color={isDark ? theme.colors.dark[3] : theme.colors.gray[7]} cursor='pointer' onClick={toggle} />
 					) : (
-						<Maximize2 color={theme.colors.gray[7]} cursor='pointer' onClick={toggle} />
+						<Maximize2 color={isDark ? theme.colors.dark[3] : theme.colors.gray[7]} cursor='pointer' onClick={toggle} />
 					)}
 					<Divider variant='dashed' orientation='vertical' />
-					<Title c={theme.colors.gray[7]} fw={500} size='18' order={1}>
+					<Title c={isDark ? theme.colors.dark[3] : theme.colors.gray[7]} fw={500} size='18' order={1}>
 						Создание новой задачи
 					</Title>
 				</Flex>
@@ -112,11 +116,13 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 							</Text>
 						</Flex>
 						<MultiSelect
+							data={[{ label: 'hello', value: 'hello' }]}
 							variant='unstyled'
 							w='calc(100% - 160px)'
 							clearable
 							searchable
 							comboboxProps={{ shadow: 'md' }}
+							{...form.getInputProps('assignees')}
 							hidePickedOptions
 							nothingFoundMessage='Такого пользователя нет'
 							placeholder='Назначить человека'
@@ -131,7 +137,11 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 						<DateInput
 							w='calc(100% - 160px)'
 							{...form.getInputProps('end_date')}
+							defaultDate={new Date()}
+							minDate={new Date()}
 							variant='unstyled'
+							clearable
+							locale='ru'
 							placeholder='Дата завершения'
 							valueFormat='YYYY-MM-DD'
 						/>
@@ -142,71 +152,73 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 								Тэги
 							</Text>
 						</Flex>
-						<TagsInput maxTags={3} variant='unstyled' w='calc(100% - 160px)' clearable placeholder='Введите максимум 3 тэга' />
+						<TagsInput
+							{...form.getInputProps('tags')}
+							maxTags={3}
+							variant='unstyled'
+							w='calc(100% - 160px)'
+							clearable
+							placeholder='Введите максимум 3 тэга'
+						/>
 					</Flex>
 					<Flex gap={10} direction='column'>
-						<Flex align='center' gap={8} w={160}>
-							<Text c={theme.colors.gray[6]} fz={16}>
+						<Flex align='center'>
+							<Text c={theme.colors.gray[6]} fz={16} w={160}>
 								Вложения
 							</Text>
+							<Button disabled={form.values.files.length === 0} variant='outline' w={180} color='red' onClick={clearFile}>
+								Удалить все файлы
+							</Button>
 						</Flex>
-						<Flex gap={10}>
-							{file.map((item) => (
+						<Flex gap={10} wrap='wrap'>
+							{form.values.files.map((item) => (
 								<Button
 									h={55}
 									key={item.name}
+									maw={250}
 									variant='default'
-									leftSection={
-										item.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' && (
-											<Word height={30} width={30} />
-										)
-									}
+									leftSection={iconMap[item.type as keyof typeof iconMap]}
 								>
 									<Flex align='flex-start' direction='column'>
 										<Text>{item.name}</Text>
 										<Text c={theme.colors.gray[6]} fz={14}>
 											{/*  eslint-disable-next-line style/jsx-one-expression-per-line */}
-											{mimeToReadableType[item.type as keyof typeof mimeToReadableType]}{' '}
-											{item.size < 1024 * 1024 && `${(item.size / 1024).toFixed(2)} КБ`}
+											{mimeToReadableType[item.type as keyof typeof mimeToReadableType]} {formatFileSize(item.size)}
 										</Text>
 									</Flex>
 								</Button>
 							))}
 							<FileButton
-								accept='application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/zip,application/x-rar-compressed,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+								accept={ACCEPT}
 								multiple
-								onChange={setFile}
+								onChange={(selectedFiles) => {
+									if (selectedFiles.length > MAX_FILES) return
+									form.setValues({ files: selectedFiles })
+								}}
 							>
 								{(props) => (
-									<Button h={55} variant='gradient' w={55} {...props}>
+									<Button disabled={form.values.files.length === MAX_FILES} h={55} variant='gradient' w={55} {...props}>
 										<Plus height={20} width={20} />
 									</Button>
 								)}
 							</FileButton>
 						</Flex>
-						{/* <Button disabled={file.length === 0} w={200} color='red' onClick={clearFile}>
-							Удалить все файлы
-						</Button> */}
 					</Flex>
 					<Tabs defaultValue='description'>
 						<Tabs.List>
 							<Tabs.Tab value='description'>Описание</Tabs.Tab>
 							<Tabs.Tab value='comments'>Комментарии</Tabs.Tab>
-							<Tabs.Tab value='settings'>Settings</Tabs.Tab>
 						</Tabs.List>
 
 						<Tabs.Panel mt={20} value='description'>
 							<Textarea
 								{...form.getInputProps('description')}
 								resize='vertical'
-								styles={{ input: { minHeight: '200px', maxHeight: '300px' } }}
+								styles={{ input: { minHeight: '100px', maxHeight: '300px' } }}
 								placeholder='Описание задачи'
 							/>
 						</Tabs.Panel>
-
 						<Tabs.Panel value='comments'>hello1</Tabs.Panel>
-
-						<Tabs.Panel value='settings'>hello2</Tabs.Panel>
 					</Tabs>
 				</Flex>
 				<Button right={20} type='submit' bottom={20} pos='absolute'>

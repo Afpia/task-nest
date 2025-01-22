@@ -3,6 +3,7 @@
 	"type": "module",
 	"version": "0.0.0",
 	"private": true,
+	"packageManager": "bun@1.1.42",
 	"scripts": {
 		"dev": "vite --open",
 		"build": "tsc -b && vite build",
@@ -46,6 +47,7 @@
 	},
 	"devDependencies": {
 		"@afpia/eslint": "^1.2.0",
+		"@afpia/prettier": "^1.1.1",
 		"@types/node": "^22.10.5",
 		"@types/react": "^18.3.18",
 		"@types/react-dom": "^18.3.5",

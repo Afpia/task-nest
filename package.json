@@ -3,37 +3,38 @@
 	"private": true,
 	"version": "1.0.0",
 	"type": "module",
-	"license": "ISC",
 	"scripts": {
 		"start": "concurrently \"pnpm --prefix ./front dev\" \"cd back && php artisan serve\"",
 		"front": "pnpm --prefix ./front dev",
 		"back": "cd back & php artisan serve",
-		"format": "prettier --config ./front/.prettierrc --write .",
+		"format": "prettier --config ./front/prettier.config.js --write .",
+		"lint": "eslint --config ./front/eslint.config.js .",
 		"update-deps": "pnpm i && pnpm update-back && pnpm update-front ",
 		"update-back": "cd back && composer i && cd ..",
 		"update-front": "cd front && pnpm i && cd ..",
-		"prepare": "husky",
 		"commit": "git add . && git-cz"
 	},
 	"devDependencies": {
-		"@afpia/commitlint": "^1.0.7",
-		"@afpia/prettier": "^1.1.0",
+		"@afpia/commitlint": "^1.0.8",
+		"@afpia/eslint": "^1.2.3",
+		"@afpia/prettier": "^1.1.1",
 		"concurrently": "^9.1.2",
 		"husky": "^9.1.7",
-		"lint-staged": "^15.3.0"
-	},
-	"lint-staged": {
-		"**/*.{js,jsx,ts,tsx}": [
-			"prettier --write"
-		],
-		"**/*.{json,yaml,yml,toml}": [
-			"prettier --write"
-		]
+		"lint-staged": "^15.4.1"
 	},
 	"config": {
 		"commitizen": {
 			"path": "@commitlint/cz-commitlint"
 		}
 	},
-	"packageManager": "pnpm@9.10.0"
+	"lint-staged": {
+		"front/**/*.{js,jsx,ts,tsx}": [
+			"prettier --config ./front/prettier.config.js --write",
+			"eslint --config ./front/eslint.config.js"
+		],
+		"front/**/*.{json,yaml,yml,toml}": [
+			"prettier --config ./front/prettier.config.js --write"
+		]
+	},
+	"packageManager": "bun@1.1.42"
 }
