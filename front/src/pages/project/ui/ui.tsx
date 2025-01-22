@@ -21,7 +21,7 @@ export const Project = () => {
 							<Title order={3}>{project.title}</Title>
 						</>
 					)}
-					{currentProjectLoading && <Skeleton height={38} width={200} />}
+					{currentProjectLoading && <Skeleton height={38} width={250} />}
 				</Flex>
 				<Button variant='light' leftSection={<UserRoundPlus />}>
 					Пригласить на проект

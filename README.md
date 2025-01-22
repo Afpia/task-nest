@@ -16,3 +16,9 @@ docker compose exec back php artisan
 ```bash
 docker compose exec back composer install
 ```
+
+# Run front/back separately
+
+```bash
+docker compose up -d front/back-proxy
+```
