@@ -10,4 +10,4 @@ dist/
 build/
 .temp/
 .turbo
-pnpm-lock.yaml
+bun.lockb
