@@ -1,6 +1,6 @@
 import { RouterProvider } from 'atomic-router-react'
 
-import { createTheme, MantineProvider, type MantineTheme } from '@mantine/core'
+import { createTheme, MantineProvider } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
 import { NavigationProgress } from '@mantine/nprogress'

@@ -1,9 +1,8 @@
 import { Settings2 } from 'lucide-react'
 
-import type { DragEndEvent } from '@dnd-kit/core'
-import { closestCorners, DndContext, DragOverlay, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { ActionIcon, Box, Divider, Flex, ScrollArea, Select, Skeleton, Title } from '@mantine/core'
+import { closestCorners, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { ActionIcon, Box, Divider, Flex, ScrollArea, Select, Title } from '@mantine/core'
 
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
@@ -24,18 +23,18 @@ export const AssignedTasks = () => {
 		})
 	)
 
-	const getTaskPos = (id: number | string) => projects.findIndex((item) => item.id === id)
+	// const getTaskPos = (id: number | string) => projects.findIndex((item) => item.id === id)
 
-	function handleDragEnd(event: DragEndEvent) {
-		const { active, over } = event
+	// function handleDragEnd(event: DragEndEvent) {
+	// 	const { active, over } = event
 
-		if (over !== null && active.id !== over.id) {
-			const oldIndex = getTaskPos(active.id)
-			const newIndex = getTaskPos(over.id)
+	// 	if (over !== null && active.id !== over.id) {
+	// 		const oldIndex = getTaskPos(active.id)
+	// 		const newIndex = getTaskPos(over.id)
 
-			// changePosition(arrayMove(projects, oldIndex, newIndex))
-		}
-	}
+	// 		// changePosition(arrayMove(projects, oldIndex, newIndex))
+	// 	}
+	// }
 
 	return (
 		<Box
@@ -60,7 +59,7 @@ export const AssignedTasks = () => {
 			<ScrollArea h='270px' scrollbars='y'>
 				<DndContext
 					collisionDetection={closestCorners}
-					onDragEnd={handleDragEnd}
+					// onDragEnd={handleDragEnd}
 					// onDragStart={(event) => changeActive(event.active.id)}
 					sensors={sensors}
 				>
