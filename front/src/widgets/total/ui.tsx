@@ -2,8 +2,6 @@ import { useUnit } from 'effector-react'
 
 import { Box, Divider, Flex, Skeleton, Text, Title, useMantineTheme } from '@mantine/core'
 
-import { Loading } from '@app/assets/svg'
-import { Loading2 } from '@app/assets/svg/loading-2'
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
 import { $projects, getProjectsWorkspaceFx, getUserWorkspacesFx } from '@shared/store'
