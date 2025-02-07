@@ -14,5 +14,13 @@ export default defineConfig({
 			'@widgets': path.resolve(__dirname, './src/widgets'),
 			'@assets': path.resolve(__dirname, './src/app/assets')
 		}
+	},
+	server: {
+		watch: {
+			usePolling: true
+		},
+		host: true,
+		strictPort: true,
+		port: 5173
 	}
 })

@@ -68,7 +68,11 @@ services:
       target: client-dev
     container_name: task_nest_front
     volumes:
-      - ./front:/app
+      - ./front/src:/app/src
+      - ./front/public:/app/public
+      - ./front/package.json:/app/package.json
+      - ./front/bun.lockb:/app/bun.lockb
+      - /app/node_modules
     ports:
       - 8080:5173
     # develop:

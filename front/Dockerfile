@@ -1,21 +1,12 @@
-FROM node:23-alpine AS base
+FROM node:22-alpine AS base
+RUN npm install -g bun
 WORKDIR /app
 
-# Копируем package.json и yarn.lock
-COPY package.json ./
-
-# Устанавливаем зависимости
-RUN npm install
-
-# Копируем все остальные файлы проекта
-# COPY eslint.config.js index.html vite.config.ts prettier.config.js tsconfig.json tsconfig.app.json tsconfig.node.json ./
-# COPY public public
-# COPY src src
-COPY . .
-
+FROM base AS client-base
+COPY package.json bun.lockb ./
+RUN bun install
+COPY ./ ./
 EXPOSE 5173
 
-FROM base AS client-dev
-
-# Запуск приложения
-CMD ["npm", "run", "dev", "--host"]
+FROM client-base AS client-dev
+CMD ["bun", "dev"]

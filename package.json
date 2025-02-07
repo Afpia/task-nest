@@ -12,7 +12,8 @@
 		"update-deps": "pnpm i && pnpm update-back && pnpm update-front ",
 		"update-back": "cd back && composer i && cd ..",
 		"update-front": "cd front && pnpm i && cd ..",
-		"commit": "git add . && git-cz"
+		"commit": "git add . && git-cz",
+		"build": "cd front && bun run build"
 	},
 	"devDependencies": {
 		"@afpia/commitlint": "^1.0.8",
@@ -29,11 +30,11 @@
 	},
 	"lint-staged": {
 		"front/**/*.{js,jsx,ts,tsx}": [
-			"prettier --config ./front/prettier.config.js --write",
-			"eslint --config ./front/eslint.config.js"
+			"prettier --write --config ./front/prettier.config.js",
+			"eslint --fix --config ./front/eslint.config.js"
 		],
 		"front/**/*.{json,yaml,yml,toml}": [
-			"prettier --config ./front/prettier.config.js --write"
+			"prettier  --write --config ./front/prettier.config.js"
 		]
 	}
 }

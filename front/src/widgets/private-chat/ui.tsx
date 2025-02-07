@@ -1,7 +1,7 @@
 import { useEditor } from '@tiptap/react'
 import { Lock } from 'lucide-react'
 
-import { AspectRatio, Box, Divider, Flex, ScrollArea, Title } from '@mantine/core'
+import { Box, Divider, Flex, ScrollArea, Title } from '@mantine/core'
 import { RichTextEditor } from '@mantine/tiptap'
 import Highlight from '@tiptap/extension-highlight'
 import Underline from '@tiptap/extension-underline'

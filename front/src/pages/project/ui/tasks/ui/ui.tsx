@@ -1,24 +1,9 @@
 import { useUnit } from 'effector-react'
-import { CalendarFold, ChevronDown, FolderPen, Maximize2, Minimize2, Plus, Scroll, Settings2, Users } from 'lucide-react'
+import { Plus, Settings2 } from 'lucide-react'
 
-import {
-	ActionIcon,
-	Avatar,
-	Badge,
-	Box,
-	Button,
-	Checkbox,
-	Divider,
-	Flex,
-	Group,
-	Progress,
-	Skeleton,
-	Table,
-	Text
-} from '@mantine/core'
+import { ActionIcon, Box, Button, Checkbox, Divider, Flex, Group, Skeleton, Table, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
-import { Loading } from '@app/assets/svg'
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
 import { $tasks, getCurrentProjectFx, getTasksProjectFx } from '@shared/store'
