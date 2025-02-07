@@ -38,6 +38,10 @@ class ProjectController extends Controller
 
         $projects = $this->queryService->paginateResults($query, $perPage);
 
+        foreach($projects as $project){
+            $project->tasks = $project->tasks;
+        }
+
         return response()->json($projects);
     }
 

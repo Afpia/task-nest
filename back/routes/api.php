@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/workspace/{workspace}/stats', [WorkspaceController::class, 'workspaceStats']);//нужны поля
         Route::get('/workspace/{workspace}/role', [WorkspaceController::class, 'getUserRole']);
         Route::delete('workspace/{workspace}/leave', [WorkspaceController::class, 'leaveWorkspace']);
+        Route::get('/workspaces/{workspace}/tasks', [WorkspaceController::class, 'getTasks']);
 
         //projects routes
         Route::get('/projects/{workspace}', [ProjectController::class, 'index']);

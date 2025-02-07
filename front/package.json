@@ -3,7 +3,6 @@
 	"type": "module",
 	"version": "0.0.0",
 	"private": true,
-	"packageManager": "bun@1.1.42",
 	"scripts": {
 		"dev": "vite --open",
 		"build": "tsc -b && vite build",
@@ -54,5 +53,8 @@
 		"@vitejs/plugin-react-swc": "^3.7.2",
 		"typescript": "^5.7.2",
 		"vite": "^5.4.11"
+	},
+	"optionalDependencies": {
+		"@rollup/rollup-linux-x64-gnu": "4.6.1"
 	}
 }

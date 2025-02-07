@@ -1,15 +1,21 @@
-FROM node:22 AS base
-RUN npm install -g bun
-RUN apt-get update && apt-get install -y xdg-utils
+FROM node:23-alpine AS base
 WORKDIR /app
 
-FROM base AS client-base
-COPY package.json bun.lockb ./
-RUN bun install
-COPY eslint.config.js index.html vite.config.ts prettier.config.js tsconfig.json tsconfig.app.json tsconfig.node.json ./
-COPY public public
-COPY src src
+# Копируем package.json и yarn.lock
+COPY package.json ./
+
+# Устанавливаем зависимости
+RUN npm install
+
+# Копируем все остальные файлы проекта
+# COPY eslint.config.js index.html vite.config.ts prettier.config.js tsconfig.json tsconfig.app.json tsconfig.node.json ./
+# COPY public public
+# COPY src src
+COPY . .
+
 EXPOSE 5173
 
-FROM client-base AS client-dev
-CMD ["bun", "dev", "--host"]
+FROM base AS client-dev
+
+# Запуск приложения
+CMD ["npm", "run", "dev", "--host"]

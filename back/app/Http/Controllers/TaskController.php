@@ -55,7 +55,6 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'start_date' => 'date',
             'end_date' => 'date|after_or_equal:start_date',
-            'priority' => 'required|in:Низкий,Средний,Высокий',
             'project_id' => 'required|exists:projects,id',
             'user_id' => 'required|exists:users,id',
         ]);
@@ -72,7 +71,6 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'start_date' => 'date',
             'end_date' => 'date|after_or_equal:start_date',
-            'priority' => 'required|in:Низкий,Средний,Высокий',
             'project_id' => 'required|exists:projects,id',
             'user_id' => 'required|exists:users,id',
         ]);

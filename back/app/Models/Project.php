@@ -32,8 +32,7 @@ class Project extends Model
 
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'user_tasks')
-            ->withPivot('role');
+        return $this->hasMany(Task::class);
     }
 
     public function remainingDays()
