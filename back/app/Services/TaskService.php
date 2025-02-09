@@ -18,7 +18,6 @@ class TaskService
         $task = Task::create([
             'title' => $data['title'],
             'description' => $data['description'],
-            'priority' => $data['priority'],
             'start_date' => $data['start_date'],
             'end_date' => $data['end_date'],
             'status' => $data['status'],
@@ -60,7 +59,9 @@ class TaskService
     public function getMyTasksInWorkspace(Workspace $workspace, User $user)
     {
         return $user->tasks()
-            ->where('workspace_id', $workspace->id)
-            ->get();
+            ->whereHas('project', function ($query) use ($workspace) {
+            $query->where('workspace_id', $workspace->id);
+            })
+        ->get();
     }
 }
