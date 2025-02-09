@@ -34,12 +34,13 @@ class TaskController extends Controller
         foreach($tasks as $task){
             $task->users()->sync($task->users->pluck('id'));
         }
+        
         return response()->json($tasks);
     }
 
     public function view(Request $request, Task $task)
     {
-        $columns = $request->input('columns', ['*']);
+        $columns = $request->input('columns', '*');
         $task = $this->queryService->selectColumns($task->newQuery(), $columns)->find($task->id);
 
         return response()->json([
@@ -54,7 +55,6 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'start_date' => 'date',
             'end_date' => 'date|after_or_equal:start_date',
-            'priority' => 'required|in:Низкий,Средний,Высокий',
             'project_id' => 'required|exists:projects,id',
             'user_id' => 'required|exists:users,id',
         ]);
@@ -71,7 +71,6 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'start_date' => 'date',
             'end_date' => 'date|after_or_equal:start_date',
-            'priority' => 'required|in:Низкий,Средний,Высокий',
             'project_id' => 'required|exists:projects,id',
             'user_id' => 'required|exists:users,id',
         ]);

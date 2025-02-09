@@ -6,14 +6,20 @@ use App\Models\Project;
 use App\Models\User;
 use App\Models\UserWorkspace;
 use App\Models\Workspace;
+use App\Repositories\WorkspaceRepository;
 use Auth;
 
 class WorkspaceService
 {
+
+    public $repo;
+
     private $imageService;
 
-    public function __construct(ImageService $imageService)
+    public function __construct(WorkspaceRepository $workspaceRepository, ImageService $imageService)
     {
+        $this->repo = $workspaceRepository;
+
         $this->imageService = $imageService;
     }
 
@@ -23,9 +29,8 @@ class WorkspaceService
 
         $workspace->image_url = $this->imageService->generateDefaultImage('workspace', $workspace->id);
         $workspace->save();
-        if (!$userId) {
-            $userId = Auth::id();
-        }
+        
+        $userId = $userId ?: Auth::id();
 
         $this->manageUserInWorkspace($workspace, $userId, 'owner');
     }
