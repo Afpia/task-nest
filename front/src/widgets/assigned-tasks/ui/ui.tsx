@@ -1,18 +1,11 @@
 import { Settings2 } from 'lucide-react'
 
 import { closestCorners, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
-import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { ActionIcon, Box, Divider, Flex, ScrollArea, Select, Title } from '@mantine/core'
 
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
-
-const projects = [
-	{
-		id: '1',
-		title: 'Задачи 1'
-	}
-]
 
 export const AssignedTasks = () => {
 	const { isDark } = isDarkMode()
@@ -64,21 +57,23 @@ export const AssignedTasks = () => {
 					sensors={sensors}
 				>
 					<Flex h='100%'>
-						{projects && (
+						{/* {projects && (
 							<SortableContext items={projects} strategy={verticalListSortingStrategy}>
 								{projects.map((item) => (
 									// eslint-disable-next-line no-inline-comments
-									<Flex key={item.id}>{/* <SortableItem {...item} /> */}</Flex>
+									<Flex key={item.id}>
+										<SortableItem {...item} />
+									</Flex>
 								))}
-								{/* <DragOverlay>
+								<DragOverlay>
 									{projects
 										.filter((item) => item.id === activeProject)
 										.map((item) => (
 											<SortableItem key={item.id} {...item} />
 										))}
-								</DragOverlay> */}
+								</DragOverlay>
 							</SortableContext>
-						)}
+						)} */}
 						{/* {loading &&
 							Array.from({ length: 3 }).map((_, index) => (
 								<Flex key={index}>

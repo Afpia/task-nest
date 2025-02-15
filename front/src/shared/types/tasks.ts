@@ -18,6 +18,7 @@ export interface TaskResponse {
 
 export interface Assignee {
 	avatar_url: string
+	email: string
 	id: number
 	name: string
 }

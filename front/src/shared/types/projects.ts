@@ -1,3 +1,5 @@
+import type { TaskResponse } from './tasks'
+
 export type ProjectsResponse = ProjectResponse[]
 
 export interface ProjectResponse {
@@ -8,6 +10,7 @@ export interface ProjectResponse {
 	remaining_days: number
 	start_date: string
 	status: string
+	tasks: TaskResponse[]
 	title: string
 }
 

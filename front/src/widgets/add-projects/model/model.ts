@@ -25,7 +25,8 @@ sample({
 				start_date: '',
 				status: '',
 				remaining_days: 0,
-				image_url: ''
+				image_url: '',
+				tasks: []
 			},
 			...source
 		]

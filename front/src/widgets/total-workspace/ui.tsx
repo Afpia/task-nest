@@ -6,13 +6,16 @@ import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
 import { $projects, getProjectsWorkspaceFx, getUserWorkspacesFx } from '@shared/store'
 
+import { $tasks } from './model'
+
 export const TotalStats = () => {
 	const theme = useMantineTheme()
 	const { isDark } = isDarkMode()
-	const [countProjects, countProjectsLoading, userWorkspacesLoading] = useUnit([
+	const [countProjects, countProjectsLoading, userWorkspacesLoading, tasks] = useUnit([
 		$projects,
 		getProjectsWorkspaceFx.pending,
-		getUserWorkspacesFx.pending
+		getUserWorkspacesFx.pending,
+		$tasks
 	])
 
 	return (
@@ -47,9 +50,12 @@ export const TotalStats = () => {
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Всего задач
 						</Title>
-						<Text c={theme.colors.gray[6]} size='30px'>
-							0
-						</Text>
+						{(countProjectsLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
+						{!(countProjectsLoading || userWorkspacesLoading) && (
+							<Text c={tasks === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
+								{tasks}
+							</Text>
+						)}
 					</Flex>
 					<Divider
 						size={2}

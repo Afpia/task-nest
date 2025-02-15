@@ -4,7 +4,7 @@ import { UserRoundPlus } from 'lucide-react'
 import { Avatar, Button, Flex, Skeleton, Tabs, Title } from '@mantine/core'
 
 import { $currentProject, getCurrentProjectFx } from '@shared/store'
-import { TotalTaskStats } from '@widgets/total-task'
+import { TotalTaskStats } from '@widgets/total-project'
 
 import { Tasks } from './tasks'
 
@@ -29,6 +29,7 @@ export const Project = () => {
 			</Flex>
 
 			<TotalTaskStats />
+
 			<Tabs defaultValue='tasks' mt={30}>
 				<Tabs.List mb={20}>
 					<Tabs.Tab value='tasks'>Задачи</Tabs.Tab>
