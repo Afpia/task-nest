@@ -8,13 +8,13 @@ import { $projects, getProjectsWorkspaceFx, getUserWorkspacesFx } from '@shared/
 
 import { $tasks } from './model'
 
-export const TotalStats = () => {
+export const StatsWorkspace = () => {
 	const theme = useMantineTheme()
 	const { isDark } = isDarkMode()
 	const [countProjects, countProjectsLoading, userWorkspacesLoading, tasks] = useUnit([
 		$projects,
-		getProjectsWorkspaceFx.pending,
-		getUserWorkspacesFx.pending,
+		getProjectsWorkspaceFx.$pending,
+		getUserWorkspacesFx.$pending,
 		$tasks
 	])
 

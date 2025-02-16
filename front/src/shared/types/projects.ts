@@ -1,6 +1,5 @@
+import type { ProjectIdParams, WorkspaceIdParams } from './params'
 import type { TaskResponse } from './tasks'
-
-export type ProjectsResponse = ProjectResponse[]
 
 export interface ProjectResponse {
 	description: string
@@ -14,32 +13,12 @@ export interface ProjectResponse {
 	title: string
 }
 
-export interface ProjectParams {
-	workspaceId: string
-}
-export interface PutProjectParams {
-	projectId: number
-}
-export interface DeleteProjectParams {
-	projectId: number
-}
-
-export interface GetProjectParams {
-	projectId: string
-}
-
-export interface ProjectRequest {
-	end_date: string
-	start_date: string
+export interface ProjectData {
 	title: string
 }
 
-export interface ProjectData {
-	title?: string
-}
-
-export type GetProjectsWorkspaceConfig = AxiosRequestConfig<ProjectParams>
-export type PostProjectWorkspaceConfig = AxiosRequestConfig<ProjectParams, ProjectData>
-export type PutProjectConfig = AxiosRequestConfig<PutProjectParams, ProjectData>
-export type DeleteProjectConfig = AxiosRequestConfig<DeleteProjectParams>
-export type GetProjectConfig = AxiosRequestConfig<GetProjectParams>
+export type GetProjectsWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams>
+export type PostProjectWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams, ProjectData>
+export type PutProjectConfig = AxiosRequestConfig<ProjectIdParams, ProjectData>
+export type DeleteProjectConfig = AxiosRequestConfig<ProjectIdParams>
+export type GetProjectConfig = AxiosRequestConfig<ProjectIdParams>

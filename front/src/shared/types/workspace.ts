@@ -4,5 +4,3 @@ export interface WorkspaceResponse {
 	image_url: string
 	title: string
 }
-
-export type WorkspacesResponse = WorkspaceResponse[]

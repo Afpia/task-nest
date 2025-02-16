@@ -2,16 +2,16 @@ import { createEffect, createEvent, createStore, sample } from 'effector'
 
 import { deleteTaskProject, getTasksProject, postTaskProject, putTaskStatusProject } from '@shared/api'
 import { notifyError } from '@shared/helpers/notification'
-import type { GetTasksProjectConfig, PostTaskProjectConfig, TaskRequest, TasksResponse } from '@shared/types'
+import type { GetTasksProjectConfig, PostTaskProjectConfig, TaskRequest, TaskResponse } from '@shared/types'
 
 import { $currentProject } from '../projects'
 
-export const $tasks = createStore([] as TasksResponse)
-export const $tasksUser = createStore([] as TasksResponse)
-export const $tasksDone = createStore([] as TasksResponse)
-export const $tasksOverdue = createStore([] as TasksResponse)
-export const $tasksSuspended = createStore([] as TasksResponse)
-export const $tasksInProgress = createStore([] as TasksResponse)
+export const $tasks = createStore([] as TaskResponse[])
+export const $tasksUser = createStore([] as TaskResponse[])
+export const $tasksDone = createStore([] as TaskResponse[])
+export const $tasksOverdue = createStore([] as TaskResponse[])
+export const $tasksSuspended = createStore([] as TaskResponse[])
+export const $tasksInProgress = createStore([] as TaskResponse[])
 
 export const getTasksProjectFx = createEffect(({ params, config }: GetTasksProjectConfig) => getTasksProject({ params, config }))
 export const getTasksProjectDoneFx = createEffect(({ params, config }: GetTasksProjectConfig) =>
@@ -43,7 +43,7 @@ sample({
 	// source: $tasks,
 	// filter: $tasks.map((tasks) => !tasks.length),
 	fn: (clk) => ({
-		params: { projectId: clk.project.id }
+		params: { projectId: String(clk.project.id) }
 	}),
 	target: getTasksProjectFx
 })
@@ -69,7 +69,7 @@ sample({
 	clock: createdTask,
 	source: $currentProject,
 	fn: (src, clk) => ({
-		params: { projectId: src.project.id },
+		params: { projectId: String(src.project.id) },
 		data: { ...clk, project_id: src.project.id, user_id: 1, start_date: '2024-12-21' }
 	}),
 	target: postTaskProjectFx
@@ -86,7 +86,7 @@ sample({
 	clock: postTaskProjectFx.doneData,
 	source: $currentProject,
 	fn: (clk) => ({
-		params: { projectId: clk.project.id }
+		params: { projectId: String(clk.project.id) }
 	}),
 	target: getTasksProjectFx
 })
@@ -97,7 +97,7 @@ sample({
 	clock: $currentProject,
 	fn: (clk) => ({
 		params: {
-			projectId: clk.project.id
+			projectId: String(clk.project.id)
 		},
 		config: {
 			params: {
@@ -129,7 +129,7 @@ sample({
 	clock: $currentProject,
 	fn: (clk) => ({
 		params: {
-			projectId: clk.project.id
+			projectId: String(clk.project.id)
 		},
 		config: {
 			params: {
@@ -161,7 +161,7 @@ sample({
 	clock: $currentProject,
 	fn: (clk) => ({
 		params: {
-			projectId: clk.project.id
+			projectId: String(clk.project.id)
 		},
 		config: {
 			params: {
@@ -193,7 +193,7 @@ sample({
 	clock: $currentProject,
 	fn: (clk) => ({
 		params: {
-			projectId: clk.project.id
+			projectId: String(clk.project.id)
 		},
 		config: {
 			params: {

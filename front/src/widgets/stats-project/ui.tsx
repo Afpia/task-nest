@@ -18,7 +18,7 @@ import {
 	getTasksProjectSuspendedFx
 } from '@shared/store'
 
-export const TotalTaskStats = () => {
+export const StatsProject = () => {
 	const theme = useMantineTheme()
 	const { isDark } = isDarkMode()
 	const [
@@ -44,7 +44,7 @@ export const TotalTaskStats = () => {
 		getTasksProjectOverdueFx.pending,
 		getTasksProjectSuspendedFx.pending,
 		getTasksProjectInProgressFx.pending,
-		getCurrentProjectFx.pending
+		getCurrentProjectFx.$pending
 	])
 
 	return (

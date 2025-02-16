@@ -19,7 +19,7 @@ interface Form {
 }
 
 export const Personal = () => {
-	const [user, avatar, loading] = useUnit([$username, $avatar, getUserAvatarFx.pending])
+	const [user, avatar, loading] = useUnit([$username, $avatar, getUserAvatarFx.$pending])
 
 	const form = useForm({
 		mode: 'controlled',

@@ -13,7 +13,10 @@
 		"update-back": "cd back && composer i && cd ..",
 		"update-front": "cd front && pnpm i && cd ..",
 		"commit": "git add . && git-cz",
-		"build": "cd front && bun run build"
+		"build": "cd front && bun run build",
+		"docker:dev": "docker compose up -d",
+		"docker:down": "docker compose down",
+		"docker:build": "docker compose up -d --build"
 	},
 	"devDependencies": {
 		"@afpia/commitlint": "^1.0.8",
