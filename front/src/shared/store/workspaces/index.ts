@@ -1,9 +1,9 @@
 import { redirect } from 'atomic-router'
-import { createEffect, createEvent, createStore, sample } from 'effector'
+import { combine, createEffect, createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 
 import { getUserWorkspaces } from '@shared/api'
-import { allUserExpired } from '@shared/auth'
+import { $isAuth, allUserExpired } from '@shared/auth'
 import { privateRouteOpened, routes } from '@shared/config'
 import type { WorkspaceResponse, WorkspacesResponse } from '@shared/types'
 
@@ -17,10 +17,16 @@ export const changedWorkspace = createEvent<string>()
 sample({
 	clock: [privateRouteOpened],
 	source: $workspaces,
-	filter: $workspaces.map((workspaces) => !workspaces.length),
+	filter: combine(
+		$workspaces.map((workspaces) => !workspaces.length),
+		$isAuth,
+		(isEmpty, isAuth) => isEmpty && isAuth
+	),
 	fn: () => ({ config: {} }),
 	target: getUserWorkspacesFx
 })
+
+// TODO: Может не работать, делаются запросы при отсутствия токена
 
 sample({
 	clock: getUserWorkspacesFx.doneData,
