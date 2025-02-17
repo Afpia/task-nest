@@ -2,7 +2,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use App\Models\User;
 use App\Models\Workspace;
 use App\Services\ProjectService;
 use App\Services\QueryService;
@@ -38,6 +37,10 @@ class ProjectController extends Controller
         $query = $this->queryService->selectColumns($query, $columns);
 
         $projects = $this->queryService->paginateResults($query, $perPage);
+
+        foreach($projects as $project){
+            $project->tasks = $project->tasks;
+        }
 
         return response()->json($projects);
     }

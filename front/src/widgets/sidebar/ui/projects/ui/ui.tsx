@@ -15,8 +15,8 @@ import { Target } from './target'
 export const Projects = () => {
 	const [projects, projectsLoading, loadingWorkspaces, activeProject, menuPosition, setMenuPosition] = useUnit([
 		$projects,
-		getProjectsWorkspaceFx.pending,
-		getUserWorkspacesFx.pending,
+		getProjectsWorkspaceFx.$pending,
+		getUserWorkspacesFx.$pending,
 		$activeProject,
 		$menuPosition,
 		setMenuPositioned

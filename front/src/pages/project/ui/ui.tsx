@@ -4,12 +4,12 @@ import { UserRoundPlus } from 'lucide-react'
 import { Avatar, Button, Flex, Skeleton, Tabs, Title } from '@mantine/core'
 
 import { $currentProject, getCurrentProjectFx } from '@shared/store'
-import { TotalTaskStats } from '@widgets/total-task'
+import { StatsProject } from '@widgets/stats-project'
 
 import { Tasks } from './tasks'
 
 export const Project = () => {
-	const [{ project }, currentProjectLoading] = useUnit([$currentProject, getCurrentProjectFx.pending])
+	const [{ project }, currentProjectLoading] = useUnit([$currentProject, getCurrentProjectFx.$pending])
 
 	return (
 		<>
@@ -28,12 +28,13 @@ export const Project = () => {
 				</Button>
 			</Flex>
 
-			<TotalTaskStats />
+			<StatsProject />
+
 			<Tabs defaultValue='tasks' mt={30}>
 				<Tabs.List mb={20}>
 					<Tabs.Tab value='tasks'>Задачи</Tabs.Tab>
 					<Tabs.Tab value='members'>Участники</Tabs.Tab>
-					<Tabs.Tab value='discussions'>Обсуждения</Tabs.Tab>
+					{/* <Tabs.Tab value='discussions'>Обсуждения</Tabs.Tab> */}
 				</Tabs.List>
 
 				<Tabs.Panel value='tasks'>
@@ -41,8 +42,6 @@ export const Project = () => {
 				</Tabs.Panel>
 
 				<Tabs.Panel value='members'>hello1</Tabs.Panel>
-
-				<Tabs.Panel value='discussions'>hello2</Tabs.Panel>
 			</Tabs>
 		</>
 	)

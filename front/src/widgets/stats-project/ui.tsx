@@ -4,15 +4,47 @@ import { Box, Divider, Flex, Skeleton, Text, Title, useMantineTheme } from '@man
 
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
-import { $tasks, getCurrentProjectFx, getTasksProjectFx } from '@shared/store'
+import {
+	$tasks,
+	$tasksDone,
+	$tasksInProgress,
+	$tasksOverdue,
+	$tasksSuspended,
+	getCurrentProjectFx,
+	getTasksProjectDoneFx,
+	getTasksProjectFx,
+	getTasksProjectInProgressFx,
+	getTasksProjectOverdueFx,
+	getTasksProjectSuspendedFx
+} from '@shared/store'
 
-export const TotalTaskStats = () => {
+export const StatsProject = () => {
 	const theme = useMantineTheme()
 	const { isDark } = isDarkMode()
-	const [countTasks, tasksProjectLoading, currentProjectLoading] = useUnit([
+	const [
+		countTasks,
+		countTasksDone,
+		countTasksOverdue,
+		countTasksSuspended,
+		countTasksInProgress,
+		tasksProjectLoading,
+		tasksProjectLoadingDone,
+		tasksProjectLoadingOverdue,
+		tasksProjectLoadingSuspended,
+		tasksProjectLoadingInProgress,
+		currentProjectLoading
+	] = useUnit([
 		$tasks,
+		$tasksDone,
+		$tasksOverdue,
+		$tasksSuspended,
+		$tasksInProgress,
 		getTasksProjectFx.pending,
-		getCurrentProjectFx.pending
+		getTasksProjectDoneFx.pending,
+		getTasksProjectOverdueFx.pending,
+		getTasksProjectSuspendedFx.pending,
+		getTasksProjectInProgressFx.pending,
+		getCurrentProjectFx.$pending
 	])
 
 	return (
@@ -47,9 +79,12 @@ export const TotalTaskStats = () => {
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Приост. задачи
 						</Title>
-						<Text c={theme.colors.gray[6]} size='30px'>
-							0
-						</Text>
+						{(tasksProjectLoadingSuspended || currentProjectLoading) && <Skeleton height={30} width={140} />}
+						{!(tasksProjectLoadingSuspended || currentProjectLoading) && (
+							<Text c={countTasksSuspended.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
+								{countTasksSuspended.length}
+							</Text>
+						)}
 					</Flex>
 					<Divider
 						size={2}
@@ -63,9 +98,12 @@ export const TotalTaskStats = () => {
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Задачи в работе
 						</Title>
-						<Text c={theme.colors.gray[6]} size='30px'>
-							0
-						</Text>
+						{(tasksProjectLoadingInProgress || currentProjectLoading) && <Skeleton height={30} width={140} />}
+						{!(tasksProjectLoadingInProgress || currentProjectLoading) && (
+							<Text c={countTasksInProgress.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
+								{countTasksInProgress.length}
+							</Text>
+						)}
 					</Flex>
 					<Divider
 						size={2}
@@ -79,9 +117,12 @@ export const TotalTaskStats = () => {
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Выпол. задачи
 						</Title>
-						<Text c={theme.colors.gray[6]} size='30px'>
-							0
-						</Text>
+						{(tasksProjectLoadingDone || currentProjectLoading) && <Skeleton height={30} width={140} />}
+						{!(tasksProjectLoadingDone || currentProjectLoading) && (
+							<Text c={countTasksDone.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
+								{countTasksDone.length}
+							</Text>
+						)}
 					</Flex>
 					<Divider
 						size={2}
@@ -95,9 +136,12 @@ export const TotalTaskStats = () => {
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Просроч. задачи
 						</Title>
-						<Text c={theme.colors.gray[6]} size='30px'>
-							0
-						</Text>
+						{(tasksProjectLoadingOverdue || currentProjectLoading) && <Skeleton height={30} width={140} />}
+						{!(tasksProjectLoadingOverdue || currentProjectLoading) && (
+							<Text c={countTasksOverdue.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
+								{countTasksOverdue.length}
+							</Text>
+						)}
 					</Flex>
 				</Flex>
 			</Flex>

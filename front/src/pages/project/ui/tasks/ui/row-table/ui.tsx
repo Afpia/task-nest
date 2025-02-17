@@ -2,9 +2,9 @@ import { ChevronDown } from 'lucide-react'
 
 import { ActionIcon, Avatar, Badge, Checkbox, Flex, Progress, Table, Text } from '@mantine/core'
 
-import type { TasksResponse } from '@shared/types'
+import type { TaskResponse } from '@shared/types'
 
-export const Row = ({ tasks }: { tasks: TasksResponse }) =>
+export const Row = ({ tasks }: { tasks: TaskResponse[] }) =>
 	tasks.map((element) => (
 		<Table.Tr h={50} key={element.id}>
 			<Table.Td>
@@ -15,9 +15,9 @@ export const Row = ({ tasks }: { tasks: TasksResponse }) =>
 			</Table.Td>
 			<Table.Td width={200}>
 				<Flex align='center' gap={8}>
-					<Avatar size={30} src={element.users[0].avatar_url} />
+					<Avatar size={30} src={element.assignee[0].avatar_url} />
 					<Text fw='bold' fz={14}>
-						{element.users.map((username) => username.name).join(', ')}
+						{element.assignee.map((username) => username.name).join(', ')}
 					</Text>
 				</Flex>
 			</Table.Td>

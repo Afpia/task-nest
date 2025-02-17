@@ -1,4 +1,4 @@
-import { Plus, Settings2 } from 'lucide-react'
+import { Plus } from 'lucide-react'
 
 import { ActionIcon, Box, Divider, Flex, Select, Title } from '@mantine/core'
 
@@ -28,9 +28,6 @@ export const People = () => {
 						defaultValue='По должности'
 						allowDeselect={false}
 					/>
-					<ActionIcon aria-label='Settings' h='100%' variant='default' w='35px'>
-						<Settings2 style={{ width: '70%', height: '70%' }} />
-					</ActionIcon>
 					<ActionIcon aria-label='Plus' h='100%' variant='filled' w='35px'>
 						<Plus style={{ width: '70%', height: '70%' }} />
 					</ActionIcon>

@@ -1,13 +1,14 @@
+import type { ReactNode } from 'react'
+
 import { Flex, Text } from '@mantine/core'
 import { useColorScheme } from '@mantine/hooks'
 
 import { Logo } from '@app/assets/svg'
 import video from '@assets/video/1.mp4'
-import type { Children } from '@shared/types'
 
 import styles from './ui.module.css'
 
-export const LayoutLogin = ({ children }: Children) => {
+export const LayoutLogin = ({ children }: { children: ReactNode }) => {
 	const colorScheme = useColorScheme()
 
 	return (

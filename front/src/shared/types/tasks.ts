@@ -1,4 +1,4 @@
-export type TasksResponse = TaskResponse[]
+import type { ProjectIdParams, TaskIdParams } from './params'
 
 export interface TaskResponse {
 	assignee: Assignee[]
@@ -10,14 +10,12 @@ export interface TaskResponse {
 	start_date: string
 	status: string
 	title: string
-	users: Assignee[]
 	who_set: string
 }
 
-// TODO: Исправить типы
-
 export interface Assignee {
 	avatar_url: string
+	email: string
 	id: number
 	name: string
 }
@@ -27,18 +25,6 @@ export interface TaskRequest {
 	end_date?: string
 	start_date: string
 	title: string
-	// priority: string
-	// status: string
-	// project_id: number
-	// user_id: number
-}
-
-export interface ProjectIdParams {
-	projectId: number
-}
-
-export interface TaskIdParams {
-	taskId: string
 }
 
 export type GetTasksProjectConfig = AxiosRequestConfig<ProjectIdParams>
