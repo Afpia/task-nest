@@ -4,11 +4,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/laravel
 
-# COPY composer.json composer.lock .
-COPY . .
-
+COPY composer.json composer.lock ./
 RUN composer install --optimize-autoloader
 
-# RUN chown -R www-data:www-data /var/www/laravel
+COPY ./ ./
+
+RUN chown -R www-data:www-data /var/www/laravel
 
 EXPOSE 8000
