@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_front:
+    name: Build and Push Front Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository 👌
+        uses: actions/checkout@v3
+
+      - name: Login to DockerHub 🍂
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Front Image 🎞️
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./front/Dockerfile
+          tags: afpi/task-nest-front:latest
+          push: true
+          secrets: |
+            VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+            VITE_YANDEX_CLIENT_ID=${{ secrets.VITE_YANDEX_CLIENT_ID }}
+            VITE_GITHUB_CLIENT_ID=${{ secrets.VITE_GITHUB_CLIENT_ID }}
+            VITE_GITHUB_CLIENT_SECRET=${{ secrets.VITE_GITHUB_CLIENT_SECRET }}
+
+  build_back:
+    name: Build and Push Back Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository 👌
+        uses: actions/checkout@v3
+
+      - name: Login to DockerHub 🍂
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Back Image 🎒
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./back/Dockerfile
+          tags: afpi/task-nest-back:latest
+          push: true

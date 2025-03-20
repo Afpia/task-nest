@@ -23,27 +23,12 @@ services:
     networks:
       - main-network
 
-  # proxy:
-  #   image: traefik:v2.11
-  #   command: --providers.docker
-  #   container_name: task_nest_proxy
-  #   ports:
-  #     - 80:80
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
 
   back:
     build:
       context: ./back
       target: back-base
     container_name: task_nest_back
-    # develop:
-    #   watch:
-    #     - path: ./back
-    #       action: sync
-    #       target: /var/www/laravel
-    #     - path: ./back/composer.json
-    #       action: rebuild
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
@@ -54,9 +39,6 @@ services:
       - DB_PASSWORD=secret
     volumes:
       - ./back:/var/www/laravel
-    # labels:
-    #   traefik.http.routers.back.rule: Host(`back.localhost`)
-    #   traefik.http.services.back.loadbalancer.server.port: 8000
     depends_on:
       - php-my-admin
     networks:
@@ -75,16 +57,6 @@ services:
       - /app/node_modules
     ports:
       - 8080:5173
-    # develop:
-    #   watch:
-    #     - path: ./front/src
-    #       action: sync
-    #       target: /app/src
-    #     - path: ./front/package.json
-    #       action: rebuild
-    # labels:
-    #   traefik.http.routers.client.rule: Host(`localhost`)
-    #   traefik.http.services.client.loadbalancer.server.port: 5173
     networks:
       - main-network
 
@@ -97,9 +69,6 @@ services:
       PMA_PASSWORD: secret
     ports:
       - 8082:80
-    # labels:
-    #   traefik.http.routers.phpmyadmin.rule: Host(`db.localhost`)
-    #   traefik.http.services.phpmyadmin.loadbalancer.server.port: 80
     depends_on:
       - mysql
     networks:
