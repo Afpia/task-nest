@@ -19,7 +19,15 @@ export const LoginForm = () => {
 
 	const onClickForm = (values: UserRequest) => {
 		loginError(form)
-		login({ data: values })
+		login({
+			data: values,
+			config: {
+				onDownloadProgress(progressEvent) {
+					const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total ?? 100))
+					console.log(percentCompleted, progressEvent)
+				}
+			}
+		})
 	}
 
 	return (

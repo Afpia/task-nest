@@ -207,7 +207,6 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 					<Tabs defaultValue='description'>
 						<Tabs.List>
 							<Tabs.Tab value='description'>Описание</Tabs.Tab>
-							<Tabs.Tab value='comments'>Комментарии</Tabs.Tab>
 						</Tabs.List>
 
 						<Tabs.Panel mt={20} value='description'>
@@ -218,7 +217,6 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 								placeholder='Описание задачи'
 							/>
 						</Tabs.Panel>
-						<Tabs.Panel value='comments'>hello1</Tabs.Panel>
 					</Tabs>
 				</Flex>
 				<Button right={20} type='submit' bottom={20} pos='absolute'>

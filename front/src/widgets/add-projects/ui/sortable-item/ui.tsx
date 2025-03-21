@@ -6,7 +6,7 @@ import { ActionIcon, Avatar, Button, Flex, Text } from '@mantine/core'
 
 import type { ProjectResponse } from '@shared/types'
 
-export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & { open?: () => void }) => {
+export const SortableItem = ({ id, title, image_url, tasks, open }: ProjectResponse & { open?: () => void }) => {
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
 		id,
 		transition: {
@@ -38,7 +38,17 @@ export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & {
 				<Flex align='start' justify='center' direction='column'>
 					<Text fw={600}>{title}</Text>
 					<Text c='gray' fz={12}>
-						Задач нет
+						{tasks?.length > 0 && (
+							<Text fz={12} span={true}>
+								Кол-во задач:
+								{tasks.length}
+							</Text>
+						)}
+						{tasks?.length === 0 && (
+							<Text fz={12} span={true}>
+								Задач нет
+							</Text>
+						)}
 					</Text>
 				</Flex>
 			</Button>
@@ -93,7 +103,17 @@ export const SortableItem = ({ id, title, image_url, open }: ProjectResponse & {
 			<Flex align='start' justify='center' direction='column'>
 				<Text fw={600}>{title}</Text>
 				<Text c='gray' fz={12}>
-					Задач нет
+					{tasks?.length > 0 && (
+						<Text fz={12} span={true}>
+							Кол-во задач:
+							{tasks.length}
+						</Text>
+					)}
+					{tasks?.length === 0 && (
+						<Text fz={12} span={true}>
+							Задач нет
+						</Text>
+					)}
 				</Text>
 			</Flex>
 		</Button>

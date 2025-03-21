@@ -1,7 +1,7 @@
 import { useUnit } from 'effector-react'
-import { Plus, Settings2 } from 'lucide-react'
+import { Plus } from 'lucide-react'
 
-import { ActionIcon, Box, Button, Checkbox, Divider, Flex, Group, Skeleton, Table, Text } from '@mantine/core'
+import { Box, Button, Checkbox, Divider, Flex, Group, Skeleton, Table, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { ThemeColors } from '@shared/config'
@@ -12,11 +12,8 @@ import { CreateTaskDrawer } from './create-task-drawer'
 import { Row } from './row-table'
 
 export const Tasks = () => {
-	const [tasks, tasksProjectLoading, currentProjectLoading] = useUnit([
-		$tasks,
-		getTasksProjectFx.pending,
-		getCurrentProjectFx.pending
-	])
+	const [tasks, tasksProjectLoading] = useUnit([$tasks, getTasksProjectFx.pending])
+	const getCurrentProject = useUnit(getCurrentProjectFx)
 	const [opened, { open, close }] = useDisclosure(false)
 	const { isDark } = isDarkMode()
 
@@ -32,31 +29,28 @@ export const Tasks = () => {
 			>
 				<Flex align='center' justify='space-between'>
 					<Group gap={8} justify='center'>
-						<Button radius='md' size='xs' variant='filled'>
+						<Button radius='md' size='xs' variant='default'>
 							Таблица
 						</Button>
 
-						<Button radius='md' size='xs' variant='default'>
+						{/* <Button radius='md' size='xs' variant='default'>
 							Канбан доска
-						</Button>
+						</Button> */}
 					</Group>
 					<Flex gap={10}>
 						<Button radius='md' size='xs' variant='filled' leftSection={<Plus />} onClick={open}>
 							Добавить задачу
 						</Button>
-						<ActionIcon aria-label='Settings' h='100%' variant='default' w='30px'>
-							<Settings2 style={{ width: '70%', height: '70%' }} />
-						</ActionIcon>
 					</Flex>
 				</Flex>
 				<Divider my='lg' variant='dashed' />
-				{(tasksProjectLoading || currentProjectLoading) && (
+				{(tasksProjectLoading || getCurrentProject.pending) && (
 					// <Flex align='center' h={300} justify='center' w='100%' pos='absolute'>
 					// 	<Loading height={60} width={60} />
 					// </Flex>
 					<Skeleton height={250} style={{ borderRadius: '10px' }} width='100%' />
 				)}
-				{!(tasksProjectLoading || currentProjectLoading) && (
+				{!(tasksProjectLoading || getCurrentProject.pending) && (
 					<Box
 						bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
 						style={{ borderRadius: '10px', overflow: 'hidden' }}

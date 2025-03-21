@@ -178,4 +178,11 @@ class WorkspaceController extends Controller
         $this->workspaceService->deleteUserFromWorkspace($workspace, $targetUserId);
         return response()->json(['message' => __('messages.success')], 202);
     }
+
+    public function getTasks(Workspace $workspace)
+    {
+        $tasks = $workspace->projects()->with('tasks')->get()->pluck('tasks')->flatten();
+
+        return response()->json($tasks);
+    }
 }

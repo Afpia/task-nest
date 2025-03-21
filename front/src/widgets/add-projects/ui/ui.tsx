@@ -18,7 +18,7 @@ import { SortableItem } from './sortable-item'
 
 export const AddProjects = () => {
 	const [loading, projects, changePosition, activeProject, changeActive] = useUnit([
-		getProjectsWorkspaceFx.pending,
+		getProjectsWorkspaceFx.$pending,
 		$projectsWidget,
 		changedPositionItem,
 		$activeProject,

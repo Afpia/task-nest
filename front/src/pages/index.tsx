@@ -1,6 +1,7 @@
 import { createRoutesView } from 'atomic-router-react'
 
 import { AccountCustomizationRoute, AccountPasswordRoute, AccountPersonalRoute, AccountRoute } from './account'
+import { AnalyticsRoute } from './analytics'
 import { ForgotPasswordRoute } from './forgot-password'
 import { HomeRoute } from './home'
 import { LoginRoute } from './login'
@@ -20,7 +21,8 @@ export const Pages = createRoutesView({
 		AccountRoute,
 		AccountPersonalRoute,
 		AccountPasswordRoute,
-		AccountCustomizationRoute
+		AccountCustomizationRoute,
+		AnalyticsRoute
 	],
 	otherwise() {
 		return <NotFound />

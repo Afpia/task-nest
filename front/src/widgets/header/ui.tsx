@@ -12,7 +12,7 @@ import { $avatar, getUserAvatarFx } from '@shared/store'
 import { headerSchema } from './model'
 
 export const Header = () => {
-	const [avatar, username, onExit, avatarLoading] = useUnit([$avatar, $username, allUserExpired, getUserAvatarFx.pending])
+	const [avatar, username, onExit, avatarLoading] = useUnit([$avatar, $username, allUserExpired, getUserAvatarFx.$pending])
 	const [currentPath] = useUnit([router.$path])
 
 	const normalizedPath = currentPath.replace(/\/\d+$/, '')

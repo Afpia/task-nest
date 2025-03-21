@@ -1,16 +1,17 @@
+// eslint-disable-next-line simple-import-sort/imports
+import type { ReactNode } from 'react'
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 
-import { Anchor, Avatar, Box, Button, Container, Divider, Flex, NavLink, Text } from '@mantine/core'
+import { Anchor, Avatar, Box, Button, Container, Divider, Flex, NavLink, Skeleton, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
 
 import { $username } from '@shared/auth'
 import { routes } from '@shared/config'
-import { $avatar } from '@shared/store'
-import type { Children } from '@shared/types'
+import { $avatar, getUserAvatarFx } from '@shared/store'
 
-export const AccountLayout = ({ children }: Children) => {
-	const [username, avatar] = useUnit([$username, $avatar])
+export const AccountLayout = ({ children }: { children: ReactNode }) => {
+	const [username, avatar, loading] = useUnit([$username, $avatar, getUserAvatarFx.$pending])
 
 	const openDeleteModal = () =>
 		modals.openConfirmModal({
@@ -30,7 +31,8 @@ export const AccountLayout = ({ children }: Children) => {
 		<Container w={860}>
 			<Flex align='center' justify='space-between' mb={20}>
 				<Flex align='center' gap={20}>
-					<Avatar size={60} src={avatar} />
+					{!loading && <Avatar radius='xl' size={60} src={avatar} />}
+					{loading && <Skeleton height={60} radius='xl' width={60} />}
 					<Anchor c='pink' fz={16} component={Link} to={routes.private.profile}>
 						{username}
 					</Anchor>
@@ -54,12 +56,12 @@ export const AccountLayout = ({ children }: Children) => {
 						component={Link}
 						to={routes.private.account_personal}
 					/>
-					<NavLink
+					{/* <NavLink
 						active={routes.private.customization.$isOpened.getState()}
 						label='Кастомизация'
 						component={Link}
 						to={routes.private.customization}
-					/>
+					/> */}
 					<NavLink
 						active={routes.private.account_password.$isOpened.getState()}
 						label='Пароль'

@@ -3,16 +3,15 @@ import type {
 	GetTasksProjectConfig,
 	PostTaskProjectConfig,
 	PutTaskProjectConfig,
-	TaskResponse,
-	TasksResponse
+	TaskResponse
 } from '@shared/types'
 
 import { api } from '../instance'
 
 export const getTasksProject = async ({ config, params }: GetTasksProjectConfig) =>
-	api.get<TasksResponse>(`tasks/${params.projectId}`, config)
+	api.get<TaskResponse[]>(`tasks/${params.projectId}`, config)
 
-// export const getTasksUserProject = async ({ params, data, config }) => api.get<TasksResponse>(``, data, config)
+// export const getTasksUserProject = async ({ params, data, config }) => api.get<TaskResponse>(``, data, config)
 
 export const postTaskProject = async ({ params, data, config }: PostTaskProjectConfig) =>
 	api.post<TaskResponse>(`task/${params.projectId}/add`, data, config)

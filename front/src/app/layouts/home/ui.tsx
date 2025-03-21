@@ -1,12 +1,13 @@
+import type { ReactNode } from 'react'
+
 import { Box, Flex, ScrollArea } from '@mantine/core'
 
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
-import type { Children } from '@shared/types'
 import { Header } from '@widgets/header'
 import { Sidebar } from '@widgets/sidebar'
 
-export const LayoutHome = ({ children }: Children) => {
+export const LayoutHome = ({ children }: { children: ReactNode }) => {
 	const { isDark } = isDarkMode()
 	const color = isDark ? ThemeColors.secondDark : ThemeColors.secondLight
 

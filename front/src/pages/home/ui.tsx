@@ -4,11 +4,11 @@ import { AddProjects } from '@widgets/add-projects'
 import { AssignedTasks } from '@widgets/assigned-tasks'
 import { People } from '@widgets/people'
 import { PrivateChat } from '@widgets/private-chat'
-import { TotalStats } from '@widgets/total'
+import { StatsWorkspace } from '@widgets/stats-workspace'
 
 export const Home = () => (
 	<Flex gap={20} direction='column'>
-		<TotalStats />
+		<StatsWorkspace />
 		<Flex gap={20} justify='space-between'>
 			<AssignedTasks />
 			<AddProjects />

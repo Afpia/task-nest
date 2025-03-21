@@ -3,7 +3,7 @@ import { useUnit } from 'effector-react'
 
 import { Button, Flex, Modal, TextInput } from '@mantine/core'
 
-import { updatedProject } from '@shared/store'
+import { putProjected } from '@shared/store'
 import type { ProjectResponse } from '@shared/types'
 
 export const ModalUpdateProject = ({
@@ -16,11 +16,11 @@ export const ModalUpdateProject = ({
 	item: ProjectResponse | null
 }) => {
 	const [projectName, setProjectName] = useState('')
-	const [updateProject] = useUnit([updatedProject])
+	const [putProject] = useUnit([putProjected])
 
 	const updateProjectClick = () => {
 		close()
-		updateProject({ title: projectName, id: item!.id })
+		putProject({ title: projectName, id: item!.id })
 	}
 
 	useEffect(() => {
