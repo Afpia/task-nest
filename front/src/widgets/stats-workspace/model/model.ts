@@ -3,7 +3,7 @@ import { createStore, sample } from 'effector'
 import { createQuery } from '@farfetched/core'
 
 import { $isAuth } from '@shared/auth'
-import { $currentWorkspace, getUserWorkspacesFx } from '@shared/store'
+import { $currentWorkspace, getUserWorkspacesFx, postTaskProjectFx } from '@shared/store'
 
 import { getWorkspaceTasks } from '../api'
 
@@ -16,7 +16,7 @@ const getWorkspaceTasksFx = createQuery({
 })
 
 sample({
-	clock: [$currentWorkspace, getUserWorkspacesFx.finished.success],
+	clock: [$currentWorkspace, getUserWorkspacesFx.finished.success, postTaskProjectFx.doneData],
 	source: $currentWorkspace,
 	fn: (source) => source.id,
 	target: getWorkspaceTasksFx.start

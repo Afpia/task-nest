@@ -13,7 +13,6 @@ import {
 	Input,
 	MultiSelect,
 	Tabs,
-	TagsInput,
 	Text,
 	Textarea,
 	Title,
@@ -116,7 +115,7 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 							</Text>
 						</Flex>
 						<MultiSelect
-							data={[{ label: 'hello', value: 'hello' }]}
+							data={[{ label: 'Я', value: 'i am' }]}
 							variant='unstyled'
 							w='calc(100% - 160px)'
 							clearable
@@ -146,7 +145,7 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 							valueFormat='YYYY-MM-DD'
 						/>
 					</Flex>
-					<Flex>
+					{/* <Flex>
 						<Flex align='center' gap={8} w={160}>
 							<Text c={theme.colors.gray[6]} fz={16}>
 								Тэги
@@ -160,7 +159,7 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 							clearable
 							placeholder='Введите максимум 3 тэга'
 						/>
-					</Flex>
+					</Flex> */}
 					<Flex gap={10} direction='column'>
 						<Flex align='center'>
 							<Text c={theme.colors.gray[6]} fz={16} w={160}>

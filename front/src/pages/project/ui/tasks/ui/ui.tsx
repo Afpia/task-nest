@@ -17,6 +17,8 @@ export const Tasks = () => {
 	const [opened, { open, close }] = useDisclosure(false)
 	const { isDark } = isDarkMode()
 
+	console.log(tasks)
+
 	return (
 		<>
 			<Box

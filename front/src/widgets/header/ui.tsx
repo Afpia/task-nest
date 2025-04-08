@@ -1,10 +1,9 @@
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
-import { LogOut, Settings, UserRoundPlus } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 
 import { Avatar, Divider, Flex, Menu, Skeleton, Text, Title } from '@mantine/core'
 
-import { SidebarSearch } from '@features/search'
 import { $username, allUserExpired } from '@shared/auth'
 import { router, routes } from '@shared/config'
 import { $avatar, getUserAvatarFx } from '@shared/store'
@@ -40,13 +39,13 @@ export const Header = () => {
 				<Text>{headerSchema?.[normalizedPath]?.subtitle}</Text>
 			</Flex>
 			<Flex align='center' gap={20}>
-				<SidebarSearch />
-				<Divider my='xs' size='xs' orientation='vertical' />
-				<UserRoundPlus />
+				{/* <SidebarSearch /> */}
+				{/* <Divider my='xs' size='xs' orientation='vertical' /> */}
+				{/* <UserRoundPlus />
 				<Link style={{ color: 'inherit', height: '24px' }} to={routes.private.account}>
 					<Settings />
-				</Link>
-				<Divider my='xs' size='xs' orientation='vertical' />
+				</Link> */}
+				{/* <Divider my='xs' size='xs' orientation='vertical' /> */}
 				<Menu
 					trigger='hover'
 					width={200}
@@ -69,9 +68,9 @@ export const Header = () => {
 								{username}
 							</Title>
 						</Flex>
-						<Menu.Item component={Link} leftSection={<Settings />} to={routes.private.account}>
+						{/* <Menu.Item component={Link} leftSection={<Settings />} to={routes.private.account}>
 							Настройки
-						</Menu.Item>
+						</Menu.Item> */}
 						<Divider my={4} variant='dashed' />
 						<Menu.Item c='red' variant='outline' leftSection={<LogOut />} onClick={onExit}>
 							Выйти

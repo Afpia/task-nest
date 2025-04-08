@@ -34,7 +34,7 @@ class TaskController extends Controller
         foreach($tasks as $task){
             $task->users()->sync($task->users->pluck('id'));
         }
-        
+
         return response()->json($tasks);
     }
 
@@ -82,6 +82,8 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
+        $task->users()->detach();
+
         $task->delete();
 
         return response()->json($task, 200);

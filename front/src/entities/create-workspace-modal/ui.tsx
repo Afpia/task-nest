@@ -1,12 +1,17 @@
 import { useRef, useState } from 'react'
+import { useUnit } from 'effector-react'
 
 import { Avatar, Button, Flex, Group, Modal, MultiSelect, Select, Text, TextInput } from '@mantine/core'
 import type { FileWithPath } from '@mantine/dropzone'
 import { Dropzone } from '@mantine/dropzone'
 
+import { createdWorkspace } from '@shared/store'
+
 export const ModalCreateWorkspace = ({ opened, close }: { opened: boolean; close: () => void }) => {
 	const [workspaceName, setWorkspaceName] = useState('')
 	const [file, setFile] = useState<FileWithPath[]>([])
+	const [createWorkspace] = useUnit([createdWorkspace])
+
 	const openRef = useRef<() => void>(null)
 
 	// const [createProject] = useUnit([createdProject])
@@ -14,7 +19,7 @@ export const ModalCreateWorkspace = ({ opened, close }: { opened: boolean; close
 	const createWorkspaceClick = () => {
 		close()
 		// setProjectName('Проект')
-		// createProject(projectName)
+		createWorkspace(workspaceName)
 	}
 
 	const onDrop = (files: FileWithPath[]) => {
