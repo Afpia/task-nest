@@ -70,7 +70,7 @@ sample({
 	source: $currentProject,
 	fn: (src, clk) => ({
 		params: { projectId: String(src.project.id) },
-		data: { ...clk, project_id: src.project.id, user_id: 1, start_date: '2024-12-21' }
+		data: { ...clk, project_id: src.project.id, user_id: 1, start_date: '2024-12-21', priority: 'Низкий' }
 	}),
 	target: postTaskProjectFx
 })

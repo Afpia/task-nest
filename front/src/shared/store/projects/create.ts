@@ -24,7 +24,7 @@ sample({
 	source: $currentWorkspace,
 	fn: (source, clock) => ({
 		params: { workspaceId: source.id },
-		data: { title: clock }
+		data: { title: clock, start_date: new Date().toISOString().split('T')[0], end_date: new Date().toISOString().split('T')[0] }
 	}),
 	target: postProjectWorkspaceFx.start
 })
