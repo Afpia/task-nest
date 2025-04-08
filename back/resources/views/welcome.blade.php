@@ -7,8 +7,6 @@
     <title>Document</title>
 </head>
 
-<body>
-    <img src="./storage/app/public/avatars/wBV5mpg02N.jpg" alt="">
-</body>
+<h1>dfdf</h1>
 
 </html>

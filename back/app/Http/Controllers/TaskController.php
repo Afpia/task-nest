@@ -112,7 +112,7 @@ class TaskController extends Controller
     public function updateStatus(Request $request, Task $task)
     {
         $validate = $request->validate([
-            'status' => 'required|in:Назначена,Выполняется,Завершена',
+            'status' => 'required|in:Назначена,Выполняется,Завершена,Просрочена,Приостановлена'
         ]);
 
         $this->taskService->updateTask($validate, $task);
