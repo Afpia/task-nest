@@ -37,9 +37,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/search', [UserController::class, 'search']);
 
+    Route::patch('/user/info', [UserController::class, 'updateProfile']);
 
 
-    //executor 
+
+    //executor
     Route::middleware('role:executor')->group(function () {
         //workspaces routes
         Route::get('/workspace/{workspace}', [WorkspaceController::class, 'show']);

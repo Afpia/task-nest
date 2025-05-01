@@ -12,7 +12,7 @@ export const routes = {
 		forgotPassword: createRoute()
 	},
 	private: {
-		profile: createRoute(),
+		profile: createRoute<{ userId: string }>(),
 		account: createRoute(),
 		account_personal: createRoute(),
 		account_password: createRoute(),

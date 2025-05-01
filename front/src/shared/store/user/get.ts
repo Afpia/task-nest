@@ -7,33 +7,33 @@ import { $isAuth } from '@shared/auth'
 import { privateRouteOpened } from '@shared/config'
 import { notifyError } from '@shared/helpers'
 
-import { $avatar } from './store'
+import { $user } from './store'
 
-export const getUserAvatarFx = createQuery({
-	name: 'getUserAvatar',
-	handler: () => getUserInfo({ config: { params: { columns: 'avatar_url' } } }),
+export const getUserFx = createQuery({
+	name: 'getUser',
+	handler: () => getUserInfo({ config: {} }),
 	enabled: $isAuth
 })
 
 sample({
 	clock: privateRouteOpened,
-	source: $avatar,
-	filter: $avatar.map((avatar) => !avatar),
-	target: getUserAvatarFx.start
+	source: $user,
+	filter: $user.map((user) => !user.id),
+	target: getUserFx.start
 })
 
 sample({
-	clock: getUserAvatarFx.finished.success,
-	fn: ({ result }) => result.data.avatar_url,
-	target: $avatar
+	clock: getUserFx.finished.success,
+	fn: ({ result }) => result.data,
+	target: $user
 })
 
 sample({
-	clock: getUserAvatarFx.finished.failure,
+	clock: getUserFx.finished.failure,
 	fn: () => {
 		notifyError({
 			title: 'Ошибка',
-			message: 'Аватарка не была получена'
+			message: 'Пользователь не был получен'
 		})
 	}
 })

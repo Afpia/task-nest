@@ -1,17 +1,17 @@
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
-import { LogOut } from 'lucide-react'
+import { LogOut, Settings } from 'lucide-react'
 
 import { Avatar, Divider, Flex, Menu, Skeleton, Text, Title } from '@mantine/core'
 
 import { $username, allUserExpired } from '@shared/auth'
 import { router, routes } from '@shared/config'
-import { $avatar, getUserAvatarFx } from '@shared/store'
+import { $user, getUserFx } from '@shared/store'
 
 import { headerSchema } from './model'
 
 export const Header = () => {
-	const [avatar, username, onExit, avatarLoading] = useUnit([$avatar, $username, allUserExpired, getUserAvatarFx.$pending])
+	const [user, username, onExit, userLoading] = useUnit([$user, $username, allUserExpired, getUserFx.$pending])
 	const [currentPath] = useUnit([router.$path])
 
 	const normalizedPath = currentPath.replace(/\/\d+$/, '')
@@ -56,21 +56,25 @@ export const Header = () => {
 					// offset={16}
 				>
 					<Menu.Target>
-						<Link to={routes.private.profile}>
-							{!avatarLoading && <Avatar radius='xl' size='46' src={avatar} variant='default' />}
-							{avatarLoading && <Skeleton height={46} radius='xl' width={46} />}
-						</Link>
+						<Flex>
+							{!userLoading && (
+								<Link params={{ userId: user.id.toString() }} to={routes.private.profile}>
+									<Avatar radius='xl' size='46' src={user.avatar_url} variant='default' />
+								</Link>
+							)}
+							{userLoading && <Skeleton height={46} radius='xl' width={46} />}
+						</Flex>
 					</Menu.Target>
 					<Menu.Dropdown>
 						<Flex align='center' justify='center' pt={10} direction='column'>
-							<Avatar mb={10} radius='xl' size='46' src={avatar} variant='default' />
+							<Avatar mb={10} radius='xl' size='46' src={user.avatar_url} variant='default' />
 							<Title fw={600} mb={10} size={14} order={3}>
 								{username}
 							</Title>
 						</Flex>
-						{/* <Menu.Item component={Link} leftSection={<Settings />} to={routes.private.account}>
+						<Menu.Item component={Link} leftSection={<Settings />} to={routes.private.account}>
 							Настройки
-						</Menu.Item> */}
+						</Menu.Item>
 						<Divider my={4} variant='dashed' />
 						<Menu.Item c='red' variant='outline' leftSection={<LogOut />} onClick={onExit}>
 							Выйти

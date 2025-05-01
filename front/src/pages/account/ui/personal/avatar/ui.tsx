@@ -5,7 +5,7 @@ import { Avatar, Button, Flex, Group, Text } from '@mantine/core'
 import { Dropzone, type FileWithPath } from '@mantine/dropzone'
 import type { UseFormReturnType } from '@mantine/form'
 
-import { $avatar } from '@shared/store'
+import { $user } from '@shared/store'
 
 export const AvatarChange = ({
 	form
@@ -16,18 +16,16 @@ export const AvatarChange = ({
 			surname: string
 			avatar: string
 			about: string
-			pronouns: string
 		},
-		(values: { name: string; surname: string; avatar: string; about: string; pronouns: string }) => {
+		(values: { name: string; surname: string; avatar: string; about: string }) => {
 			name: string
 			surname: string
 			avatar: string
 			about: string
-			pronouns: string
 		}
 	>
 }) => {
-	const [avatar] = useUnit([$avatar])
+	const [user] = useUnit([$user])
 	const [file, setFile] = useState<FileWithPath[]>([])
 	const openRef = useRef<() => void>(null)
 
@@ -41,7 +39,7 @@ export const AvatarChange = ({
 	const clearFile = () => {
 		setFile([])
 		form.setValues({
-			avatar
+			avatar: user.avatar_url
 		})
 	}
 

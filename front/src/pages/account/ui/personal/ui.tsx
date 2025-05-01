@@ -1,12 +1,11 @@
 import { useEffect } from 'react'
 import { useUnit } from 'effector-react'
 
-import { Box, Button, Divider, Flex, Select, Skeleton, Text, Textarea, TextInput, Title } from '@mantine/core'
+import { Box, Button, Divider, Flex, Skeleton, Text, Textarea, TextInput, Title } from '@mantine/core'
 import { useForm } from '@mantine/form'
 
 import { AccountLayout } from '@app/layouts'
-import { $username } from '@shared/auth'
-import { $avatar, getUserAvatarFx } from '@shared/store'
+import { $user, getUserFx } from '@shared/store'
 
 import { AvatarChange } from './avatar'
 
@@ -14,32 +13,32 @@ interface Form {
 	about: string
 	avatar: string
 	name: string
-	pronouns: string
 	surname: string
 }
 
 export const Personal = () => {
-	const [user, avatar, loading] = useUnit([$username, $avatar, getUserAvatarFx.$pending])
+	const [user, loading] = useUnit([$user, getUserFx.$pending])
 
 	const form = useForm({
 		mode: 'controlled',
-		initialValues: { name: '', surname: '', avatar: '', about: '', pronouns: 'Не важно' }
+		initialValues: { name: '', surname: '', avatar: '', about: '' }
 		// validate: zodResolver(ProfileScheme)
 	})
 
 	useEffect(() => {
 		if (!loading && user) {
-			const surname = user?.split(' ')[1]
-			const name = user?.split(' ')[0]
+			const surname = user.name?.split(' ')[1]
+			const name = user.name?.split(' ')[0]
+
 			form.setValues({
 				name,
 				surname,
-				avatar
+				avatar: user.avatar_url
 				// about: '',
 				// newPassword: ''
 			})
 		}
-	}, [user, avatar])
+	}, [user])
 
 	const onClickForm = (values: Form) => {
 		// loginError(form)
@@ -76,7 +75,7 @@ export const Personal = () => {
 					</Flex>
 				</Box>
 				<Divider mb={20} mt={20} w='100%' />
-				<Box>
+				{/* <Box>
 					<Flex w='100%' direction='column'>
 						<Title fw={600} mb={10} size={14} order={3}>
 							Произношение
@@ -88,8 +87,8 @@ export const Personal = () => {
 							{...form.getInputProps('pronouns')}
 						/>
 					</Flex>
-				</Box>
-				<Divider mb={20} mt={20} w='100%' />
+				</Box> */}
+				{/* <Divider mb={20} mt={20} w='100%' /> */}
 				<Flex justify='flex-end' w='100%'>
 					<Button bg='rgb(64, 192, 87)' radius='lg' type='submit'>
 						Сохранить

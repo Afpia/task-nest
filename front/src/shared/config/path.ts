@@ -1,7 +1,7 @@
 export const path = {
 	LOGIN: '/login',
 	SIGNUP: '/signup',
-	PROFILE: '/profile',
+	PROFILE: '/profile/:userId',
 	ANALYTICS: '/analytics',
 	NOTICES: '/notices',
 	FORGOT_PASSWORD: '/forgot-password',

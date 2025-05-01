@@ -8,10 +8,10 @@ import { modals } from '@mantine/modals'
 
 import { $username } from '@shared/auth'
 import { routes } from '@shared/config'
-import { $avatar, getUserAvatarFx } from '@shared/store'
+import { $user, getUserFx } from '@shared/store'
 
 export const AccountLayout = ({ children }: { children: ReactNode }) => {
-	const [username, avatar, loading] = useUnit([$username, $avatar, getUserAvatarFx.$pending])
+	const [username, user, loading] = useUnit([$username, $user, getUserFx.$pending])
 
 	const openDeleteModal = () =>
 		modals.openConfirmModal({
@@ -29,18 +29,31 @@ export const AccountLayout = ({ children }: { children: ReactNode }) => {
 
 	return (
 		<Container w={860}>
-			<Flex align='center' justify='space-between' mb={20}>
-				<Flex align='center' gap={20}>
-					{!loading && <Avatar radius='xl' size={60} src={avatar} />}
-					{loading && <Skeleton height={60} radius='xl' width={60} />}
-					<Anchor c='pink' fz={16} component={Link} to={routes.private.profile}>
-						{username}
-					</Anchor>
+			{loading && <Skeleton height={60} mb={20} radius='xl' />}
+			{!loading && (
+				<Flex align='center' justify='space-between' mb={20}>
+					<Flex align='center' gap={20}>
+						<Avatar radius='xl' size={60} src={user.avatar_url} />
+						<Anchor
+							c='pink'
+							fz={16}
+							params={{ userId: user?.id?.toString() ?? '' }}
+							component={Link}
+							to={routes.private.profile as unknown as string}
+						>
+							{username}
+						</Anchor>
+					</Flex>
+					<Button
+						params={{ userId: user?.id?.toString() ?? '' }}
+						variant='light'
+						component={Link}
+						to={routes.private.profile as unknown as string}
+					>
+						Перейти в профиль
+					</Button>
 				</Flex>
-				<Button variant='light' component={Link} to={routes.private.profile}>
-					Перейти в профиль
-				</Button>
-			</Flex>
+			)}
 			<Flex>
 				<Flex miw='210' direction='column'>
 					<NavLink

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Services\QueryService;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProfileUpdateRequest;
 
 class UserController extends Controller
 {
@@ -56,6 +57,27 @@ class UserController extends Controller
         $workspaces = $user->workspaces;
 
         return response()->json($workspaces);
+    }
+
+    // public function updateEmail(Request $request)
+    // {
+    //     $user = $request->user();
+    //     $user->email = $request->email;
+    //     $user->save();
+
+    //     return response()->json([
+    //         // 'message' => 'Email успешно обновлён',
+    //         'email' => $user->email
+    //     ]);
+    // }
+
+    public function updateProfile(ProfileUpdateRequest $request)
+    {
+        $user = $request->user();
+        $user->fill($request->validated());
+        $user->save();
+
+        return response()->json($user);
     }
 
     public function search()
