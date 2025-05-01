@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Services\QueryService;
 use Illuminate\Http\Request;
+use App\Services\ImageService;
 use App\Http\Requests\ProfileUpdateRequest;
 
 class UserController extends Controller
@@ -71,9 +72,16 @@ class UserController extends Controller
     //     ]);
     // }
 
-    public function updateProfile(ProfileUpdateRequest $request)
+    public function updateProfile(ProfileUpdateRequest $request, ImageService $images)
     {
         $user = $request->user();
+
+        dd($request);
+        if ($request->hasFile('avatar_url')) {
+            $path = $images->saveImage('avatar', $request->file('avatar_url'));
+            $user->avatar_url = $path;
+        }
+
         $user->fill($request->validated());
         $user->save();
 

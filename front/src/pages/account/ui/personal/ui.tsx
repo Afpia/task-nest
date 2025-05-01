@@ -5,7 +5,8 @@ import { Box, Button, Divider, Flex, Skeleton, Text, Textarea, TextInput, Title 
 import { useForm } from '@mantine/form'
 
 import { AccountLayout } from '@app/layouts'
-import { $user, getUserFx } from '@shared/store'
+import { api } from '@shared/api'
+import { $user, getUserFx, patchUser } from '@shared/store'
 
 import { AvatarChange } from './avatar'
 
@@ -17,7 +18,7 @@ interface Form {
 }
 
 export const Personal = () => {
-	const [user, loading] = useUnit([$user, getUserFx.$pending])
+	const [user, loadingUser] = useUnit([$user, getUserFx.$pending, patchUser])
 
 	const form = useForm({
 		mode: 'controlled',
@@ -26,7 +27,7 @@ export const Personal = () => {
 	})
 
 	useEffect(() => {
-		if (!loading && user) {
+		if (!loadingUser && user) {
 			const surname = user.name?.split(' ')[1]
 			const name = user.name?.split(' ')[0]
 
@@ -35,65 +36,68 @@ export const Personal = () => {
 				surname,
 				avatar: user.avatar_url
 				// about: '',
-				// newPassword: ''
 			})
 		}
 	}, [user])
 
-	const onClickForm = (values: Form) => {
+	// console.log('profile', form.values)
+
+	const onClickForm = async (values: Form) => {
 		// loginError(form)
-		// login({ data: values })
-		console.log('update profile', values)
+		const formData = new FormData()
+		console.log(values.avatar)
+		formData.append('avatar_url', values.avatar)
+		formData.append('name', `${values.name} ${values.surname}`)
+
+		console.log('click', formData)
+		await api
+			.patch(`user/info`, formData, {
+				headers: { 'Content-Type': 'multipart/form-data' }
+			})
+			.then((res) => console.log(res))
+		// updateUser(formData)
+		// console.log('update profile', values)
 	}
 
 	return (
 		<AccountLayout>
 			<form onSubmit={form.onSubmit((values) => onClickForm(values))}>
-				{form.getValues().avatar === '' && <Skeleton h='127px' mb={20} style={{ borderRadius: '10px' }} w='100%' />}
-				{!(form.getValues().avatar === '') && <AvatarChange form={form} />}
-				<Box>
-					<Flex justify='space-between' w='100%'>
-						<Title fw={600} mb={10} size={14} order={3}>
-							Полное имя
-						</Title>
-					</Flex>
-					<Flex align='start' gap={20} h='100%' justify='start' w='100%'>
-						<TextInput label='Имя' radius='md' w='48%' {...form.getInputProps('name')} />
-						<TextInput label='Фамилия' radius='md' w='48%' {...form.getInputProps('surname')} />
-					</Flex>
-				</Box>
-				<Divider mb={20} mt={20} w='100%' />
-				<Box>
-					<Flex w='100%' direction='column'>
-						<Title fw={600} mb={10} size={14} order={3}>
-							О себе
-						</Title>
-						<Text mb={14} size='14px'>
-							Расскажите о немного о себе
-						</Text>
-						<Textarea w='48%' {...form.getInputProps('about')} />
-					</Flex>
-				</Box>
-				<Divider mb={20} mt={20} w='100%' />
-				{/* <Box>
-					<Flex w='100%' direction='column'>
-						<Title fw={600} mb={10} size={14} order={3}>
-							Произношение
-						</Title>
-						<Select
-							data={['Не важно', 'он/его', 'она/её', 'они/их']}
-							w='48%'
-							allowDeselect={false}
-							{...form.getInputProps('pronouns')}
-						/>
-					</Flex>
-				</Box> */}
-				{/* <Divider mb={20} mt={20} w='100%' /> */}
-				<Flex justify='flex-end' w='100%'>
-					<Button bg='rgb(64, 192, 87)' radius='lg' type='submit'>
-						Сохранить
-					</Button>
-				</Flex>
+				{loadingUser && <Skeleton h='470px' mb={20} style={{ borderRadius: '10px' }} w='100%' />}
+				{!loadingUser && (
+					<>
+						<AvatarChange form={form} />
+						<Box>
+							<Flex justify='space-between' w='100%'>
+								<Title fw={600} mb={10} size={14} order={3}>
+									Полное имя
+								</Title>
+							</Flex>
+							<Flex align='start' gap={20} h='100%' justify='start' w='100%'>
+								<TextInput label='Имя' radius='md' w='48%' {...form.getInputProps('name')} />
+								<TextInput label='Фамилия' radius='md' w='48%' {...form.getInputProps('surname')} />
+							</Flex>
+						</Box>
+						<Divider mb={20} mt={20} w='100%' />
+						<Box>
+							<Flex w='100%' direction='column'>
+								<Title fw={600} mb={10} size={14} order={3}>
+									О себе
+								</Title>
+								<Text mb={14} size='14px'>
+									Расскажите о немного о себе
+								</Text>
+								<Textarea w='48%' {...form.getInputProps('about')} />
+							</Flex>
+						</Box>
+						<Divider mb={20} mt={20} w='100%' />
+						{/* <Divider mb={20} mt={20} w='100%' /> */}
+						<Flex justify='flex-end' w='100%'>
+							<Button bg='rgb(64, 192, 87)' radius='lg' type='submit'>
+								Сохранить
+							</Button>
+						</Flex>
+					</>
+				)}
 			</form>
 		</AccountLayout>
 	)

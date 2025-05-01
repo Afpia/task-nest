@@ -31,15 +31,16 @@ export const AvatarChange = ({
 
 	const onDrop = (files: FileWithPath[]) => {
 		setFile(files)
+		// console.log('onDrop', formData)
 		form.setValues({
-			avatar: URL.createObjectURL(files[0])
+			avatar: files[0] as unknown as string
 		})
 	}
 
 	const clearFile = () => {
 		setFile([])
 		form.setValues({
-			avatar: user.avatar_url
+			avatar: user.avatar_url as string
 		})
 	}
 
@@ -54,6 +55,7 @@ export const AvatarChange = ({
 			accept={['image/png', 'image/jpeg']}
 			activateOnClick={false}
 			bg='default'
+			itemType='file'
 			maxSize={5 * 1024 ** 2}
 			mb={20}
 			multiple={false}

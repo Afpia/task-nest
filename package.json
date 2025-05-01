@@ -39,5 +39,6 @@
 		"front/**/*.{json,yaml,yml,toml}": [
 			"prettier  --write --config ./front/prettier.config.js"
 		]
-	}
+	},
+	"packageManager": "bun@1.2.0"
 }
