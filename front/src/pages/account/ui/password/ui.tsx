@@ -1,28 +1,33 @@
+import { useUnit } from 'effector-react'
 import { Lock } from 'lucide-react'
 
 import { Button, Divider, Flex, PasswordInput, Text, Title } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useForm, zodResolver } from '@mantine/form'
 
 import { AccountLayout } from '@app/layouts'
+import { patchUser, patchUserFx, updateFormed } from '@shared/store'
+
+import { PasswordScheme } from './schema'
 
 interface Form {
-	newPassword: string
+	current_password: string
 	password: string
 }
 
 export const Password = () => {
+	const [updateUser, updateError, loadingUpdate] = useUnit([patchUser, updateFormed, patchUserFx.$pending])
+
 	const form = useForm({
 		mode: 'controlled',
-		initialValues: { password: '', newPassword: '' }
-		// validate: {
-		// 	newPassword: (value, values) => (value !== values.password ? 'Пароль не совпадает' : null)
-		// }
+		initialValues: { password: '', current_password: '' },
+		validate: zodResolver(PasswordScheme)
 	})
 
 	const onClickForm = (values: Form) => {
-		// loginError(form)
-		// login({ data: values })
-		console.log('update profile', values)
+		updateError(form)
+
+		updateUser({ password: values.password, current_password: values.current_password })
+		form.reset()
 	}
 
 	return (
@@ -37,12 +42,18 @@ export const Password = () => {
 					</Text>
 				</Flex>
 				<Flex align='start' gap={20} justify='start' w='100%'>
-					<PasswordInput label='Текущий пароль' radius='md' w='48%' {...form.getInputProps('password')} leftSection={<Lock />} />
-					<PasswordInput label='Новый пароль' radius='md' w='48%' {...form.getInputProps('newPassword')} leftSection={<Lock />} />
+					<PasswordInput
+						label='Текущий пароль'
+						radius='md'
+						w='48%'
+						{...form.getInputProps('current_password')}
+						leftSection={<Lock />}
+					/>
+					<PasswordInput label='Новый пароль' radius='md' w='48%' {...form.getInputProps('password')} leftSection={<Lock />} />
 				</Flex>
 				<Divider mb={20} mt={20} w='100%' />
 				<Flex justify='flex-end' w='100%'>
-					<Button bg='rgb(64, 192, 87)' radius='lg' type='submit'>
+					<Button bg='rgb(64, 192, 87)' disabled={loadingUpdate || !form.isDirty()} radius='lg' type='submit'>
 						Сохранить
 					</Button>
 				</Flex>

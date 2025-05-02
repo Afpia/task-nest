@@ -1,5 +1,5 @@
 export const redirects = {
-	github: `http://localhost:8081/api/auth/github/redirect`,
-	yandex: `http://localhost:8081/api/auth/yandex/redirect`,
-	google: `http://localhost:8081/api/auth/google/redirect`
+	github: `${import.meta.env.VITE_BACKEND}/api/auth/github/redirect`,
+	yandex: `${import.meta.env.VITE_BACKEND}/api/auth/yandex/redirect`,
+	google: `${import.meta.env.VITE_BACKEND}/api/auth/google/redirect`
 }

@@ -6,7 +6,7 @@ import { Button, Divider, Flex, Skeleton, Text, TextInput, Title } from '@mantin
 import { useForm, zodResolver } from '@mantine/form'
 
 import { AccountLayout } from '@app/layouts'
-import { $user, getUserFx, patchUser, patchUserFx } from '@shared/store'
+import { $user, getUserFx, patchUser, patchUserFx, updateFormed } from '@shared/store'
 
 import { AccountScheme } from '../model'
 
@@ -15,7 +15,13 @@ interface Form {
 }
 
 export const Account = () => {
-	const [user, loadingUser, updateUser, loadingUpdate] = useUnit([$user, getUserFx.$pending, patchUser, patchUserFx.$pending])
+	const [user, loadingUser, updateUser, loadingUpdate, updateError] = useUnit([
+		$user,
+		getUserFx.$pending,
+		patchUser,
+		patchUserFx.$pending,
+		updateFormed
+	])
 
 	const form = useForm({
 		mode: 'controlled',
@@ -23,9 +29,8 @@ export const Account = () => {
 		validate: zodResolver(AccountScheme)
 	})
 
-	// TODO: Сделать вывод ошибок в форме с бека
 	const onClickForm = (values: Form) => {
-		// loginError(form)
+		updateError(form)
 		updateUser({
 			email: values.email
 		})

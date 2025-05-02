@@ -5,6 +5,7 @@ import { Avatar, Button, Flex, Group, Text } from '@mantine/core'
 import { Dropzone, type FileWithPath } from '@mantine/dropzone'
 import type { UseFormReturnType } from '@mantine/form'
 
+import { AvatarSrc } from '@shared/helpers'
 import { $user } from '@shared/store'
 
 export const AvatarChange = ({
@@ -31,7 +32,6 @@ export const AvatarChange = ({
 
 	const onDrop = (files: FileWithPath[]) => {
 		setFile(files)
-		// console.log('onDrop', formData)
 		form.setValues({
 			avatar: files[0] as unknown as string
 		})
@@ -56,7 +56,7 @@ export const AvatarChange = ({
 			activateOnClick={false}
 			bg='default'
 			itemType='file'
-			maxSize={5 * 1024 ** 2}
+			maxSize={2 * 1024 ** 2}
 			mb={20}
 			multiple={false}
 			p={20}
@@ -69,10 +69,10 @@ export const AvatarChange = ({
 		>
 			<Flex align='center' h='100%' justify='space-between' w='100%'>
 				<Flex align='center' gap={20} justify='start'>
-					<Avatar radius='100%' size='85' src={preview[0] || form.getValues().avatar} variant='default' />
+					<Avatar radius='100%' size='85' src={preview[0] || AvatarSrc(form.getValues().avatar)} variant='default' />
 					<Flex align='flex-start' gap={10} h='100%' justify='center' direction='column'>
 						<Text>Фотография профиля</Text>
-						<Text>PNG, JPG меньше 5 МБ</Text>
+						<Text>PNG, JPG меньше 2 МБ</Text>
 					</Flex>
 				</Flex>
 				<Group justify='center'>

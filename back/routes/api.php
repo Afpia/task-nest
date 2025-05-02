@@ -37,7 +37,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/search', [UserController::class, 'search']);
 
-    Route::patch('/user/info', [UserController::class, 'updateProfile']);
+    Route::post('/user/info', [UserController::class, 'updateProfile']);
+    // Route::post('/user/info', [UserController::class, 'updateProfileAvatar']);
 
 
 

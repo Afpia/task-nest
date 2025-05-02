@@ -1,10 +1,11 @@
+import { redirect } from 'atomic-router'
 import { sample } from 'effector'
 
 import { createQuery } from '@farfetched/core'
 
 import { getCurrentProject, getProjectsWorkspace } from '@shared/api'
 import { $isAuth } from '@shared/auth'
-import { privateProjectRouteParams } from '@shared/config'
+import { privateProjectRouteParams, routes } from '@shared/config'
 import { notifyError } from '@shared/helpers'
 
 import { $currentWorkspace, changedWorkspace, getUserWorkspacesFx } from '../workspaces'
@@ -45,6 +46,11 @@ sample({
 			message: 'Текущий проект не был получен'
 		})
 	}
+})
+
+redirect({
+	clock: getCurrentProjectFx.finished.failure,
+	route: routes.private.home
 })
 
 // Получение всех проектов

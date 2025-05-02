@@ -18,12 +18,13 @@ export interface UserInfoParams {
 
 export interface UserFieldData {
 	avatar_url: string
-	created_at: string
+	current_password: string
 	email: string
 	name: string
+	password: string
 }
 
-export type UserFieldPartialData = Partial<UserFieldData>
+export type UserFieldPartialData = FormData | Partial<UserFieldData>
 
 export type GetUserInfoConfig = AxiosRequestConfig
 

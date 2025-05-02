@@ -6,6 +6,7 @@ import { Avatar, Divider, Flex, Menu, Skeleton, Text, Title } from '@mantine/cor
 
 import { $username, allUserExpired } from '@shared/auth'
 import { router, routes } from '@shared/config'
+import { AvatarSrc } from '@shared/helpers'
 import { $user, getUserFx } from '@shared/store'
 
 import { headerSchema } from './model'
@@ -41,11 +42,11 @@ export const Header = () => {
 			<Flex align='center' gap={20}>
 				{/* <SidebarSearch /> */}
 				{/* <Divider my='xs' size='xs' orientation='vertical' /> */}
-				{/* <UserRoundPlus />
+				{/* <UserRoundPlus /> */}
 				<Link style={{ color: 'inherit', height: '24px' }} to={routes.private.account}>
 					<Settings />
-				</Link> */}
-				{/* <Divider my='xs' size='xs' orientation='vertical' /> */}
+				</Link>
+				<Divider my='xs' size='xs' orientation='vertical' />
 				<Menu
 					trigger='hover'
 					width={200}
@@ -59,7 +60,7 @@ export const Header = () => {
 						<Flex>
 							{!userLoading && (
 								<Link params={{ userId: user.id.toString() }} to={routes.private.profile}>
-									<Avatar radius='xl' size='46' src={user.avatar_url} variant='default' />
+									<Avatar radius='xl' size='46' src={AvatarSrc(user.avatar_url)} variant='default' />
 								</Link>
 							)}
 							{userLoading && <Skeleton height={46} radius='xl' width={46} />}
@@ -67,7 +68,7 @@ export const Header = () => {
 					</Menu.Target>
 					<Menu.Dropdown>
 						<Flex align='center' justify='center' pt={10} direction='column'>
-							<Avatar mb={10} radius='xl' size='46' src={user.avatar_url} variant='default' />
+							<Avatar mb={10} radius='xl' size='46' src={AvatarSrc(user.avatar_url)} variant='default' />
 							<Title fw={600} mb={10} size={14} order={3}>
 								{username}
 							</Title>

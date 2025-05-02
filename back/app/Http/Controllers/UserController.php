@@ -7,6 +7,7 @@ use App\Services\QueryService;
 use Illuminate\Http\Request;
 use App\Services\ImageService;
 use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -60,29 +61,25 @@ class UserController extends Controller
         return response()->json($workspaces);
     }
 
-    // public function updateEmail(Request $request)
-    // {
-    //     $user = $request->user();
-    //     $user->email = $request->email;
-    //     $user->save();
-
-    //     return response()->json([
-    //         // 'message' => 'Email успешно обновлён',
-    //         'email' => $user->email
-    //     ]);
-    // }
-
     public function updateProfile(ProfileUpdateRequest $request, ImageService $images)
     {
         $user = $request->user();
+        $data = $request->validated();
 
-        dd($request);
         if ($request->hasFile('avatar_url')) {
             $path = $images->saveImage('avatar', $request->file('avatar_url'));
             $user->avatar_url = $path;
+            $user->save();
+        } else if(isset($data['password'])) {
+            if (!Hash::check($data['current_password'], $user->password)) {
+                return response()->json([
+                    'message' => 'Текущий пароль неверен'
+                ], 422);
+            }
+            $data['password'] = Hash::make($data['password']);
         }
 
-        $user->fill($request->validated());
+        $user->fill($data);
         $user->save();
 
         return response()->json($user);

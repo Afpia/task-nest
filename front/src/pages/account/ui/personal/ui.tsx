@@ -5,7 +5,6 @@ import { Box, Button, Divider, Flex, Skeleton, Text, Textarea, TextInput, Title 
 import { useForm } from '@mantine/form'
 
 import { AccountLayout } from '@app/layouts'
-import { api } from '@shared/api'
 import { $user, getUserFx, patchUser } from '@shared/store'
 
 import { AvatarChange } from './avatar'
@@ -18,7 +17,7 @@ interface Form {
 }
 
 export const Personal = () => {
-	const [user, loadingUser] = useUnit([$user, getUserFx.$pending, patchUser])
+	const [user, loadingUser, updateUser] = useUnit([$user, getUserFx.$pending, patchUser])
 
 	const form = useForm({
 		mode: 'controlled',
@@ -40,23 +39,14 @@ export const Personal = () => {
 		}
 	}, [user])
 
-	// console.log('profile', form.values)
-
-	const onClickForm = async (values: Form) => {
+	const onClickForm = (values: Form) => {
 		// loginError(form)
 		const formData = new FormData()
-		console.log(values.avatar)
-		formData.append('avatar_url', values.avatar)
+		if ((values.avatar as any) instanceof File) formData.append('avatar_url', values.avatar)
 		formData.append('name', `${values.name} ${values.surname}`)
 
-		console.log('click', formData)
-		await api
-			.patch(`user/info`, formData, {
-				headers: { 'Content-Type': 'multipart/form-data' }
-			})
-			.then((res) => console.log(res))
-		// updateUser(formData)
-		// console.log('update profile', values)
+		updateUser(formData)
+		form.reset()
 	}
 
 	return (
