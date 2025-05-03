@@ -19,6 +19,10 @@ return new class extends Migration {
             $table->string('password')->nullable();
             $table->rememberToken();
             $table->string('avatar_url')->nullable();
+            $table->text('about')->nullable();
+            $table->string('login')->unique();
+            $table->string('city')->nullable();
+            $table->string('background_url')->nullable();
             $table->timestamps();
         });
     }

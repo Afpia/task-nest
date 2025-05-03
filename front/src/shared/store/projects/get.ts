@@ -48,6 +48,7 @@ sample({
 	}
 })
 
+// MB: redirect на страницу несуществующего проекта
 redirect({
 	clock: getCurrentProjectFx.finished.failure,
 	route: routes.private.home

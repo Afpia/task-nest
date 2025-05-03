@@ -1,6 +1,6 @@
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
-import { LogOut, Settings } from 'lucide-react'
+import { LogOut, Settings, UserRoundPlus } from 'lucide-react'
 
 import { Avatar, Divider, Flex, Menu, Skeleton, Text, Title } from '@mantine/core'
 
@@ -9,40 +9,29 @@ import { router, routes } from '@shared/config'
 import { AvatarSrc } from '@shared/helpers'
 import { $user, getUserFx } from '@shared/store'
 
-import { headerSchema } from './model'
+import { resolveHeader } from './model'
 
 export const Header = () => {
 	const [user, username, onExit, userLoading] = useUnit([$user, $username, allUserExpired, getUserFx.$pending])
 	const [currentPath] = useUnit([router.$path])
+	const [{ userId }] = useUnit([routes.private.profile.$params])
 
-	const normalizedPath = currentPath.replace(/\/\d+$/, '')
+	const { title, subtitle } = resolveHeader(currentPath, userId, user)
 
 	return (
-		<Flex
-			align='center'
-			h={80}
-			justify='space-between'
-			mt={10}
-			px={20}
-			py={10}
-			// className={styles.header}
-			// style={{ borderRadius: '10px 10px 0 0' }}
-			// pos='sticky'
-			// bg={'#fff'}
-			// style={{ zIndex: 100 }}
-			// top={0}
-			w='100%'
-		>
+		<Flex align='center' h={80} justify='space-between' mt={10} px={20} py={10} w='100%'>
 			<Flex direction='column'>
 				<Title size={28} order={1}>
-					{headerSchema?.[normalizedPath]?.title}
+					{title}
 				</Title>
-				<Text>{headerSchema?.[normalizedPath]?.subtitle}</Text>
+				<Text>{subtitle}</Text>
 			</Flex>
 			<Flex align='center' gap={20}>
 				{/* <SidebarSearch /> */}
-				{/* <Divider my='xs' size='xs' orientation='vertical' /> */}
-				{/* <UserRoundPlus /> */}
+				<Divider my='xs' size='xs' orientation='vertical' />
+				<Link style={{ color: 'inherit', height: '24px' }} to={routes.private.search}>
+					<UserRoundPlus />
+				</Link>
 				<Link style={{ color: 'inherit', height: '24px' }} to={routes.private.account}>
 					<Settings />
 				</Link>
@@ -54,7 +43,6 @@ export const Header = () => {
 					openDelay={100}
 					position='bottom-end'
 					transitionProps={{ transition: 'pop', duration: 200 }}
-					// offset={16}
 				>
 					<Menu.Target>
 						<Flex>

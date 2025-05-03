@@ -77,16 +77,33 @@ class UserController extends Controller
                 ], 422);
             }
             $data['password'] = Hash::make($data['password']);
+
+            $user->fill($data);
+            $user->save();
+        } else {
+            $user->fill($data);
+            $user->save();
         }
 
-        $user->fill($data);
-        $user->save();
 
         return response()->json($user);
     }
 
-    public function search()
+    public function search(Request $request)
     {
-        //
+        $term = $request->email ?? '';
+
+
+        if ($term === '') {
+            return response()->noContent();
+        }
+
+        $users = User::where('email', 'LIKE', "%{$term}%")->get();
+
+        if ($users->isEmpty()) {
+            return response()->noContent();
+        }
+
+        return response()->json($users);
     }
 }

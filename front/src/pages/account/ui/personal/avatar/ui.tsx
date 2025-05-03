@@ -17,12 +17,14 @@ export const AvatarChange = ({
 			surname: string
 			avatar: string
 			about: string
+			city: string
 		},
-		(values: { name: string; surname: string; avatar: string; about: string }) => {
+		(values: { name: string; surname: string; avatar: string; about: string; city: string }) => {
 			name: string
 			surname: string
 			avatar: string
 			about: string
+			city: string
 		}
 	>
 }) => {
@@ -35,6 +37,7 @@ export const AvatarChange = ({
 		form.setValues({
 			avatar: files[0] as unknown as string
 		})
+		form.setDirty({ avatar: true })
 	}
 
 	const clearFile = () => {
@@ -42,6 +45,7 @@ export const AvatarChange = ({
 		form.setValues({
 			avatar: user.avatar_url as string
 		})
+		form.setDirty({ avatar: false })
 	}
 
 	const preview = file.map((first) => {

@@ -3,6 +3,7 @@ export const path = {
 	SIGNUP: '/signup',
 	PROFILE: '/profile/:userId',
 	ANALYTICS: '/analytics',
+	SEARCH: '/search',
 	NOTICES: '/notices',
 	FORGOT_PASSWORD: '/forgot-password',
 	HOME: '/',

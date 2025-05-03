@@ -35,12 +35,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user/{user}', [UserController::class, 'view']);
 
-    Route::get('/search', [UserController::class, 'search']);
+    Route::get('/search/user', [UserController::class, 'search']);
 
     Route::post('/user/info', [UserController::class, 'updateProfile']);
-    // Route::post('/user/info', [UserController::class, 'updateProfileAvatar']);
-
-
 
     //executor
     Route::middleware('role:executor')->group(function () {

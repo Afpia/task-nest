@@ -1,28 +1,30 @@
 import { useEffect } from 'react'
 import { useUnit } from 'effector-react'
 
-import { Box, Button, Divider, Flex, Skeleton, Text, Textarea, TextInput, Title } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { Box, Button, Divider, Flex, Skeleton, Textarea, TextInput, Title } from '@mantine/core'
+import { useForm, zodResolver } from '@mantine/form'
 
 import { AccountLayout } from '@app/layouts'
-import { $user, getUserFx, patchUser } from '@shared/store'
+import { $user, getUserFx, patchUser, patchUserFx } from '@shared/store'
 
 import { AvatarChange } from './avatar'
+import { PersonalScheme } from './schema'
 
 interface Form {
 	about: string
 	avatar: string
+	city: string
 	name: string
 	surname: string
 }
 
 export const Personal = () => {
-	const [user, loadingUser, updateUser] = useUnit([$user, getUserFx.$pending, patchUser])
+	const [user, loadingUser, updateUser, loadingUpdate] = useUnit([$user, getUserFx.$pending, patchUser, patchUserFx.$pending])
 
 	const form = useForm({
 		mode: 'controlled',
-		initialValues: { name: '', surname: '', avatar: '', about: '' }
-		// validate: zodResolver(ProfileScheme)
+		initialValues: { name: '', surname: '', avatar: '', about: '', city: '' },
+		validate: zodResolver(PersonalScheme)
 	})
 
 	useEffect(() => {
@@ -33,12 +35,15 @@ export const Personal = () => {
 			form.setValues({
 				name,
 				surname,
-				avatar: user.avatar_url
-				// about: '',
+				avatar: user.avatar_url,
+				about: '',
+				city: ''
 			})
+			form.setInitialValues({ name, surname, avatar: user.avatar_url, about: '', city: '' })
 		}
 	}, [user])
 
+	// FIXME: Сделать вывод ошибок, пока лень
 	const onClickForm = (values: Form) => {
 		// loginError(form)
 		const formData = new FormData()
@@ -73,16 +78,22 @@ export const Personal = () => {
 								<Title fw={600} mb={10} size={14} order={3}>
 									О себе
 								</Title>
-								<Text mb={14} size='14px'>
-									Расскажите о немного о себе
-								</Text>
-								<Textarea w='48%' {...form.getInputProps('about')} />
+								<Textarea
+									label='Расскажите о немного о себе'
+									radius='md'
+									w='48%'
+									placeholder='Люблю занимать творчеством...'
+									{...form.getInputProps('about')}
+									mb={10}
+								/>
+							</Flex>
+							<Flex w='100%' direction='column'>
+								<TextInput label='Город' radius='md' w='48%' placeholder='Уфа' {...form.getInputProps('city')} />
 							</Flex>
 						</Box>
 						<Divider mb={20} mt={20} w='100%' />
-						{/* <Divider mb={20} mt={20} w='100%' /> */}
 						<Flex justify='flex-end' w='100%'>
-							<Button bg='rgb(64, 192, 87)' radius='lg' type='submit'>
+							<Button bg='rgb(64, 192, 87)' disabled={loadingUpdate || !form.isDirty()} radius='lg' type='submit'>
 								Сохранить
 							</Button>
 						</Flex>
