@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/info/avatar', [UserController::class, 'avatar']);
     Route::get('/user/workspaces', [UserController::class, 'workspaces']);
 
-    Route::get('/user/{user}', [UserController::class, 'view']);
+    Route::get('/user/{user:login}', [UserController::class, 'view']);
 
     Route::get('/search/user', [UserController::class, 'search']);
 

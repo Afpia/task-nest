@@ -10,13 +10,13 @@ import utc from 'dayjs/plugin/utc'
 import { Avatar, Box, Container, Flex, Image, Skeleton, Text, Title } from '@mantine/core'
 
 import { AvatarSrc } from '@shared/helpers'
-import { $userId, getUserIdFx } from '@shared/store'
+import { $userLogin, getUserLoginFx } from '@shared/store'
 
 dayjs.extend(utc)
 dayjs.locale('ru')
 
 export const Profile = () => {
-	const [user, loadingUser] = useUnit([$userId, getUserIdFx.$pending])
+	const [user, loadingUser] = useUnit([$userLogin, getUserLoginFx.$pending])
 
 	return (
 		<Flex align='center' gap='20' justify='center' w='100%' direction='column'>
@@ -24,7 +24,11 @@ export const Profile = () => {
 			{!loadingUser && (
 				<Container w={860}>
 					<Box pos='relative'>
-						<Image h={200} radius='md' src='https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png' />
+						<Image
+							h={200}
+							radius='md'
+							src={user.background_url ?? 'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-10.png'}
+						/>
 						<Avatar left={30} size={150} src={AvatarSrc(user.avatar_url)} variant='filled' pos='absolute' top={80} />
 					</Box>
 					<Flex justify='space-between' mt={35}>
@@ -41,7 +45,7 @@ export const Profile = () => {
 							<Flex gap='10' direction='column'>
 								<Flex align='center' gap='10'>
 									<MapPin />
-									<Text>Санкт-Петербург</Text>
+									<Text>{user.city ?? 'Город не указан'}</Text>
 								</Flex>
 								<Flex align='center' gap='10'>
 									<Mail />
@@ -49,9 +53,14 @@ export const Profile = () => {
 								</Flex>
 							</Flex>
 						</Flex>
-						<Title size={24} order={2}>
-							О себе
-						</Title>
+						<Flex w={260} direction='column'>
+							<Title size={24} order={2}>
+								О себе
+							</Title>
+							<Text lh={2} m={0} size='sm'>
+								{user.about ?? 'Пользователь ничего не написал о себе'}
+							</Text>
+						</Flex>
 					</Flex>
 				</Container>
 			)}

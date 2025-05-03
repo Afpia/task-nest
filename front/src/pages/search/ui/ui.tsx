@@ -11,13 +11,13 @@ import { useDebounce } from '@shared/hooks'
 import { $userSearch, queriedUser } from '@shared/store'
 import type { UserFieldResponse } from '@shared/types'
 
-const AccordionLabel = ({ avatar_url, name, email, id }: UserFieldResponse) => (
+const AccordionLabel = ({ avatar_url, name, email, login }: UserFieldResponse) => (
 	<Group wrap='nowrap'>
-		<Link params={{ userId: id?.toString() ?? '' }} to={routes.private.profile}>
+		<Link params={{ userLogin: login }} to={routes.private.profile}>
 			<Avatar radius='xl' size='lg' src={AvatarSrc(avatar_url)} />
 		</Link>
 		<div>
-			<Link params={{ userId: id?.toString() ?? '' }} to={routes.private.profile}>
+			<Link params={{ userLogin: login }} to={routes.private.profile}>
 				<Text>{name}</Text>
 			</Link>
 			<Text c='dimmed' fw={400} size='sm'>

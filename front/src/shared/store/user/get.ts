@@ -3,12 +3,12 @@ import { createEvent, sample } from 'effector'
 
 import { createQuery } from '@farfetched/core'
 
-import { getUserId, getUserInfo, getUserSearch } from '@shared/api'
+import { getUserInfo, getUserLogin, getUserSearch } from '@shared/api'
 import { $isAuth } from '@shared/auth'
 import { privateProfileRouteParams, privateRouteOpened, routes } from '@shared/config'
 import { notifyError } from '@shared/helpers'
 
-import { $user, $userId, $userSearch } from './store'
+import { $user, $userLogin, $userSearch } from './store'
 
 export const queriedUser = createEvent<string>()
 export const clearedUserSearch = createEvent()
@@ -21,14 +21,14 @@ export const getUserFx = createQuery({
 	enabled: $isAuth
 })
 
-export const getUserIdFx = createQuery({
-	name: 'getUserId',
-	handler: (userId: string) => getUserId({ params: { userId } }),
+export const getUserLoginFx = createQuery({
+	name: 'getUserLogin',
+	handler: (userLogin: string) => getUserLogin({ params: { userLogin } }),
 	enabled: $isAuth
 })
 
 export const getUserSearchFx = createQuery({
-	name: 'getUserId',
+	name: 'getUserSearch',
 	handler: ({ config }) => getUserSearch({ config }),
 	enabled: $isAuth
 })
@@ -67,20 +67,20 @@ sample({
 
 sample({
 	clock: privateProfileRouteParams,
-	source: $userId,
-	filter: (source, clock) => source?.id !== Number(clock.userId),
-	fn: (_, clk) => clk.userId,
-	target: getUserIdFx.start
+	source: $userLogin,
+	filter: (source, clock) => source?.login !== clock.userLogin,
+	fn: (_, clk) => clk.userLogin,
+	target: getUserLoginFx.start
 })
 
 sample({
-	clock: getUserIdFx.finished.success,
+	clock: getUserLoginFx.finished.success,
 	fn: (clock) => clock.result.data,
-	target: $userId
+	target: $userLogin
 })
 
 sample({
-	clock: getUserIdFx.finished.failure,
+	clock: getUserLoginFx.finished.failure,
 	fn: () => {
 		notifyError({
 			title: 'Ошибка',
@@ -92,7 +92,7 @@ sample({
 // MB: redirect на страницу несуществующего пользователя
 
 redirect({
-	clock: getUserIdFx.finished.failure,
+	clock: getUserLoginFx.finished.failure,
 	route: routes.private.home
 })
 

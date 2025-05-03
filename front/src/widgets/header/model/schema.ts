@@ -23,11 +23,11 @@ export const headerSchema = {
 	}
 }
 
-export const resolveHeader = (pathname: string, userId?: string, user?: UserFieldResponse) => {
+export const resolveHeader = (pathname: string, userLogin?: string, user?: UserFieldResponse) => {
 	const normalized = pathname.replace(/\/\d+$/, '')
 
-	if (normalized === path.PROFILE.replace(/\/:userId$/, '')) {
-		if (userId && user?.id !== null && String(user?.id) === userId) {
+	if (normalized.replace(/\/[^/]+$/, '') === path.PROFILE.replace(/\/:userLogin$/, '')) {
+		if (userLogin && user?.login !== null && user?.login === userLogin) {
 			return {
 				title: 'Мой профиль',
 				subtitle: 'Просмотр своего публичного профиля'

@@ -11,9 +11,9 @@ import { AvatarChange } from './avatar'
 import { PersonalScheme } from './schema'
 
 interface Form {
-	about: string
+	about: string | null
 	avatar: string
-	city: string
+	city: string | null
 	name: string
 	surname: string
 }
@@ -36,10 +36,10 @@ export const Personal = () => {
 				name,
 				surname,
 				avatar: user.avatar_url,
-				about: '',
-				city: ''
+				about: user.about ?? '',
+				city: user.city ?? ''
 			})
-			form.setInitialValues({ name, surname, avatar: user.avatar_url, about: '', city: '' })
+			form.setInitialValues({ name, surname, avatar: user.avatar_url, about: user.about ?? '', city: user.city ?? '' })
 		}
 	}, [user])
 
@@ -49,6 +49,8 @@ export const Personal = () => {
 		const formData = new FormData()
 		if ((values.avatar as any) instanceof File) formData.append('avatar_url', values.avatar)
 		formData.append('name', `${values.name} ${values.surname}`)
+		formData.append('about', values.about ?? '')
+		formData.append('city', values.city ?? '')
 
 		updateUser(formData)
 		form.reset()
@@ -81,6 +83,7 @@ export const Personal = () => {
 								<Textarea
 									label='Расскажите о немного о себе'
 									radius='md'
+									styles={{ input: { height: '180px' } }}
 									w='48%'
 									placeholder='Люблю занимать творчеством...'
 									{...form.getInputProps('about')}

@@ -28,7 +28,6 @@ class UserController extends Controller
 
     public function view(Request $request, User $user)
     {
-
         $columns = $request->input('columns', '*');
         $user = $this->queryService->selectColumns($user->newQuery(), $columns)->find($user->id);
         return response()->json($user);
@@ -69,7 +68,8 @@ class UserController extends Controller
         if ($request->hasFile('avatar_url')) {
             $path = $images->saveImage('avatar', $request->file('avatar_url'));
             $user->avatar_url = $path;
-            $user->save();
+            $user->saveQuietly();
+
         } else if(isset($data['password'])) {
             if (!Hash::check($data['current_password'], $user->password)) {
                 return response()->json([
@@ -78,11 +78,9 @@ class UserController extends Controller
             }
             $data['password'] = Hash::make($data['password']);
 
-            $user->fill($data);
-            $user->save();
+            $user->updateQuietly($data);
         } else {
-            $user->fill($data);
-            $user->save();
+            $user->updateQuietly($data);
         }
 
 
@@ -92,13 +90,13 @@ class UserController extends Controller
     public function search(Request $request)
     {
         $term = $request->email ?? '';
-
+        $currentUserId = $request->user()->id;
 
         if ($term === '') {
             return response()->noContent();
         }
 
-        $users = User::where('email', 'LIKE', "%{$term}%")->get();
+        $users = User::where('email', 'LIKE', "%{$term}%")->where('id', '!=', $currentUserId)->get();
 
         if ($users->isEmpty()) {
             return response()->noContent();

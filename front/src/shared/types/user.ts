@@ -16,12 +16,8 @@ export interface UserFieldResponse {
 	updated_at: string
 }
 
-// export interface UserInfoParams {
-// 	columns?: keyof UserFieldResponse
-// }
-
-export interface UserIdParams {
-	userId: string
+export interface UserLoginParams {
+	userLogin: string
 }
 
 export interface UserFieldData {
@@ -36,6 +32,6 @@ export type UserFieldPartialData = FormData | Partial<UserFieldData>
 
 export type GetUserInfoConfig = AxiosRequestConfig
 export type GetUserSearchConfig = AxiosRequestConfig
-export type GetUserIdConfig = AxiosRequestConfig<UserIdParams>
+export type GetUserLoginConfig = AxiosRequestConfig<UserLoginParams>
 
 export type PatchUserInfoConfig = AxiosRequestConfig<undefined, UserFieldPartialData>

@@ -7,6 +7,7 @@ use App\Models\DisposableToken;
 use Laravel\Socialite\Facades\Socialite;
 use App\Services\AvatarService;
 use App\Services\TokenService;
+use TaylorNetwork\UsernameGenerator\Generator;
 use Illuminate\Support\Facades\Hash;
 use Str;
 
@@ -15,6 +16,11 @@ class AuthService
     private $avatarService;
     private $tokenService;
     private $workspaceService;
+
+    protected function generateUniqueLogin(string $name)
+    {
+        return Generator::generate($name);
+    }
 
     public function __construct(ImageService $avatarService, TokenService $tokenService, WorkspaceService $workspaceService)
     {

@@ -38,7 +38,7 @@ export const AccountLayout = ({ children }: { children: ReactNode }) => {
 						<Anchor
 							c='pink'
 							fz={16}
-							params={{ userId: user?.id?.toString() ?? '' }}
+							params={{ userLogin: user?.login ?? '' }}
 							component={Link}
 							to={routes.private.profile as unknown as string}
 						>
@@ -46,7 +46,7 @@ export const AccountLayout = ({ children }: { children: ReactNode }) => {
 						</Anchor>
 					</Flex>
 					<Button
-						params={{ userId: user?.id?.toString() ?? '' }}
+						params={{ userLogin: user?.login ?? '' }}
 						variant='light'
 						component={Link}
 						to={routes.private.profile as unknown as string}

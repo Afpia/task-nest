@@ -1,7 +1,7 @@
 import { api } from '@shared/api'
 import type {
-	GetUserIdConfig,
 	GetUserInfoConfig,
+	GetUserLoginConfig,
 	GetUserSearchConfig,
 	PatchUserInfoConfig,
 	UserFieldResponse
@@ -13,7 +13,7 @@ export const getUserInfo = async ({ config }: GetUserInfoConfig) => api.get<User
 export const patchUserInfo = async ({ config, data }: PatchUserInfoConfig) =>
 	api.post<UserFieldResponse>(`user/info`, data, config)
 
-export const getUserId = async ({ config, params }: GetUserIdConfig) =>
-	api.get<UserFieldResponse>(`user/${params.userId}`, config)
+export const getUserLogin = async ({ config, params }: GetUserLoginConfig) =>
+	api.get<UserFieldResponse>(`user/${params.userLogin}`, config)
 
 export const getUserSearch = async ({ config }: GetUserSearchConfig) => api.get<UserFieldResponse[]>(`search/user`, config)

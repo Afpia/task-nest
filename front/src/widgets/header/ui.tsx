@@ -14,9 +14,9 @@ import { resolveHeader } from './model'
 export const Header = () => {
 	const [user, username, onExit, userLoading] = useUnit([$user, $username, allUserExpired, getUserFx.$pending])
 	const [currentPath] = useUnit([router.$path])
-	const [{ userId }] = useUnit([routes.private.profile.$params])
+	const [{ userLogin }] = useUnit([routes.private.profile.$params])
 
-	const { title, subtitle } = resolveHeader(currentPath, userId, user)
+	const { title, subtitle } = resolveHeader(currentPath, userLogin, user)
 
 	return (
 		<Flex align='center' h={80} justify='space-between' mt={10} px={20} py={10} w='100%'>
@@ -47,7 +47,7 @@ export const Header = () => {
 					<Menu.Target>
 						<Flex>
 							{!userLoading && (
-								<Link params={{ userId: user.id.toString() }} to={routes.private.profile}>
+								<Link params={{ userLogin: user.login }} to={routes.private.profile}>
 									<Avatar radius='xl' size='46' src={AvatarSrc(user.avatar_url)} variant='default' />
 								</Link>
 							)}
