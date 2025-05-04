@@ -23,7 +23,8 @@ export interface Assignee {
 export interface TaskRequest {
 	description?: string
 	end_date?: string
-	start_date: string
+	files: FormData
+	// start_date: string
 	title: string
 }
 

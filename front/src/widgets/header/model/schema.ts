@@ -9,7 +9,7 @@ export const headerSchema = {
 	},
 	[path.ACCOUNT_PASSWORD]: {
 		title: 'Настройки',
-		subtitle: 'Обновите текущий пароль для надёжной защиты ваших данных и учётной записи'
+		subtitle: 'Обновите текущий пароль для надёжной защиты ваших данных'
 	},
 	[path.ACCOUNT_PERSONAL]: {
 		title: 'Настройки',

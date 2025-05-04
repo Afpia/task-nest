@@ -7,6 +7,7 @@ import { getUserInfo, getUserLogin, getUserSearch } from '@shared/api'
 import { $isAuth } from '@shared/auth'
 import { privateProfileRouteParams, privateRouteOpened, routes } from '@shared/config'
 import { notifyError } from '@shared/helpers'
+import type { UserFieldResponse } from '@shared/types'
 
 import { $user, $userLogin, $userSearch } from './store'
 
@@ -52,7 +53,7 @@ sample({
 sample({
 	clock: getUserSearchFx.finished.success,
 	fn: (clock) => {
-		if (clock.result.status === 204) return []
+		if (clock.result.status === 204) return [{ message: 'NotFound' }] as unknown as UserFieldResponse[]
 		return clock.result.data
 	},
 	target: $userSearch

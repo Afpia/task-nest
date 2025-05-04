@@ -1,3 +1,5 @@
+import type { role } from '@shared/config'
+
 export interface UserResponse {
 	access_token: string
 	user: UserFieldResponse
@@ -14,6 +16,9 @@ export interface UserFieldResponse {
 	login: string
 	name: string
 	updated_at: string
+	pivot: {
+		role: (typeof role)[keyof typeof role]
+	}
 }
 
 export interface UserLoginParams {

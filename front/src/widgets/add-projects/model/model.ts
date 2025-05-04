@@ -1,7 +1,7 @@
 import { createEvent, createStore, sample } from 'effector'
 
 import { routes } from '@shared/config'
-import { $projects, getProjectsWorkspaceFx } from '@shared/store'
+import { $projects, createdTask, getProjectsWorkspaceFx } from '@shared/store'
 import type { ProjectResponse } from '@shared/types'
 
 export const $projectsWidget = createStore<ProjectResponse[]>([] as ProjectResponse[])
@@ -14,7 +14,7 @@ export const $activeProject = createStore<number | string | null>(null).on(chang
 const currentRoute = routes.private.home
 
 sample({
-	clock: [currentRoute.opened, getProjectsWorkspaceFx.$succeeded, $projects],
+	clock: [currentRoute.opened, getProjectsWorkspaceFx.finished.success, $projects, createdTask],
 	source: $projects,
 	fn(source) {
 		return [

@@ -9,14 +9,14 @@ import { getWorkspaceTasks } from '../api'
 
 export const $tasks = createStore<number>(0)
 
-const getWorkspaceTasksFx = createQuery({
+export const getWorkspaceTasksFx = createQuery({
 	name: 'getWorkspaceTasks',
 	handler: (workspaceId: string) => getWorkspaceTasks({ params: { workspaceId } }),
 	enabled: $isAuth
 })
 
 sample({
-	clock: [$currentWorkspace, getUserWorkspacesFx.finished.success, postTaskProjectFx.doneData],
+	clock: [$currentWorkspace, getUserWorkspacesFx.finished.success, postTaskProjectFx.finished.success],
 	source: $currentWorkspace,
 	fn: (source) => source.id,
 	target: getWorkspaceTasksFx.start

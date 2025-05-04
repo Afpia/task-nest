@@ -3,7 +3,7 @@ import { Trash } from 'lucide-react'
 
 import { ActionIcon, Badge, Checkbox, Flex, Progress, Table, Text } from '@mantine/core'
 
-import { deletedTaskProject } from '@shared/store/tasks/delete'
+import { deletedTaskProject } from '@shared/store'
 import type { TaskResponse } from '@shared/types'
 
 export const Row = ({ tasks }: { tasks: TaskResponse[] }) => {

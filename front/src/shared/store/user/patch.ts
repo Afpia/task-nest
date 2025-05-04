@@ -9,7 +9,8 @@ import { $isAuth, $username } from '@shared/auth'
 import { handleError, notifySuccess } from '@shared/helpers'
 import type { UserFieldPartialData } from '@shared/types'
 
-import { $user } from './store'
+import { getUserLoginFx } from './get'
+import { $user, $userLogin } from './store'
 
 export const patchUser = createEvent<UserFieldPartialData>()
 
@@ -47,6 +48,13 @@ sample({
 	filter: (source, clock) => source !== clock.result.data.name,
 	fn: (_, clock) => clock.result.data.name,
 	target: $username
+})
+
+sample({
+	clock: patchUserFx.finished.success,
+	source: $userLogin,
+	fn: (source) => source.login,
+	target: getUserLoginFx.refresh
 })
 
 sample({

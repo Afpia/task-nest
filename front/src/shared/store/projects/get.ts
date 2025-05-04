@@ -8,7 +8,7 @@ import { $isAuth } from '@shared/auth'
 import { privateProjectRouteParams, routes } from '@shared/config'
 import { notifyError } from '@shared/helpers'
 
-import { $currentWorkspace, changedWorkspace, getUserWorkspacesFx } from '../workspaces'
+import { $currentWorkspace, changedWorkspace } from '../workspaces'
 
 import { $currentProject, $projects } from './store'
 
@@ -23,6 +23,8 @@ export const getCurrentProjectFx = createQuery({
 	handler: (projectId: string) => getCurrentProject({ params: { projectId } }),
 	enabled: $isAuth
 })
+
+// Получение проекта
 
 sample({
 	clock: privateProjectRouteParams,
@@ -57,9 +59,9 @@ redirect({
 // Получение всех проектов
 
 sample({
-	clock: [changedWorkspace, getUserWorkspacesFx.finished.success],
+	clock: [changedWorkspace, $currentWorkspace],
 	source: $currentWorkspace,
-	fn: (source) => source.id,
+	fn: (source) => source.id.toString(),
 	target: getProjectsWorkspaceFx.start
 })
 

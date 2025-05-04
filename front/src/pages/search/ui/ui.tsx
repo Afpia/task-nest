@@ -3,12 +3,14 @@ import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 import { SearchIcon } from 'lucide-react'
 
-import { Accordion, Avatar, Container, Flex, Group, Input, Text } from '@mantine/core'
+import { Accordion, Avatar, Container, Flex, Group, Image, Input, Text } from '@mantine/core'
 
+import search_not_found from '@app/assets/svg/search-not-found.svg'
+import search_people from '@app/assets/svg/search-people.svg'
 import { routes } from '@shared/config'
 import { AvatarSrc } from '@shared/helpers'
 import { useDebounce } from '@shared/hooks'
-import { $userSearch, queriedUser } from '@shared/store'
+import { $userSearch, clearedUserSearch, queriedUser } from '@shared/store'
 import type { UserFieldResponse } from '@shared/types'
 
 const AccordionLabel = ({ avatar_url, name, email, login }: UserFieldResponse) => (
@@ -28,12 +30,13 @@ const AccordionLabel = ({ avatar_url, name, email, login }: UserFieldResponse) =
 )
 
 export const Search = () => {
-	const [queryUser, users] = useUnit([queriedUser, $userSearch])
+	const [queryUser, users, clearUserSearch] = useUnit([queriedUser, $userSearch, clearedUserSearch])
 	const [email, setEmail] = useState('')
 
 	const debouncedEmail = useDebounce(email, 500)
 
 	useEffect(() => {
+		if (!debouncedEmail) return clearUserSearch()
 		queryUser(debouncedEmail)
 	}, [debouncedEmail])
 
@@ -63,9 +66,13 @@ export const Search = () => {
 					onChange={(e) => setEmail(e.target.value)}
 					placeholder='Поиск по почте'
 				/>
-				<Accordion miw={600} variant='contained' chevronPosition='right'>
-					{items}
-				</Accordion>
+				{!(users.length > 0 && 'message' in users[0]) && (
+					<Accordion miw={600} variant='contained' chevronPosition='right'>
+						{items}
+					</Accordion>
+				)}
+				{users.length === 0 && <Image h={350} radius='md' src={search_people} w={350} />}
+				{users.length > 0 && 'message' in users[0] && <Image h={350} radius='md' src={search_not_found} w={350} />}
 			</Flex>
 		</Container>
 	)

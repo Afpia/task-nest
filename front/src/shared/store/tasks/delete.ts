@@ -9,12 +9,12 @@ import type { DeleteTaskProjectConfig } from '@shared/types'
 
 import { $currentProject } from '../projects'
 
-import { getTasksProjectFx } from '.'
+import { getTasksProjectFx } from './get'
 
 export const deletedTaskProject = createEvent<number>()
 
 const deleteTaskProjectFx = createMutation({
-	name: 'deleteTask',
+	name: 'deleteTaskProject',
 	handler: ({ params }: DeleteTaskProjectConfig) => deleteTaskProject({ params }),
 	enabled: $isAuth
 })
@@ -40,7 +40,7 @@ sample({
 			params: { projectId: String(source.project.id) }
 		}
 	},
-	target: getTasksProjectFx
+	target: getTasksProjectFx.start
 })
 
 sample({

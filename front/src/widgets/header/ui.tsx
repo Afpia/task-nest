@@ -4,6 +4,7 @@ import { LogOut, Settings, UserRoundPlus } from 'lucide-react'
 
 import { Avatar, Divider, Flex, Menu, Skeleton, Text, Title } from '@mantine/core'
 
+import { SidebarSearch } from '@features/search'
 import { $username, allUserExpired } from '@shared/auth'
 import { router, routes } from '@shared/config'
 import { AvatarSrc } from '@shared/helpers'
@@ -27,7 +28,7 @@ export const Header = () => {
 				<Text>{subtitle}</Text>
 			</Flex>
 			<Flex align='center' gap={20}>
-				{/* <SidebarSearch /> */}
+				<SidebarSearch />
 				<Divider my='xs' size='xs' orientation='vertical' />
 				<Link style={{ color: 'inherit', height: '24px' }} to={routes.private.search}>
 					<UserRoundPlus />
