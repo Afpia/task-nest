@@ -29,10 +29,12 @@ class WorkspaceService
 
         $workspace->image_url = $this->imageService->generateDefaultImage('workspace', $workspace->id);
         $workspace->save();
-        
+
         $userId = $userId ?: Auth::id();
 
         $this->manageUserInWorkspace($workspace, $userId, 'owner');
+
+        return $workspace;
     }
 
     public function updateWorkspace(array $data, Workspace $workspace)

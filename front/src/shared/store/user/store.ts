@@ -1,3 +1,7 @@
 import { createStore } from 'effector'
 
-export const $avatar = createStore<string>('')
+import type { UserFieldResponse } from '@shared/types'
+
+export const $user = createStore<UserFieldResponse>({} as UserFieldResponse)
+export const $userLogin = createStore<UserFieldResponse>({} as UserFieldResponse)
+export const $userSearch = createStore<UserFieldResponse[]>([] as UserFieldResponse[])

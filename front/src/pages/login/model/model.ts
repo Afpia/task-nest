@@ -72,14 +72,17 @@ sample({
 			const errorMessage = error?.response?.data?.message
 
 			if (errorMessage === 'Неверный пароль') {
-				handleError(form, 'Неверный пароль', { email: true, password: 'Неверный пароль' })
+				handleError(form, 'Неверный пароль', 'Мы не смогли войти в систему', { email: true, password: 'Неверный пароль' })
 			} else if (errorMessage === 'Email не найден') {
-				handleError(form, 'Такого пользователя не существует', { email: 'Такого пользователя не существует', password: true })
+				handleError(form, 'Такого пользователя не существует', 'Мы не смогли войти в систему', {
+					email: 'Такого пользователя не существует',
+					password: true
+				})
 			} else {
-				handleError(form, 'Что-то пошло не так AxiosError', { email: true, password: true })
+				handleError(form, 'Что-то пошло не так AxiosError', 'Мы не смогли войти в систему', { email: true, password: true })
 			}
 		} else {
-			handleError(form, 'Что-то пошло не так Error', { email: true, password: true })
+			handleError(form, 'Что-то пошло не так Error', 'Мы не смогли войти в систему', { email: true, password: true })
 		}
 	}
 })

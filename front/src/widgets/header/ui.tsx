@@ -7,42 +7,32 @@ import { Avatar, Divider, Flex, Menu, Skeleton, Text, Title } from '@mantine/cor
 import { SidebarSearch } from '@features/search'
 import { $username, allUserExpired } from '@shared/auth'
 import { router, routes } from '@shared/config'
-import { $avatar, getUserAvatarFx } from '@shared/store'
+import { SrcImage } from '@shared/helpers'
+import { $user, getUserFx } from '@shared/store'
 
-import { headerSchema } from './model'
+import { resolveHeader } from './model'
 
 export const Header = () => {
-	const [avatar, username, onExit, avatarLoading] = useUnit([$avatar, $username, allUserExpired, getUserAvatarFx.$pending])
+	const [user, username, onExit, userLoading] = useUnit([$user, $username, allUserExpired, getUserFx.$pending])
 	const [currentPath] = useUnit([router.$path])
+	const [{ userLogin }] = useUnit([routes.private.profile.$params])
 
-	const normalizedPath = currentPath.replace(/\/\d+$/, '')
+	const { title, subtitle } = resolveHeader(currentPath, userLogin, user)
 
 	return (
-		<Flex
-			align='center'
-			h={80}
-			justify='space-between'
-			mt={10}
-			px={20}
-			py={10}
-			// className={styles.header}
-			// style={{ borderRadius: '10px 10px 0 0' }}
-			// pos='sticky'
-			// bg={'#fff'}
-			// style={{ zIndex: 100 }}
-			// top={0}
-			w='100%'
-		>
+		<Flex align='center' h={80} justify='space-between' mt={10} px={20} py={10} w='100%'>
 			<Flex direction='column'>
 				<Title size={28} order={1}>
-					{headerSchema?.[normalizedPath]?.title}
+					{title}
 				</Title>
-				<Text>{headerSchema?.[normalizedPath]?.subtitle}</Text>
+				<Text>{subtitle}</Text>
 			</Flex>
 			<Flex align='center' gap={20}>
 				<SidebarSearch />
 				<Divider my='xs' size='xs' orientation='vertical' />
-				<UserRoundPlus />
+				<Link style={{ color: 'inherit', height: '24px' }} to={routes.private.search}>
+					<UserRoundPlus />
+				</Link>
 				<Link style={{ color: 'inherit', height: '24px' }} to={routes.private.account}>
 					<Settings />
 				</Link>
@@ -54,17 +44,20 @@ export const Header = () => {
 					openDelay={100}
 					position='bottom-end'
 					transitionProps={{ transition: 'pop', duration: 200 }}
-					// offset={16}
 				>
 					<Menu.Target>
-						<Link to={routes.private.profile}>
-							{!avatarLoading && <Avatar radius='xl' size='46' src={avatar} variant='default' />}
-							{avatarLoading && <Skeleton height={46} radius='xl' width={46} />}
-						</Link>
+						<Flex>
+							{!userLoading && (
+								<Link params={{ userLogin: user.login }} to={routes.private.profile}>
+									<Avatar radius='xl' size='46' src={SrcImage(user.avatar_url)} variant='default' />
+								</Link>
+							)}
+							{userLoading && <Skeleton height={46} radius='xl' width={46} />}
+						</Flex>
 					</Menu.Target>
 					<Menu.Dropdown>
 						<Flex align='center' justify='center' pt={10} direction='column'>
-							<Avatar mb={10} radius='xl' size='46' src={avatar} variant='default' />
+							<Avatar mb={10} radius='xl' size='46' src={SrcImage(user.avatar_url)} variant='default' />
 							<Title fw={600} mb={10} size={14} order={3}>
 								{username}
 							</Title>

@@ -8,6 +8,7 @@ import { LoginRoute } from './login'
 import { NotFound } from './not-found'
 import { ProfileRoute } from './profile'
 import { ProjectRoute } from './project'
+import { SearchRoute } from './search'
 import { SignupRoute } from './signup'
 
 export const Pages = createRoutesView({
@@ -21,6 +22,7 @@ export const Pages = createRoutesView({
 		AccountRoute,
 		AccountPersonalRoute,
 		AccountPasswordRoute,
+		SearchRoute,
 		AccountCustomizationRoute,
 		AnalyticsRoute
 	],

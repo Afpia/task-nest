@@ -13,7 +13,6 @@ import {
 	Input,
 	MultiSelect,
 	Tabs,
-	TagsInput,
 	Text,
 	Textarea,
 	Title,
@@ -26,7 +25,7 @@ import { useFullscreen } from '@mantine/hooks'
 import { isDarkMode } from '@shared/helpers'
 import { createdTask } from '@shared/store'
 
-import { ACCEPT, CreateTaskSchema, formatFileSize, iconMap, MAX_FILES, mimeToReadableType } from '../../model'
+import { ACCEPT, CreateTaskSchema, formatFileSize, iconMap, MAX_FILES, mimeToReadableType } from './model'
 
 export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened: boolean }) => {
 	const [createTask] = useUnit([createdTask])
@@ -37,18 +36,11 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 
 	const form = useForm({
 		mode: 'controlled',
-		initialValues: { title: '', description: '', end_date: '', tags: [], assignees: [], files: [] as File[] },
+		initialValues: { title: '', description: '', end_date: '', assignees: [], files: [] as File[] },
 		validate: zodResolver(CreateTaskSchema)
 	})
 
-	const onClickForm = (values: {
-		title: string
-		description?: string
-		end_date: any
-		tags: string[]
-		assignees: string[]
-		files: File[]
-	}) => {
+	const onClickForm = (values: { title: string; description?: string; end_date: any; assignees: string[]; files: File[] }) => {
 		const formData = new FormData()
 		form.values.files.forEach((f) => {
 			formData.append(`file`, f)
@@ -59,8 +51,7 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 			title: values.title,
 			description: values.description,
 			end_date: formattedDate,
-			// tags: values.tags,
-			start_date: ''
+			files: formData
 		})
 		close()
 		form.reset()
@@ -116,7 +107,7 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 							</Text>
 						</Flex>
 						<MultiSelect
-							data={[{ label: 'hello', value: 'hello' }]}
+							data={[{ label: 'Я', value: 'i am' }]}
 							variant='unstyled'
 							w='calc(100% - 160px)'
 							clearable
@@ -146,7 +137,7 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 							valueFormat='YYYY-MM-DD'
 						/>
 					</Flex>
-					<Flex>
+					{/* <Flex>
 						<Flex align='center' gap={8} w={160}>
 							<Text c={theme.colors.gray[6]} fz={16}>
 								Тэги
@@ -160,7 +151,7 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 							clearable
 							placeholder='Введите максимум 3 тэга'
 						/>
-					</Flex>
+					</Flex> */}
 					<Flex gap={10} direction='column'>
 						<Flex align='center'>
 							<Text c={theme.colors.gray[6]} fz={16} w={160}>

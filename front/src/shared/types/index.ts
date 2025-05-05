@@ -1,5 +1,5 @@
-export * from './auth'
 export * from './params'
 export * from './projects'
 export * from './tasks'
+export * from './user'
 export * from './workspace'

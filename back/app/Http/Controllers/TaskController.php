@@ -34,7 +34,7 @@ class TaskController extends Controller
         foreach($tasks as $task){
             $task->users()->sync($task->users->pluck('id'));
         }
-        
+
         return response()->json($tasks);
     }
 
@@ -82,6 +82,8 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
+        $task->users()->detach();
+
         $task->delete();
 
         return response()->json($task, 200);
@@ -112,7 +114,7 @@ class TaskController extends Controller
     public function updateStatus(Request $request, Task $task)
     {
         $validate = $request->validate([
-            'status' => 'required|in:Назначена,Выполняется,Завершена',
+            'status' => 'required|in:Назначена,Выполняется,Завершена,Просрочена,Приостановлена'
         ]);
 
         $this->taskService->updateTask($validate, $task);

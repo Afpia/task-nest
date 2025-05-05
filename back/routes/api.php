@@ -33,13 +33,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/info/avatar', [UserController::class, 'avatar']);
     Route::get('/user/workspaces', [UserController::class, 'workspaces']);
 
-    Route::get('/user/{user}', [UserController::class, 'view']);
+    Route::get('/user/{user:login}', [UserController::class, 'view']);
 
-    Route::get('/search', [UserController::class, 'search']);
+    Route::get('/search/user', [UserController::class, 'search']);
 
+    Route::post('/user/info', [UserController::class, 'updateProfile']);
+    Route::post('/user/info/background', [UserController::class, 'updateProfileBackground']);
 
-
-    //executor 
+    Route::get('/projects/tasks', [ProjectController::class, 'projectsTasks']);
+    //executor
     Route::middleware('role:executor')->group(function () {
         //workspaces routes
         Route::get('/workspace/{workspace}', [WorkspaceController::class, 'show']);
@@ -52,7 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
         //projects routes
         Route::get('/projects/{workspace}', [ProjectController::class, 'index']);
         Route::get('/project/{project}', [ProjectController::class, 'show']);
-        Route::get('/project/{project}/users', [ProjectController::class, 'projectUsers']);//после тасков
+        Route::get('/project/{project}/users', [ProjectController::class, 'projectUsers']); //после тасков
+
 
         //tasks routes
         Route::get('/my-tasks/{workspace}', [TaskController::class, 'myTasksInWorkspace']);

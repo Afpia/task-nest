@@ -1,22 +1,29 @@
 import { useUnit } from 'effector-react'
 import { ChartNoAxesGantt, CircleCheck, Plus } from 'lucide-react'
 
-import { Avatar, Flex, Select, Text } from '@mantine/core'
+import { Avatar, Flex, Select, Skeleton, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { ModalCreateWorkspace } from '@entities/create-workspace-modal'
-import { $currentWorkspace, $workspaces, changedWorkspace } from '@shared/store'
+import { $currentWorkspace, $workspaces, changedWorkspace, getUserWorkspacesFx } from '@shared/store'
 
 export const SelectWorkspace = () => {
-	const [workspaces, currentWorkspace, change] = useUnit([$workspaces, $currentWorkspace, changedWorkspace])
+	const [workspaces, currentWorkspace, change, loadingWorkspace] = useUnit([
+		$workspaces,
+		$currentWorkspace,
+		changedWorkspace,
+		getUserWorkspacesFx.$pending
+	])
 	const [opened, { open, close }] = useDisclosure(false)
+
+	if (loadingWorkspace) return <Skeleton h={36} radius='md' w={210} />
 
 	return (
 		<>
 			<Select
-				value={currentWorkspace.title}
+				value={currentWorkspace.id.toString()}
 				data={[
-					...workspaces.map((workspace) => ({ value: workspace.title, label: workspace.title })),
+					...workspaces.map((workspace) => ({ value: workspace.id.toString(), label: workspace.title })),
 
 					{
 						group: 'Другое',
@@ -52,7 +59,7 @@ export const SelectWorkspace = () => {
 								<Avatar
 									radius={6}
 									size={28}
-									src={workspaces.find((workspace) => workspace.title === item.option.value)?.image_url}
+									src={workspaces.find((workspace) => workspace.id.toString() === item.option.value)?.image_url}
 								/>
 								<Text
 									size='sm'

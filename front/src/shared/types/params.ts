@@ -9,3 +9,7 @@ export interface ProjectIdParams {
 export interface TaskIdParams {
 	taskId: string
 }
+
+export interface UserLoginParams {
+	userLogin: string
+}

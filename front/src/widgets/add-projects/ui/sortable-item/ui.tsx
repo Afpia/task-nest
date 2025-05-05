@@ -21,6 +21,8 @@ export const SortableItem = ({ id, title, image_url, tasks, open }: ProjectRespo
 		'--button-hover': 'none'
 	}
 
+	console.log(tasks)
+
 	if (isDragging) {
 		return (
 			<Button
@@ -44,7 +46,7 @@ export const SortableItem = ({ id, title, image_url, tasks, open }: ProjectRespo
 								{tasks.length}
 							</Text>
 						)}
-						{tasks?.length === 0 && (
+						{(tasks?.length === 0 || !tasks) && (
 							<Text fz={12} span={true}>
 								Задач нет
 							</Text>
@@ -109,7 +111,7 @@ export const SortableItem = ({ id, title, image_url, tasks, open }: ProjectRespo
 							{tasks.length}
 						</Text>
 					)}
-					{tasks?.length === 0 && (
+					{(tasks?.length === 0 || !tasks) && (
 						<Text fz={12} span={true}>
 							Задач нет
 						</Text>

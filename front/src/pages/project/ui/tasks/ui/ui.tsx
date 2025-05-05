@@ -7,13 +7,16 @@ import { useDisclosure } from '@mantine/hooks'
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
 import { $tasks, getCurrentProjectFx, getTasksProjectFx } from '@shared/store'
+import { CreateTaskDrawer } from '@widgets/create-task-drawer'
 
-import { CreateTaskDrawer } from './create-task-drawer'
 import { Row } from './row-table'
 
 export const Tasks = () => {
-	const [tasks, tasksProjectLoading] = useUnit([$tasks, getTasksProjectFx.pending])
-	const getCurrentProject = useUnit(getCurrentProjectFx)
+	const [tasks, tasksProjectLoading, currentProjectLoading] = useUnit([
+		$tasks,
+		getTasksProjectFx.$pending,
+		getCurrentProjectFx.$pending
+	])
 	const [opened, { open, close }] = useDisclosure(false)
 	const { isDark } = isDarkMode()
 
@@ -22,7 +25,6 @@ export const Tasks = () => {
 			<Box
 				bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
 				h='100%'
-				// mih='500px'
 				p={20}
 				style={{ borderRadius: '20px' }}
 				w='100%'
@@ -44,13 +46,10 @@ export const Tasks = () => {
 					</Flex>
 				</Flex>
 				<Divider my='lg' variant='dashed' />
-				{(tasksProjectLoading || getCurrentProject.pending) && (
-					// <Flex align='center' h={300} justify='center' w='100%' pos='absolute'>
-					// 	<Loading height={60} width={60} />
-					// </Flex>
+				{(tasksProjectLoading || currentProjectLoading) && (
 					<Skeleton height={250} style={{ borderRadius: '10px' }} width='100%' />
 				)}
-				{!(tasksProjectLoading || getCurrentProject.pending) && (
+				{!(tasksProjectLoading || currentProjectLoading) && (
 					<Box
 						bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
 						style={{ borderRadius: '10px', overflow: 'hidden' }}

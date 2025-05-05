@@ -109,14 +109,14 @@ sample({
 			const errorMessage = error?.response?.data?.message
 
 			if (errorMessage === 'email уже занят.') {
-				handleError(form, 'Такой пользователь уже зарегистрирован', {
+				handleError(form, 'Такой пользователь уже зарегистрирован', 'Мы не смогли войти в систему', {
 					email: 'Такой пользователь уже зарегистрирован',
 					password: true,
 					name: true,
 					surname: true
 				})
 			} else {
-				handleError(form, 'Что-то пошло не так AxiosError', {
+				handleError(form, 'Что-то пошло не так AxiosError', 'Мы не смогли войти в систему', {
 					email: true,
 					password: true,
 					name: true,
@@ -124,7 +124,7 @@ sample({
 				})
 			}
 		} else {
-			handleError(form, 'Что-то пошло не так Error', {
+			handleError(form, 'Что-то пошло не так Error', 'Мы не смогли войти в систему', {
 				email: true,
 				password: true,
 				name: true,

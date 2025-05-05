@@ -6,6 +6,7 @@ use App\Models\Workspace;
 use App\Services\QueryService;
 use App\Services\WorkspaceService;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class WorkspaceController extends Controller
 {
@@ -52,9 +53,12 @@ class WorkspaceController extends Controller
 
         $title = $validate['title'] ?? 'new Workspace';
 
-        $this->workspaceService->createWorkspace($title);
+        $workspace = $this->workspaceService->createWorkspace($title);
 
-        return response()->json(['message' => __('messages.add_success')], 201);
+        return response()->json([
+            'message' => __('messages.add_success'),
+            'workspace' => $workspace,
+        ], 201);
     }
 
     public function update(Request $request, Workspace $workspace)
@@ -80,14 +84,18 @@ class WorkspaceController extends Controller
     {
         $workspaceWithUsers = $workspace->load('users');
         $sanitizedUsers = $workspaceWithUsers->users->map(function ($user) use ($workspace) {
-            $role = $this->workspaceService->getUserRoleInWorkspace($workspace, $user->id);
-            return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'avatar' => $user->avatar_url,
-                'role' => $role,
-            ];
+            $data = $user->toArray();
+            // $role = $this->workspaceService->getUserRoleInWorkspace($workspace, $user->id);
+            // $data['role'] = $this->workspaceService
+            //                  ->getUserRoleInWorkspace($workspace, $user->id);
+            // return [
+            //     'id' => $user->id,
+            //     'name' => $user->name,
+            //     'email' => $user->email,
+            //     'avatar_url' => $user->avatar_url,
+            //     'role' => $role,
+            // ];
+            return $data;
         });
         return response()->json($sanitizedUsers);
     }
@@ -147,9 +155,29 @@ class WorkspaceController extends Controller
 
         $userId = $validate['user_id'];
 
+        $already = $workspace->users()
+        ->where('user_id', $userId)
+        ->exists();
+
+        if ($already) {
+            $user = User::find($userId);
+
+            return response()->json([
+                'message' => __('messages.user_already_added'),
+                'user'    => $user,
+            ], 409);
+        }
+
         $this->workspaceService->manageUserInWorkspace($workspace, $userId);
 
-        return response()->json(['message' => __('messages.user_added')], 201);
+        $workspace->load(['users' => fn($q) => $q->where('user_id', $userId)]);
+
+        $user = $workspace->users->first();
+
+        return response()->json([
+            'message' => __('messages.user_added'),
+            'user' => $user,
+        ], 201);
     }
 
     public function leave(Request $request, Workspace $workspace)
@@ -176,7 +204,10 @@ class WorkspaceController extends Controller
         }
 
         $this->workspaceService->deleteUserFromWorkspace($workspace, $targetUserId);
-        return response()->json(['message' => __('messages.success')], 202);
+
+        $user = User::findOrFail($targetUserId);
+
+        return response()->json(['message' => __('messages.success'), 'user' => $user,], 202);
     }
 
     public function getTasks(Workspace $workspace)

@@ -12,8 +12,9 @@ export const routes = {
 		forgotPassword: createRoute()
 	},
 	private: {
-		profile: createRoute(),
+		profile: createRoute<{ userLogin: string }>(),
 		account: createRoute(),
+		search: createRoute(),
 		account_personal: createRoute(),
 		account_password: createRoute(),
 		analytics: createRoute(),
@@ -77,6 +78,10 @@ export const mappedRoutes = [
 	{
 		route: routes.private.customization,
 		path: path.CUSTOMIZATION
+	},
+	{
+		route: routes.private.search,
+		path: path.SEARCH
 	}
 ]
 
@@ -84,6 +89,7 @@ const privateRoutes = Object.values(routes.private)
 export const privateRouteOpened = merge(privateRoutes.map((route) => route.opened))
 
 export const privateProjectRouteParams = routes.private.project.$params
+export const privateProfileRouteParams = routes.private.profile.$params
 
 export const controls = createRouterControls()
 
