@@ -170,7 +170,9 @@ class WorkspaceController extends Controller
 
         $this->workspaceService->manageUserInWorkspace($workspace, $userId);
 
-        $user = User::findOrFail($userId);
+        $workspace->load(['users' => fn($q) => $q->where('user_id', $userId)]);
+
+        $user = $workspace->users->first();
 
         return response()->json([
             'message' => __('messages.user_added'),
@@ -202,7 +204,10 @@ class WorkspaceController extends Controller
         }
 
         $this->workspaceService->deleteUserFromWorkspace($workspace, $targetUserId);
-        return response()->json(['message' => __('messages.success')], 202);
+
+        $user = User::findOrFail($targetUserId);
+
+        return response()->json(['message' => __('messages.success'), 'user' => $user,], 202);
     }
 
     public function getTasks(Workspace $workspace)

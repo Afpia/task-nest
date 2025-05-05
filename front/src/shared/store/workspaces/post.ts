@@ -4,15 +4,16 @@ import { createEvent, sample } from 'effector'
 import { createMutation } from '@farfetched/core'
 import { notifications } from '@mantine/notifications'
 
-import { postAddUserToWorkspace, postUserWorkspace } from '@shared/api'
+import { postAddUserToWorkspace, postKickUserFromWorkspace, postUserWorkspace } from '@shared/api'
 import { $isAuth } from '@shared/auth'
 import { notifyError, notifySuccess } from '@shared/helpers'
-import type { PostAddUserToWorkspaceConfig, PostUserWorkspaceConfig } from '@shared/types'
+import type { PostAddUserToWorkspaceConfig, PostKickUserFromWorkspaceConfig, PostUserWorkspaceConfig } from '@shared/types'
 
 import { $currentWorkspace, $workspaces } from './store'
 
 export const createdWorkspace = createEvent<string>()
 export const addedUserToWorkspace = createEvent<{ user_id: number; workspaceId: string }>()
+export const kickedUserFromWorkspace = createEvent<{ user_id: number }>()
 
 const postUserWorkspaceFx = createMutation({
 	name: 'postWorkspaceWorkspaceFx',
@@ -20,9 +21,16 @@ const postUserWorkspaceFx = createMutation({
 	enabled: $isAuth
 })
 
-const postAddUserToWorkspaceFx = createMutation({
+// NOTE: Нужен для обновление widget people
+export const postAddUserToWorkspaceFx = createMutation({
 	name: 'postAddUserToWorkspace',
 	handler: ({ params, data }: PostAddUserToWorkspaceConfig) => postAddUserToWorkspace({ params, data }),
+	enabled: $isAuth
+})
+
+export const postKickUserFromWorkspaceFx = createMutation({
+	name: 'postKickUserFromWorkspace',
+	handler: ({ params, data }: PostKickUserFromWorkspaceConfig) => postKickUserFromWorkspace({ params, data }),
 	enabled: $isAuth
 })
 
@@ -105,6 +113,41 @@ sample({
 		notifyError({
 			title: 'Ошибка',
 			message: 'Пользователь не был добавлен'
+		})
+	}
+})
+
+// Удаление юзера с проекта
+
+sample({
+	clock: kickedUserFromWorkspace,
+	source: $currentWorkspace,
+	fn: (source, { user_id }) => ({
+		params: {
+			workspaceId: source.id.toString()
+		},
+		data: { user_id }
+	}),
+	target: postKickUserFromWorkspaceFx.start
+})
+
+sample({
+	clock: postKickUserFromWorkspaceFx.finished.success,
+	source: kickedUserFromWorkspace,
+	fn: (_, clock) => {
+		notifySuccess({
+			title: 'Успешно',
+			message: `Вы успешно удалили ${clock.result.data.user.login} с workspace`
+		})
+	}
+})
+
+sample({
+	clock: postKickUserFromWorkspaceFx.finished.failure,
+	fn: () => {
+		notifyError({
+			title: 'Ошибка',
+			message: 'Пользователь не был удален'
 		})
 	}
 })

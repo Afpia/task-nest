@@ -6,7 +6,7 @@ import { Button, Divider, Flex, Skeleton, Text, TextInput, Title } from '@mantin
 import { useForm, zodResolver } from '@mantine/form'
 
 import { AccountLayout } from '@app/layouts'
-import { $user, getUserFx, patchUser, patchUserFx, updateFormed } from '@shared/store'
+import { $user, getUserFx, patchedUser, patchUserFx, updateFormed } from '@shared/store'
 
 import { AccountScheme } from '../model'
 
@@ -18,7 +18,7 @@ export const Account = () => {
 	const [user, loadingUser, updateUser, loadingUpdate, updateError] = useUnit([
 		$user,
 		getUserFx.$pending,
-		patchUser,
+		patchedUser,
 		patchUserFx.$pending,
 		updateFormed
 	])

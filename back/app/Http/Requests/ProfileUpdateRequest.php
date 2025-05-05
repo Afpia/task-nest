@@ -19,6 +19,7 @@ class ProfileUpdateRequest extends FormRequest
             'name' => ['sometimes', 'string', 'max:255'],
             'email' => ['sometimes', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
             'avatar_url' => ['sometimes', 'file', 'max:2048'],
+            'background_url' => ['sometimes', 'file', 'max:2048'],
             'about' => ['sometimes', 'nullable','string','max:255'],
             'city' => ['sometimes', 'nullable', 'string', 'max:255'],
         ];

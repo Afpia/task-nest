@@ -5,7 +5,7 @@ import { Avatar, Button, Flex, Group, Text } from '@mantine/core'
 import { Dropzone, type FileWithPath } from '@mantine/dropzone'
 import type { UseFormReturnType } from '@mantine/form'
 
-import { AvatarSrc } from '@shared/helpers'
+import { SrcImage } from '@shared/helpers'
 import { $user } from '@shared/store'
 
 export const AvatarChange = ({
@@ -73,7 +73,7 @@ export const AvatarChange = ({
 		>
 			<Flex align='center' h='100%' justify='space-between' w='100%'>
 				<Flex align='center' gap={20} justify='start'>
-					<Avatar radius='100%' size='85' src={preview[0] || AvatarSrc(form.getValues().avatar)} variant='default' />
+					<Avatar radius='100%' size='85' src={preview[0] || SrcImage(form.getValues().avatar)} variant='default' />
 					<Flex align='flex-start' gap={10} h='100%' justify='center' direction='column'>
 						<Text>Фотография профиля</Text>
 						<Text>PNG, JPG меньше 2 МБ</Text>

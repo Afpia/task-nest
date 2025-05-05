@@ -87,6 +87,18 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+    public function updateProfileBackground(ProfileUpdateRequest $request, ImageService $images)
+    {
+        $user = $request->user();
+
+        $path = $images->saveImage('background', $request->file('background_url'));
+        $user->background_url = $path;
+        $user->saveQuietly();
+
+
+        return response()->json($user);
+    }
+
     public function search(Request $request)
     {
         $term = $request->email ?? '';

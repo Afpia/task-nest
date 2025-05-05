@@ -5,7 +5,7 @@ import { Button, Divider, Flex, PasswordInput, Text, Title } from '@mantine/core
 import { useForm, zodResolver } from '@mantine/form'
 
 import { AccountLayout } from '@app/layouts'
-import { patchUser, patchUserFx, updateFormed } from '@shared/store'
+import { patchedUser, patchUserFx, updateFormed } from '@shared/store'
 
 import { PasswordScheme } from './schema'
 
@@ -15,7 +15,7 @@ interface Form {
 }
 
 export const Password = () => {
-	const [updateUser, updateError, loadingUpdate] = useUnit([patchUser, updateFormed, patchUserFx.$pending])
+	const [updateUser, updateError, loadingUpdate] = useUnit([patchedUser, updateFormed, patchUserFx.$pending])
 
 	const form = useForm({
 		mode: 'controlled',

@@ -17,3 +17,7 @@ export const getUserLogin = async ({ config, params }: GetUserLoginConfig) =>
 	api.get<UserFieldResponse>(`user/${params.userLogin}`, config)
 
 export const getUserSearch = async ({ config }: GetUserSearchConfig) => api.get<UserFieldResponse[]>(`search/user`, config)
+
+// NOTE: Сделано post для обоев, иначе не работает обновление
+export const patchUserInfoBackground = async ({ config, data }: PatchUserInfoConfig) =>
+	api.post<UserFieldResponse>(`user/info/background`, data, config)

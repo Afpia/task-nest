@@ -8,7 +8,7 @@ import { modals } from '@mantine/modals'
 
 import { $username } from '@shared/auth'
 import { routes } from '@shared/config'
-import { AvatarSrc } from '@shared/helpers'
+import { SrcImage } from '@shared/helpers'
 import { $user, getUserFx } from '@shared/store'
 
 export const AccountLayout = ({ children }: { children: ReactNode }) => {
@@ -34,7 +34,7 @@ export const AccountLayout = ({ children }: { children: ReactNode }) => {
 			{!loading && (
 				<Flex align='center' justify='space-between' mb={20}>
 					<Flex align='center' gap={20}>
-						<Avatar radius='xl' size={60} src={AvatarSrc(user.avatar_url)} />
+						<Avatar radius='xl' size={60} src={SrcImage(user.avatar_url)} />
 						<Anchor
 							c='pink'
 							fz={16}

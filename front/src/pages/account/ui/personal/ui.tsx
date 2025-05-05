@@ -5,7 +5,7 @@ import { Box, Button, Divider, Flex, Skeleton, Textarea, TextInput, Title } from
 import { useForm, zodResolver } from '@mantine/form'
 
 import { AccountLayout } from '@app/layouts'
-import { $user, getUserFx, patchUser, patchUserFx } from '@shared/store'
+import { $user, getUserFx, patchedUser, patchUserFx } from '@shared/store'
 
 import { AvatarChange } from './avatar'
 import { PersonalScheme } from './schema'
@@ -19,7 +19,7 @@ interface Form {
 }
 
 export const Personal = () => {
-	const [user, loadingUser, updateUser, loadingUpdate] = useUnit([$user, getUserFx.$pending, patchUser, patchUserFx.$pending])
+	const [user, loadingUser, updateUser, loadingUpdate] = useUnit([$user, getUserFx.$pending, patchedUser, patchUserFx.$pending])
 
 	const form = useForm({
 		mode: 'controlled',

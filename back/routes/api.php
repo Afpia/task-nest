@@ -38,7 +38,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/search/user', [UserController::class, 'search']);
 
     Route::post('/user/info', [UserController::class, 'updateProfile']);
+    Route::post('/user/info/background', [UserController::class, 'updateProfileBackground']);
 
+    Route::get('/projects/tasks', [ProjectController::class, 'projectsTasks']);
     //executor
     Route::middleware('role:executor')->group(function () {
         //workspaces routes
@@ -52,7 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
         //projects routes
         Route::get('/projects/{workspace}', [ProjectController::class, 'index']);
         Route::get('/project/{project}', [ProjectController::class, 'show']);
-        Route::get('/project/{project}/users', [ProjectController::class, 'projectUsers']);//после тасков
+        Route::get('/project/{project}/users', [ProjectController::class, 'projectUsers']); //после тасков
+
 
         //tasks routes
         Route::get('/my-tasks/{workspace}', [TaskController::class, 'myTasksInWorkspace']);

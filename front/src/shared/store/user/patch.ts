@@ -4,15 +4,15 @@ import { createEvent, sample } from 'effector'
 import { createMutation } from '@farfetched/core'
 import type { UseFormReturnType } from '@mantine/form'
 
-import { patchUserInfo } from '@shared/api'
+import { patchUserInfo, patchUserInfoBackground } from '@shared/api'
 import { $isAuth, $username } from '@shared/auth'
-import { handleError, notifySuccess } from '@shared/helpers'
+import { handleError, notifyError, notifySuccess } from '@shared/helpers'
 import type { UserFieldPartialData } from '@shared/types'
 
-import { getUserLoginFx } from './get'
 import { $user, $userLogin } from './store'
 
-export const patchUser = createEvent<UserFieldPartialData>()
+export const patchedUser = createEvent<UserFieldPartialData>()
+export const patchedUserBackground = createEvent<FormData>()
 
 // FIXME: Проблема с типами формы, прокидываются всегда разные поля
 export const updateFormed = createEvent<UseFormReturnType<any, any>>()
@@ -23,8 +23,16 @@ export const patchUserFx = createMutation({
 	enabled: $isAuth
 })
 
+export const patchUserBackgroundFx = createMutation({
+	name: 'patchUserBackground',
+	handler: (data: FormData) => patchUserInfoBackground({ data }),
+	enabled: $isAuth
+})
+
+// Обновление пользователя
+
 sample({
-	clock: patchUser,
+	clock: patchedUser,
 	fn: (clock) => clock,
 	target: patchUserFx.start
 })
@@ -53,8 +61,8 @@ sample({
 sample({
 	clock: patchUserFx.finished.success,
 	source: $userLogin,
-	fn: (source) => source.login,
-	target: getUserLoginFx.refresh
+	fn: (source, clock) => ({ ...source, ...clock.result.data }),
+	target: $userLogin
 })
 
 sample({
@@ -78,5 +86,36 @@ sample({
 		} else {
 			handleError(form, 'Что-то пошло не так Error', 'Ошибка сервера')
 		}
+	}
+})
+
+// Обновление фона
+
+sample({
+	clock: patchedUserBackground,
+	fn: (clock) => clock,
+	target: patchUserBackgroundFx.start
+})
+
+sample({
+	clock: patchUserBackgroundFx.finished.success,
+	source: $userLogin,
+	fn: (source, clock) => {
+		notifySuccess({
+			title: 'Успешно',
+			message: 'Фон успешно обновлен'
+		})
+		return { ...source, background_url: clock.result.data.background_url }
+	},
+	target: $userLogin
+})
+
+sample({
+	clock: patchUserBackgroundFx.finished.failure,
+	fn: () => {
+		notifyError({
+			title: 'Ошибка',
+			message: 'Фон не был обновлен'
+		})
 	}
 })

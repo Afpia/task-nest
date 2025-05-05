@@ -1,5 +1,7 @@
 import type { role } from '@shared/config'
 
+import type { WorkspaceIdParams } from './params'
+
 export interface WorkspaceResponse {
 	description: string
 	id: number
@@ -15,9 +17,6 @@ export interface WorkspaceRoleResponse {
 	role: (typeof role)[keyof typeof role]
 }
 
-export interface WorkspaceIdParams {
-	workspaceId: string
-}
 export interface WorkspaceData {
 	title: string
 }
@@ -31,5 +30,7 @@ export type PostUserWorkspaceConfig = AxiosRequestConfig<undefined, WorkspaceDat
 export type GetWorkspaceRoleConfig = AxiosRequestConfig<WorkspaceIdParams>
 
 export type PostAddUserToWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams, WorkspaceAddUserData>
+
+export type PostKickUserFromWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams, WorkspaceAddUserData>
 
 export type GetUsersWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams>

@@ -56,6 +56,7 @@ sample({
 
 persist({
 	key: 'workspace',
+	clock: changedWorkspace,
 	store: $currentWorkspace,
 	serialize: (state: WorkspaceResponse) => JSON.stringify({ id: state.id, title: state.title, image_url: state.image_url }),
 	deserialize: JSON.parse,

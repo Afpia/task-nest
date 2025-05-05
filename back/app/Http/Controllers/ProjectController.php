@@ -61,6 +61,45 @@ class ProjectController extends Controller
         // return response()->json($project->users);
     }
 
+    public function projectsTasks(Request $request)
+    {
+        $q = $request->input('query', null);
+
+        if ($q === null) {
+            return response()->noContent();
+        }
+
+        $userId = $request->user()->id;
+
+        $workspaces = Workspace::whereHas('users', fn($u) => 
+            $u->where('user_id', $userId)
+            )->where(function ($wsQuery) use ($q) {
+            $wsQuery->where('title', 'like', "%{$q}%")->orWhereHas('projects', function ($prQuery) use ($q) {
+                $prQuery->where('title', 'like', "%{$q}%")->orWhereHas('tasks', function ($tkQuery) use ($q) {
+                        $tkQuery->where('title', 'like', "%{$q}%");
+                });
+                })->orWhereHas('projects.tasks', function ($tkQuery) use ($q) {
+                    $tkQuery->where('title', 'like', "%{$q}%");
+                });
+        })->with([
+            'projects' => function ($prQuery) use ($q) {
+                $prQuery->where('title', 'like', "%{$q}%")->orWhereHas('tasks', function ($tkQuery) use ($q) {
+                    $tkQuery->where('title', 'like', "%{$q}%");
+                });
+            },
+            'projects.tasks' => function ($tkQuery) use ($q) {
+                $tkQuery->where('title', 'like', "%{$q}%");
+            },
+        ])
+        ->get();   
+        
+        if ($workspaces->isEmpty()) {
+            return response()->noContent();
+        }
+
+        return response()->json($workspaces);
+    }
+
     public function store(Request $request, Workspace $workspace)
     {
         $validated = $request->validate(self::PROJECT_VALIDATOR);

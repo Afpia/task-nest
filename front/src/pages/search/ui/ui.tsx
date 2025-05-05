@@ -8,7 +8,7 @@ import { Accordion, Avatar, Container, Flex, Group, Image, Input, Text } from '@
 import search_not_found from '@app/assets/svg/search-not-found.svg'
 import search_people from '@app/assets/svg/search-people.svg'
 import { routes } from '@shared/config'
-import { AvatarSrc } from '@shared/helpers'
+import { SrcImage } from '@shared/helpers'
 import { useDebounce } from '@shared/hooks'
 import { $userSearch, clearedUserSearch, queriedUser } from '@shared/store'
 import type { UserFieldResponse } from '@shared/types'
@@ -16,7 +16,7 @@ import type { UserFieldResponse } from '@shared/types'
 const AccordionLabel = ({ avatar_url, name, email, login }: UserFieldResponse) => (
 	<Group wrap='nowrap'>
 		<Link params={{ userLogin: login }} to={routes.private.profile}>
-			<Avatar radius='xl' size='lg' src={AvatarSrc(avatar_url)} />
+			<Avatar radius='xl' size='lg' src={SrcImage(avatar_url)} />
 		</Link>
 		<div>
 			<Link params={{ userLogin: login }} to={routes.private.profile}>
