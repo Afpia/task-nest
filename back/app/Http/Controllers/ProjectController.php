@@ -61,6 +61,7 @@ class ProjectController extends Controller
         // return response()->json($project->users);
     }
 
+    // Глобальный поиск по проекту
     public function projectsTasks(Request $request)
     {
         $q = $request->input('query', null);
@@ -71,7 +72,7 @@ class ProjectController extends Controller
 
         $userId = $request->user()->id;
 
-        $workspaces = Workspace::whereHas('users', fn($u) => 
+        $workspaces = Workspace::whereHas('users', fn($u) =>
             $u->where('user_id', $userId)
             )->where(function ($wsQuery) use ($q) {
             $wsQuery->where('title', 'like', "%{$q}%")->orWhereHas('projects', function ($prQuery) use ($q) {
@@ -91,8 +92,8 @@ class ProjectController extends Controller
                 $tkQuery->where('title', 'like', "%{$q}%");
             },
         ])
-        ->get();   
-        
+        ->get();
+
         if ($workspaces->isEmpty()) {
             return response()->noContent();
         }

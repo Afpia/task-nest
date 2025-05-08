@@ -56,7 +56,6 @@ sample({
 
 persist({
 	key: 'workspace',
-	clock: changedWorkspace,
 	store: $currentWorkspace,
 	serialize: (state: WorkspaceResponse) => JSON.stringify({ id: state.id, title: state.title, image_url: state.image_url }),
 	deserialize: JSON.parse,
@@ -84,6 +83,7 @@ sample({
 	clock: $currentWorkspace,
 	// clock: [changedWorkspace, getUserWorkspacesFx.finished.success],
 	// source: $currentWorkspace,
+	// filter: $currentWorkspace.map((item) => item.id),
 	fn: (source) => source.id.toString(),
 	target: getWorkspaceRoleFx.start
 })

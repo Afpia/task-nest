@@ -133,8 +133,7 @@ sample({
 
 sample({
 	clock: postKickUserFromWorkspaceFx.finished.success,
-	source: kickedUserFromWorkspace,
-	fn: (_, clock) => {
+	fn: (clock) => {
 		notifySuccess({
 			title: 'Успешно',
 			message: `Вы успешно удалили ${clock.result.data.user.login} с workspace`

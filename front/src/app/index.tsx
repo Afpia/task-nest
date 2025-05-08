@@ -27,7 +27,7 @@ const theme = createTheme({
 })
 
 export const App = () => (
-	<MantineProvider theme={theme} defaultColorScheme='auto'>
+	<MantineProvider theme={theme} defaultColorScheme='light'>
 		<ModalsProvider>
 			{/* <AuthProvider> */}
 			<Notifications />

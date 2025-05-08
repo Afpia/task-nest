@@ -40,7 +40,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/info', [UserController::class, 'updateProfile']);
     Route::post('/user/info/background', [UserController::class, 'updateProfileBackground']);
 
+    // глобальный поиск
     Route::get('/projects/tasks', [ProjectController::class, 'projectsTasks']);
+    
     //executor
     Route::middleware('role:executor')->group(function () {
         //workspaces routes

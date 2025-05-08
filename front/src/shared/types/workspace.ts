@@ -1,6 +1,7 @@
 import type { role } from '@shared/config'
 
 import type { WorkspaceIdParams } from './params'
+import type { UserFieldResponse } from './user'
 
 export interface WorkspaceResponse {
 	description: string
@@ -10,6 +11,11 @@ export interface WorkspaceResponse {
 	pivot: {
 		role: (typeof role)[keyof typeof role]
 	}
+}
+
+export interface WorkspaceResponseWithUser {
+	message: string
+	user: UserFieldResponse
 }
 
 export interface WorkspaceRoleResponse {
@@ -24,6 +30,10 @@ export interface WorkspaceData {
 export interface WorkspaceAddUserData {
 	user_id: number
 }
+export interface WorkspaceManageUserData {
+	role: Exclude<(typeof role)[keyof typeof role], 'owner'>
+	user_id: number
+}
 
 export type PostUserWorkspaceConfig = AxiosRequestConfig<undefined, WorkspaceData>
 
@@ -32,5 +42,7 @@ export type GetWorkspaceRoleConfig = AxiosRequestConfig<WorkspaceIdParams>
 export type PostAddUserToWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams, WorkspaceAddUserData>
 
 export type PostKickUserFromWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams, WorkspaceAddUserData>
+
+export type PutManageUserInWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams, WorkspaceManageUserData>
 
 export type GetUsersWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams>

@@ -5,8 +5,10 @@ import type {
 	PostAddUserToWorkspaceConfig,
 	PostKickUserFromWorkspaceConfig,
 	PostUserWorkspaceConfig,
+	PutManageUserInWorkspaceConfig,
 	UserFieldResponse,
 	WorkspaceResponse,
+	WorkspaceResponseWithUser,
 	WorkspaceRoleResponse
 } from '@shared/types'
 
@@ -25,7 +27,10 @@ export const postUserWorkspace = async ({ config, data }: PostUserWorkspaceConfi
 	api.post<{ workspace: WorkspaceResponse }>('workspace/add', data, config)
 
 export const postAddUserToWorkspace = async ({ config, data, params }: PostAddUserToWorkspaceConfig) =>
-	api.post<{ user: UserFieldResponse; message: string }>(`workspace/${params.workspaceId}/user-add`, data, config)
+	api.post<WorkspaceResponseWithUser>(`workspace/${params.workspaceId}/user-add`, data, config)
 
 export const postKickUserFromWorkspace = async ({ config, data, params }: PostKickUserFromWorkspaceConfig) =>
-	api.post<{ user: UserFieldResponse; message: string }>(`workspace/${params.workspaceId}/kick-user`, data, config)
+	api.post<WorkspaceResponseWithUser>(`workspace/${params.workspaceId}/kick-user`, data, config)
+
+export const putManageUserInWorkspace = async ({ config, data, params }: PutManageUserInWorkspaceConfig) =>
+	api.put<WorkspaceResponseWithUser>(`workspace/${params.workspaceId}/manage-user`, data, config)

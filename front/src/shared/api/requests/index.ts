@@ -1,4 +1,3 @@
-export * from './global'
 export * from './projects'
 export * from './tasks'
 export * from './user'

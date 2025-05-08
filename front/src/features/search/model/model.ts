@@ -1,12 +1,13 @@
-import { createEvent, sample } from 'effector'
+import { createEvent, createStore, sample } from 'effector'
 
 import { createQuery } from '@farfetched/core'
 
-import type { EntitiesResponse } from '@shared/api'
-import { getAllEntities } from '@shared/api'
 import { $isAuth } from '@shared/auth'
 
-import { $allEntities } from './store'
+import type { EntitiesResponse } from '../api'
+import { getAllEntities } from '../api'
+
+export const $allEntities = createStore<EntitiesResponse[]>([] as EntitiesResponse[])
 
 export const sendedQueryAllEntities = createEvent<string>()
 

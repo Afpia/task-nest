@@ -7,6 +7,7 @@ use App\Services\QueryService;
 use App\Services\WorkspaceService;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class WorkspaceController extends Controller
 {
@@ -80,23 +81,25 @@ class WorkspaceController extends Controller
         return response()->json(['message' => __('messages.delete_success')], 202);
     }
 
-    public function workspaceUsers(Workspace $workspace)
+    public function workspaceUsers(Request $request, Workspace $workspace)
     {
-        $workspaceWithUsers = $workspace->load('users');
-        $sanitizedUsers = $workspaceWithUsers->users->map(function ($user) use ($workspace) {
+        $validated = $request->validate([
+            'order' => ['sometimes', Rule::in(['asc','desc'])],
+        ]);
+
+        $order = $validated['order'] ?? 'asc';
+
+        $rolesDesc  = "'owner','admin','project_manager','executor'";
+        $rolesAsc = "'executor','project_manager','admin','owner'";
+        $rolesList = $order === 'asc' ? $rolesAsc : $rolesDesc;
+
+        $currentUserId = auth()->id();
+        $workspaceWithUsers = $workspace->users()->withPivot('role')->orderByRaw("FIELD(role, {$rolesList})")->get();
+
+        $sanitizedUsers = $workspaceWithUsers->filter(fn($user) => $user->id !== $currentUserId)->map(function ($user) {
             $data = $user->toArray();
-            // $role = $this->workspaceService->getUserRoleInWorkspace($workspace, $user->id);
-            // $data['role'] = $this->workspaceService
-            //                  ->getUserRoleInWorkspace($workspace, $user->id);
-            // return [
-            //     'id' => $user->id,
-            //     'name' => $user->name,
-            //     'email' => $user->email,
-            //     'avatar_url' => $user->avatar_url,
-            //     'role' => $role,
-            // ];
             return $data;
-        });
+        })->values();
         return response()->json($sanitizedUsers);
     }
 
@@ -132,7 +135,7 @@ class WorkspaceController extends Controller
         if (!$targetUserRole = $this->workspaceService->getUserRoleInWorkspace($workspace, $userId)) {
             return response()->json(['message' => __('messages.user_not_found')], 404);
         }
-        ;
+
 
         if ($currentUserRole === 'admin' && ($targetUserRole === 'admin' || $targetUserRole === 'owner')) {
             return response()->json(['message' => __('messages.cannot_change_admin_or_owner_role')], 403);
@@ -144,7 +147,12 @@ class WorkspaceController extends Controller
 
         $this->workspaceService->manageUserInWorkspace($workspace, $userId, $role);
 
-        return response()->json(['message' => __('messages.success')], 201);
+        $user = $workspace->users()->where('user_id', $userId)->firstOrFail();
+
+        return response()->json([
+            'message' => __('messages.success'),
+            'user' => $user,
+        ], 201);
     }
 
     public function addUserToWorkspace(Request $request, Workspace $workspace)

@@ -5,11 +5,13 @@ import { Search, SearchIcon } from 'lucide-react'
 import { Avatar, Badge, Breadcrumbs, Button, Flex, Group, Kbd, Text } from '@mantine/core'
 import { Spotlight, spotlight } from '@mantine/spotlight'
 
-import type { EntitiesResponse } from '@shared/api'
 import { routes } from '@shared/config'
 import { SrcImage } from '@shared/helpers'
 import { useDebounce } from '@shared/hooks'
-import { $allEntities, changedWorkspace, clearedAllEntities, sendedQueryAllEntities } from '@shared/store'
+import { changedWorkspace } from '@shared/store'
+
+import type { EntitiesResponse } from './api'
+import { $allEntities, clearedAllEntities, sendedQueryAllEntities } from './model'
 
 import styles from './ui.module.css'
 
@@ -24,7 +26,7 @@ interface ActionData {
 	onTrigger?: () => void
 }
 
-function buildActions(entities: EntitiesResponse[], query: string, changeWorkspace: (payload: string) => string) {
+const buildActions = (entities: EntitiesResponse[], query: string, changeWorkspace: (payload: string) => string) => {
 	const q = query.toLowerCase()
 
 	const actions = [] as ActionData[]
@@ -59,7 +61,6 @@ function buildActions(entities: EntitiesResponse[], query: string, changeWorkspa
 			})
 
 			pr.tasks.forEach((tk) => {
-				// действие для задачи
 				actions.push({
 					id: `tk-${tk.id}`,
 					title: tk.title,

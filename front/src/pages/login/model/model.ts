@@ -1,4 +1,3 @@
-import { redirect } from 'atomic-router'
 import { AxiosError } from 'axios'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 
@@ -59,10 +58,10 @@ sample({
 	target: allUserReceived
 })
 
-redirect({
-	clock: loginFx.doneData,
-	route: routes.private.home
-})
+// redirect({
+// 	clock: loginFx.doneData,
+// 	route: routes.private.home
+// })
 
 sample({
 	clock: loginFx.failData,
@@ -93,10 +92,10 @@ sample({
 	target: loginSocialFx.prepend(({ accessToken }: UserSocialRequest) => ({ data: { accessToken } }))
 })
 
-redirect({
-	clock: loginSocialFx.doneData,
-	route: routes.private.home
-})
+// redirect({
+// 	clock: loginSocialFx.doneData,
+// 	route: routes.private.home
+// })
 
 sample({
 	clock: loginSocialFx.doneData,

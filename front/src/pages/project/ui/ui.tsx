@@ -1,6 +1,7 @@
 import { useUnit } from 'effector-react'
+import { UserRoundPlus } from 'lucide-react'
 
-import { Avatar, Flex, Skeleton, Tabs, Title } from '@mantine/core'
+import { Avatar, Button, Flex, Skeleton, Tabs, Title } from '@mantine/core'
 
 import { $currentProject, getCurrentProjectFx } from '@shared/store'
 import { StatsProject } from '@widgets/stats-project'
@@ -22,9 +23,9 @@ export const Project = () => {
 					)}
 					{currentProjectLoading && <Skeleton height={38} width={250} />}
 				</Flex>
-				{/* <Button variant='light' leftSection={<UserRoundPlus />}>
+				<Button variant='light' leftSection={<UserRoundPlus />}>
 					Пригласить на проект
-				</Button> */}
+				</Button>
 			</Flex>
 
 			<StatsProject />
@@ -32,7 +33,7 @@ export const Project = () => {
 			<Tabs defaultValue='tasks' mt={30}>
 				<Tabs.List mb={20}>
 					<Tabs.Tab value='tasks'>Задачи</Tabs.Tab>
-					{/* <Tabs.Tab value='members'>Участники</Tabs.Tab> */}
+					<Tabs.Tab value='members'>Участники</Tabs.Tab>
 					{/* <Tabs.Tab value='discussions'>Обсуждения</Tabs.Tab> */}
 				</Tabs.List>
 

@@ -15,9 +15,11 @@ import type { UserFieldResponse } from '@shared/types'
 
 const AccordionLabel = ({ avatar_url, name, email, login }: UserFieldResponse) => (
 	<Group wrap='nowrap'>
-		<Link params={{ userLogin: login }} to={routes.private.profile}>
-			<Avatar radius='xl' size='lg' src={SrcImage(avatar_url)} />
-		</Link>
+		<Flex p={2}>
+			<Link params={{ userLogin: login }} to={routes.private.profile}>
+				<Avatar radius='xl' size='lg' src={SrcImage(avatar_url)} />
+			</Link>
+		</Flex>
 		<div>
 			<Link params={{ userLogin: login }} to={routes.private.profile}>
 				<Text>{name}</Text>
