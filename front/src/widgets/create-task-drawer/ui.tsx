@@ -4,6 +4,8 @@ import { Maximize2, Minimize2, Plus } from 'lucide-react'
 
 import 'dayjs/locale/ru'
 
+import dayjs from 'dayjs'
+
 import {
 	Button,
 	Divider,
@@ -22,13 +24,14 @@ import { DateInput } from '@mantine/dates'
 import { useForm, zodResolver } from '@mantine/form'
 import { useFullscreen } from '@mantine/hooks'
 
+import { ROLE } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
-import { createdTask } from '@shared/store'
+import { $usersProject, createdTask } from '@shared/store'
 
 import { ACCEPT, CreateTaskSchema, formatFileSize, iconMap, MAX_FILES, mimeToReadableType } from './model'
 
 export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened: boolean }) => {
-	const [createTask] = useUnit([createdTask])
+	const [createTask, usersProject] = useUnit([createdTask, $usersProject])
 	const { toggle, fullscreen } = useFullscreen()
 
 	const isDark = isDarkMode()
@@ -36,20 +39,23 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 
 	const form = useForm({
 		mode: 'controlled',
-		initialValues: { title: '', description: '', end_date: '', assignees: [], files: [] as File[] },
+		initialValues: { title: '', description: '', end_date: new Date(), assignees: [], files: [] as File[] },
 		validate: zodResolver(CreateTaskSchema)
 	})
 
+	console.log(usersProject)
+
 	const onClickForm = (values: { title: string; description?: string; end_date: any; assignees: string[]; files: File[] }) => {
+		const formattedDate = dayjs(values?.end_date).format('YYYY-MM-DD')
 		const formData = new FormData()
 		form.values.files.forEach((f) => {
 			formData.append(`file`, f)
 		})
 		console.log(values, formData)
-		const formattedDate = values?.end_date?.toISOString().split('T')[0]
 		createTask({
 			title: values.title,
 			description: values.description,
+			assignees: values.assignees,
 			end_date: formattedDate,
 			files: formData
 		})
@@ -107,11 +113,13 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 							</Text>
 						</Flex>
 						<MultiSelect
-							data={[{ label: 'Я', value: 'i am' }]}
 							variant='unstyled'
 							w='calc(100% - 160px)'
 							clearable
 							searchable
+							data={usersProject
+								.filter((item) => item.pivot.role !== ROLE.PROJECT_MANAGER)
+								.map((item) => ({ label: item.name, value: item.id.toString() }))}
 							comboboxProps={{ shadow: 'md' }}
 							{...form.getInputProps('assignees')}
 							hidePickedOptions
@@ -128,7 +136,7 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 						<DateInput
 							w='calc(100% - 160px)'
 							{...form.getInputProps('end_date')}
-							defaultDate={new Date()}
+							// defaultDate={new Date()}
 							minDate={new Date()}
 							variant='unstyled'
 							clearable

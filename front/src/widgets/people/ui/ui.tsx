@@ -25,18 +25,11 @@ import { modals } from '@mantine/modals'
 
 import people_not_found from '@app/assets/svg/people-not-found.svg'
 import { ManageUserInWorkspaceModal } from '@entities/manage-user-in-workspace-modal'
-import { role, routes, ThemeColors } from '@shared/config'
+import { ROLE, ROLE_NAMING, routes, ThemeColors } from '@shared/config'
 import { isDarkMode, SrcImage } from '@shared/helpers'
 import { $workspaceRole, getWorkspaceRoleFx, kickedUserFromWorkspace } from '@shared/store'
 
 import { $usersWorkspace, changedOrder, getUsersWorkspaceFx } from '../model'
-
-const role_naming = {
-	owner: 'Владелец',
-	admin: 'Админ',
-	executor: 'Исполнитель',
-	project_manager: 'Проектный менеджер'
-}
 
 export const People = () => {
 	const { isDark } = isDarkMode()
@@ -118,7 +111,7 @@ export const People = () => {
 					<Image h={195} src={people_not_found} w={210} />
 				</Flex>
 			)}
-			{!usersLoading && !roleLoading && users.length >= 1 && (
+			{!usersLoading && !roleLoading && users.length > 0 && (
 				<ScrollArea h='200px' scrollbars='y'>
 					<Grid h='100%' styles={{ inner: { maxWidth: '100%', margin: '0 auto' } }}>
 						{users.map((item) => (
@@ -127,9 +120,9 @@ export const People = () => {
 									<Card.Section py='xs' inheritPadding withBorder>
 										<Group justify='space-between'>
 											<Text fw={500} maw={110} truncate='end'>
-												{role_naming[item.pivot.role]}
+												{ROLE_NAMING[item.pivot.role]}
 											</Text>
-											{(myRole.role === role.OWNER || myRole.role === role.ADMIN) && item.pivot.role !== role.OWNER && (
+											{(myRole.role === ROLE.OWNER || myRole.role === ROLE.ADMIN) && item.pivot.role !== ROLE.OWNER && (
 												<Menu position='bottom-end' shadow='sm' withinPortal>
 													<Menu.Target>
 														<ActionIcon variant='subtle' color='gray'>
@@ -145,7 +138,7 @@ export const People = () => {
 															Изменить роль
 														</Menu.Item>
 														<Menu.Item color='red' leftSection={<UserRoundX size={14} />} onClick={() => openKickModal(item.id)}>
-															Выгнать из проекта
+															Выгнать из области
 														</Menu.Item>
 													</Menu.Dropdown>
 												</Menu>

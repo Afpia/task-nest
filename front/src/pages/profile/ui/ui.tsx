@@ -12,7 +12,7 @@ import { Avatar, Box, Button, Container, FileButton, Flex, Image, Skeleton, Text
 import { useDisclosure } from '@mantine/hooks'
 
 import { ModalAddUserToWorkspace } from '@entities/add-user-to-workspace-modal'
-import { role } from '@shared/config'
+import { ROLE } from '@shared/config'
 import { SrcImage } from '@shared/helpers'
 import {
 	$currentWorkspace,
@@ -116,7 +116,7 @@ export const Profile = () => {
 										<Text>{user.email}</Text>
 									</Flex>
 								</Flex>
-								{myUser.login !== user.login && (myRole.role === role.OWNER || myRole.role === role.ADMIN) && (
+								{myUser.login !== user.login && (myRole.role === ROLE.OWNER || myRole.role === ROLE.ADMIN) && (
 									<Button onClick={() => open()}>Добавить на workspace</Button>
 								)}
 							</Flex>

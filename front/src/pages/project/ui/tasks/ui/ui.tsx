@@ -65,7 +65,7 @@ export const Tasks = () => {
 										<Table.Th w={300}>Назначенный</Table.Th>
 										<Table.Th w={200}>Срок</Table.Th>
 										<Table.Th w={200}>Статус</Table.Th>
-										<Table.Th w={250}>Прогресс</Table.Th>
+										<Table.Th w={250}>Вложения</Table.Th>
 									</Table.Tr>
 								</Table.Thead>
 								<Table.Tbody mih={500}>

@@ -1,7 +1,7 @@
 import type { ProjectIdParams, TaskIdParams } from './params'
 
 export interface TaskResponse {
-	assignee: Assignee[]
+	assignees: Assignee[]
 	description?: string
 	end_date?: string
 	id: number
@@ -21,6 +21,7 @@ export interface Assignee {
 }
 
 export interface TaskRequest {
+	assignees: string[]
 	description?: string
 	end_date?: string
 	files: FormData

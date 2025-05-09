@@ -22,18 +22,18 @@ export const $isAuth = $accessToken.map((token) => !!token)
 
 sample({
 	clock: allUserReceived,
-	fn: ({ user }) => user.name,
+	fn: (clock) => clock.user.name,
 	target: $username
 })
 
 sample({
 	clock: allUserReceived,
-	fn: (allUser) => allUser.access_token,
+	fn: (clock) => clock.access_token,
 	target: $accessToken
 })
 
 redirect({
-	clock: allUserReceived,
+	clock: $accessToken,
 	route: routes.private.home
 })
 

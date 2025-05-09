@@ -132,7 +132,9 @@ export const SidebarSearch = () => {
 												{item.status}
 											</Badge>
 										)}
-										{item.image && <Avatar alt={item.title} mah={28} maw={28} miw={28} radius='sm' src={item.image} w={28} />}
+										{item.image && (
+											<Avatar alt={item.title} mah={28} maw={28} miw={28} radius='sm' src={SrcImage(item.image)} w={28} />
+										)}
 
 										<Flex gap={4} justify='center' direction='column'>
 											<Text size='md' style={{ lineHeight: 1 }}>

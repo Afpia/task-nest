@@ -1,4 +1,4 @@
-import type { role } from '@shared/config'
+import type { ROLE } from '@shared/config'
 
 import type { WorkspaceIdParams } from './params'
 import type { UserFieldResponse } from './user'
@@ -9,7 +9,7 @@ export interface WorkspaceResponse {
 	image_url: string
 	title: string
 	pivot: {
-		role: (typeof role)[keyof typeof role]
+		role: (typeof ROLE)[keyof typeof ROLE]
 	}
 }
 
@@ -20,7 +20,7 @@ export interface WorkspaceResponseWithUser {
 
 export interface WorkspaceRoleResponse {
 	// message?: string
-	role: (typeof role)[keyof typeof role]
+	role: (typeof ROLE)[keyof typeof ROLE]
 }
 
 export interface WorkspaceData {
@@ -31,7 +31,7 @@ export interface WorkspaceAddUserData {
 	user_id: number
 }
 export interface WorkspaceManageUserData {
-	role: Exclude<(typeof role)[keyof typeof role], 'owner'>
+	role: Exclude<(typeof ROLE)[keyof typeof ROLE], 'owner'>
 	user_id: number
 }
 

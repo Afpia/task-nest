@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Project;
-use App\Models\ProjectManagers;
 use App\Models\User;
 use App\Models\UserProject;
 use Illuminate\Support\Facades\Auth;
@@ -53,17 +52,17 @@ class ProjectService
             ->role ?? null;
     }
 
-    public function assignManager(Project $project, $userId)
+    public function assignUser(Project $project, $userId)
     {
-        ProjectManagers::create([
+        UserProject::create([
             'user_id' => $userId,
             'project_id' => $project->id,
         ]);
     }
 
-    public function DeleteManagerFromProject(Project $project, $userId)
+    public function deleteUserFromProject(Project $project, $userId)
     {
-        ProjectManagers::where('user_id', $userId)
+        UserProject::where('user_id', $userId)
             ->where('project_id', $project->id)
             ->delete();
     }

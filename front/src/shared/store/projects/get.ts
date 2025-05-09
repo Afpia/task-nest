@@ -1,16 +1,15 @@
-import { redirect } from 'atomic-router'
 import { sample } from 'effector'
 
 import { createQuery } from '@farfetched/core'
 
-import { getCurrentProject, getProjectsWorkspace } from '@shared/api'
+import { getCurrentProject, getProjectsWorkspace, getUsersProject } from '@shared/api'
 import { $isAuth } from '@shared/auth'
-import { privateProjectRouteParams, routes } from '@shared/config'
+import { privateProjectRouteParams } from '@shared/config'
 import { notifyError } from '@shared/helpers'
 
 import { $currentWorkspace, changedWorkspace } from '../workspaces'
 
-import { $currentProject, $projects } from './store'
+import { $currentProject, $projects, $usersProject } from './store'
 
 export const getProjectsWorkspaceFx = createQuery({
 	name: 'getProjectsWorkspace',
@@ -24,13 +23,35 @@ export const getCurrentProjectFx = createQuery({
 	enabled: $isAuth
 })
 
+export const getUsersProjectFx = createQuery({
+	name: 'getUsersProject',
+	handler: (projectId: string) => getUsersProject({ params: { projectId } }),
+	enabled: $isAuth
+})
+
+// Получение пользователей проекта
+
+sample({
+	clock: privateProjectRouteParams,
+	source: $currentProject,
+	filter: ({ project }, clock) => project?.id !== Number(clock.projectId),
+	fn: (_, clock) => clock.projectId,
+	target: getUsersProjectFx.start
+})
+
+sample({
+	clock: getUsersProjectFx.finished.success,
+	fn: (clock) => clock.result.data,
+	target: $usersProject
+})
+
 // Получение проекта
 
 sample({
 	clock: privateProjectRouteParams,
 	source: $currentProject,
 	filter: ({ project }, { projectId }) => project?.id !== Number(projectId),
-	fn: (_, clk) => clk.projectId,
+	fn: (_, clock) => clock.projectId,
 	target: getCurrentProjectFx.start
 })
 
@@ -51,10 +72,10 @@ sample({
 })
 
 // MB: redirect на страницу несуществующего проекта
-redirect({
-	clock: getCurrentProjectFx.finished.failure,
-	route: routes.private.home
-})
+// redirect({
+// 	clock: getCurrentProjectFx.finished.failure,
+// 	route: routes.private.home
+// })
 
 // Получение всех проектов
 

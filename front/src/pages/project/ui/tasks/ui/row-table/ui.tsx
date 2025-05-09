@@ -1,7 +1,7 @@
 import { useUnit } from 'effector-react'
 import { Trash } from 'lucide-react'
 
-import { ActionIcon, Badge, Checkbox, Flex, Progress, Table, Text } from '@mantine/core'
+import { ActionIcon, Badge, Checkbox, Flex, Table, Text } from '@mantine/core'
 
 import { deletedTaskProject } from '@shared/store'
 import type { TaskResponse } from '@shared/types'
@@ -32,10 +32,10 @@ export const Row = ({ tasks }: { tasks: TaskResponse[] }) => {
 			</Table.Td>
 			<Table.Td>
 				<Flex gap={20} justify='space-between'>
-					<Flex align='center' gap={60}>
+					{/* <Flex align='center' gap={60}>
 						<Text fw='bold'>0%</Text>
 						<Progress value={0} w={100} />
-					</Flex>
+					</Flex> */}
 					<ActionIcon aria-label='Settings' h='100%' variant='default' w='30px' onClick={() => deleteTask(element.id)}>
 						{/* <ChevronDown style={{ width: '70%', height: '70%' }} /> */}
 						<Trash style={{ width: '70%', height: '70%' }} />

@@ -48,8 +48,8 @@ class Project extends Model
             ->withPivot('role');
     }
 
-    public function managers()
+    public function managersAndExecutors()
     {
-        return $this->belongsToMany(ProjectManagers::class, 'user_id');
+        return $this->belongsToMany(UserProject::class, 'user_id');
     }
 }

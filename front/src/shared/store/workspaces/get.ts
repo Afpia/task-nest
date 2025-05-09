@@ -5,7 +5,7 @@ import { persist } from 'effector-storage/local'
 import { createQuery } from '@farfetched/core'
 
 import { getUserWorkspaces, getWorkspaceRole } from '@shared/api'
-import { $isAuth } from '@shared/auth'
+import { $isAuth, allUserReceived } from '@shared/auth'
 import { privateRouteOpened, routes, started } from '@shared/config'
 import type { WorkspaceResponse } from '@shared/types'
 
@@ -28,7 +28,7 @@ export const getWorkspaceRoleFx = createQuery({
 // Получение текущего workspace
 
 sample({
-	clock: privateRouteOpened,
+	clock: [privateRouteOpened, allUserReceived],
 	source: $workspaces,
 	filter: $workspaces.map((workspaces) => !workspaces.length),
 	fn: () => ({ config: {} }),

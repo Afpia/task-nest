@@ -93,10 +93,9 @@ class WorkspaceController extends Controller
         $rolesAsc = "'executor','project_manager','admin','owner'";
         $rolesList = $order === 'asc' ? $rolesAsc : $rolesDesc;
 
-        $currentUserId = auth()->id();
         $workspaceWithUsers = $workspace->users()->withPivot('role')->orderByRaw("FIELD(role, {$rolesList})")->get();
 
-        $sanitizedUsers = $workspaceWithUsers->filter(fn($user) => $user->id !== $currentUserId)->map(function ($user) {
+        $sanitizedUsers = $workspaceWithUsers->map(function ($user) {
             $data = $user->toArray();
             return $data;
         })->values();

@@ -42,7 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // глобальный поиск
     Route::get('/projects/tasks', [ProjectController::class, 'projectsTasks']);
-    
+
     //executor
     Route::middleware('role:executor')->group(function () {
         //workspaces routes
@@ -65,6 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/task/{task}', [TaskController::class, 'view']);
         Route::get('/task/{task}/users', [TaskController::class, 'taskUsers']);
         Route::put('/task/{task}/update-status', [TaskController::class, 'updateStatus']);
+        Route::get('/tasks/{project}', [TaskController::class, 'index']);
 
         //comments routes
         Route::get('/comment/{task}', [CommentController::class, 'index']);
@@ -77,7 +78,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/project/{project}/leave', [ProjectController::class, 'leaveProject']);
 
         //task routes
-        Route::get('/tasks/{project}', [TaskController::class, 'index']);
         Route::post('/task/{project}/add', [TaskController::class, 'store']);
         Route::post('/task/{task}/add-user', [TaskController::class, 'addUserToTask']);
         Route::put('/task/{task}/update', [TaskController::class, 'update']);
@@ -93,8 +93,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
         //projects routes
         Route::post('/project/{workspace}/add', [ProjectController::class, 'store']);
-        Route::post('/project/{project}/add-manager', [ProjectController::class, 'assignProjectManager']);
-        Route::post('/project/{project}/kick-manager', [ProjectController::class, 'kickProjectManager']);
+        Route::post('/project/{project}/user-add', [ProjectController::class, 'assignUserToProject']);
+        Route::post('/project/{project}/kick-user', [ProjectController::class, 'kickUserFromProject']);
         Route::put('/project/{project}/update', [ProjectController::class, 'update']);
         Route::delete('/project/{project}/delete', [ProjectController::class, 'destroy']);
     });
