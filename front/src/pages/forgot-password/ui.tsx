@@ -4,7 +4,7 @@ import { Anchor, Box, Button, Flex, Text, TextInput, Title } from '@mantine/core
 
 import { routes } from '@shared/config'
 
-export const ForgotPassword = () => (
+const ForgotPassword = () => (
 	// const [loading, setLoading] = useState(false)
 
 	<Flex justify='flex-start' w='100%'>
@@ -31,3 +31,5 @@ export const ForgotPassword = () => (
 		</Box>
 	</Flex>
 )
+
+export default ForgotPassword

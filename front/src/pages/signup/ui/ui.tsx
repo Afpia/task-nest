@@ -8,7 +8,7 @@ import { routes } from '@shared/config'
 
 import { Form } from './form'
 
-export const SignUp = () => {
+const SignUp = () => {
 	const [opened, setOpened] = useState(false)
 
 	return (
@@ -75,3 +75,5 @@ export const SignUp = () => {
 		</>
 	)
 }
+
+export default SignUp

@@ -73,7 +73,12 @@ class ProjectController extends Controller
 
     public function projectUsers(Project $project)
     {
-        $users = $project->users()->withPivot('role')->get();
+        $users = $project->users()->get();
+
+        $users->transform(function($user) use($project) {
+            $user->pivot->role = $this->workspaceService->getUserRoleInWorkspace($project->workspace, $user->id);
+            return $user;
+        });
 
         return response()->json($users);
     }
@@ -193,7 +198,9 @@ class ProjectController extends Controller
 
         $this->projectService->assignUser($project, $request->user_id);
 
-        $user = $project->users()->withPivot('role')->where('user_id', $userId)->firstOrFail();
+        $user = $project->users()->where('user_id', $userId)->firstOrFail();
+
+        $user->pivot->role = $workspaceRole;
 
         return response()->json([
             'message' => 'Пользователь успешно назначен на проект',
@@ -214,7 +221,7 @@ class ProjectController extends Controller
 
 
         return response()->json([
-            'message' => 'Менеджер проекта успешно отстранен',
+            'message' => 'Пользователь успешно отстранен',
             'user' => $user,
         ], 200);
     }

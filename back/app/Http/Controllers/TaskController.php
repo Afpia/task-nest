@@ -22,18 +22,18 @@ class TaskController extends Controller
 
     public function index(Request $request, Project $project)
     {
-        $filters = $request->input('filters', '');
-        $columns = $request->input('columns', '*');
-        $perPage = $request->input('per_page', false);
+        // $filters = $request->input('filters', '');
+        // $columns = $request->input('columns', '*');
+        // $perPage = $request->input('per_page', false);
 
-        $query = Task::where('project_id', $project->id);
-        $query = $this->queryService->applyFilters($query, $filters);
-        $query = $this->queryService->selectColumns($query, $columns);
-        $tasks = $this->queryService->paginateResults($query, $perPage);
+        $tasks = Task::where('project_id', $project->id)->with(['users','files'])->get();
+        // $query = $this->queryService->applyFilters($query, $filters);
+        // $query = $this->queryService->selectColumns($query, $columns);
+        // $tasks = $this->queryService->paginateResults($query, $perPage);
 
-        foreach($tasks as $task){
-            $task->users()->sync($task->users->pluck('id'));
-        }
+        // foreach($tasks as $task){
+        //     $task->users()->sync($task->users->pluck('id'));
+        // }
 
         return response()->json($tasks);
     }
@@ -51,15 +51,19 @@ class TaskController extends Controller
     public function store(Request $request, Project $project)
     {
         $validate = $request->validate([
-            'title' => 'required|string|max:255',
+            'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
-            'start_date' => 'date',
-            'end_date' => 'date|after_or_equal:start_date',
-            'project_id' => 'required|exists:projects,id',
-            'user_id' => 'required|exists:users,id',
+            'start_date'  => 'required|date',
+            'end_date'    => 'nullable|date|after_or_equal:start_date',
+            'assignees'   => 'required|array|min:1',
+            'assignees.*' => 'integer|exists:users,id',
+            'files'       => 'sometimes|array',
+            'files.*'     => 'file|max:10240',
         ]);
 
         $task = $this->taskService->createTask($validate, $project);
+
+        $task->load(['users', 'files']);
 
         return response()->json($task, 201);
     }

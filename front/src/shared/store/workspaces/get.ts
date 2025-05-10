@@ -81,6 +81,7 @@ redirect({
 
 sample({
 	clock: $currentWorkspace,
+	filter: $isAuth,
 	// clock: [changedWorkspace, getUserWorkspacesFx.finished.success],
 	// source: $currentWorkspace,
 	// filter: $currentWorkspace.map((item) => item.id),

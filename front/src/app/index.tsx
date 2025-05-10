@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { RouterProvider } from 'atomic-router-react'
 
 import { createTheme, MantineProvider } from '@mantine/core'
@@ -5,7 +6,7 @@ import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
 import { NavigationProgress } from '@mantine/nprogress'
 
-import { Pages } from '@pages/index'
+import { LoadingPage, Pages } from '@pages/index'
 import { Dark, myColors, router } from '@shared/config'
 
 import '@mantine/notifications/styles.css'
@@ -29,12 +30,12 @@ const theme = createTheme({
 export const App = () => (
 	<MantineProvider theme={theme} defaultColorScheme='light'>
 		<ModalsProvider>
-			{/* <AuthProvider> */}
 			<Notifications />
 			<RouterProvider router={router}>
-				<Pages />
+				<Suspense fallback={<LoadingPage />}>
+					<Pages />
+				</Suspense>
 			</RouterProvider>
-			{/* </AuthProvider> */}
 		</ModalsProvider>
 		<NavigationProgress />
 	</MantineProvider>

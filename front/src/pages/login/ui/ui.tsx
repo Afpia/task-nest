@@ -7,7 +7,7 @@ import { routes } from '@shared/config'
 
 import { LoginForm } from './form'
 
-export const Login = () => (
+const Login = () => (
 	<Flex justify='flex-start' w='100%'>
 		<Box ml={200} size='xs'>
 			<Title pb={30} size={30} order={1}>
@@ -30,3 +30,4 @@ export const Login = () => (
 		</Box>
 	</Flex>
 )
+export default Login

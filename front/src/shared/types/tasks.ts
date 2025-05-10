@@ -1,37 +1,30 @@
 import type { ProjectIdParams, TaskIdParams } from './params'
+import type { UserFieldResponse } from './user'
 
 export interface TaskResponse {
-	assignees: Assignee[]
 	description?: string
 	end_date?: string
+	files: Files[]
 	id: number
 	progress: number
 	project_id: number
 	start_date: string
 	status: string
 	title: string
-	who_set: string
+	users: UserFieldResponse[]
 }
 
-export interface Assignee {
-	avatar_url: string
-	email: string
+export interface Files {
 	id: number
-	name: string
-}
-
-export interface TaskRequest {
-	assignees: string[]
-	description?: string
-	end_date?: string
-	files: FormData
-	// start_date: string
-	title: string
+	mime_type: string
+	original_name: string
+	path: string
+	size: string
 }
 
 export type GetTasksProjectConfig = AxiosRequestConfig<ProjectIdParams>
 
-export type PostTaskProjectConfig = AxiosRequestConfig<ProjectIdParams, TaskRequest>
+export type PostTaskProjectConfig = AxiosRequestConfig<ProjectIdParams, FormData>
 
 export type PutTaskProjectConfig = AxiosRequestConfig<TaskIdParams>
 

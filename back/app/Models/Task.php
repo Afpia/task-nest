@@ -34,5 +34,10 @@ class Task extends Model
             ->withPivot('role');
     }
 
+    public function files()
+    {
+        return $this->hasMany(TaskFile::class);
+    }
+
 
 }

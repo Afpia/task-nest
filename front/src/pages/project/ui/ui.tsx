@@ -35,11 +35,10 @@ import {
 	kickedUserFromProject
 } from '@shared/store'
 import { StatsProject } from '@widgets/stats-project'
-
-import { Tasks } from './tasks'
+import { Tasks } from '@widgets/task-table'
 
 export const Project = () => {
-	const [{ project }, currentProjectLoading, users, loadingUsers, kickUserFromProject, myRole, myRoleLoading] = useUnit([
+	const [{ project }, currentProjectLoading, users, loadingUsers, kickUserFromProject, { role }, myRoleLoading] = useUnit([
 		$currentProject,
 		getCurrentProjectFx.$pending,
 		$usersProject,
@@ -72,9 +71,11 @@ export const Project = () => {
 					)}
 					{currentProjectLoading && <Skeleton height={38} width={250} />}
 				</Flex>
-				<Button variant='light' leftSection={<UserRoundPlus />} onClick={open}>
-					Пригласить на проект
-				</Button>
+				{(role === ROLE.ADMIN || role === ROLE.OWNER) && (
+					<Button variant='light' leftSection={<UserRoundPlus />} onClick={open}>
+						Пригласить на проект
+					</Button>
+				)}
 			</Flex>
 
 			<StatsProject />
@@ -108,7 +109,7 @@ export const Project = () => {
 													<Text fw={500} maw={110} truncate='end'>
 														{ROLE_NAMING[item.pivot.role]}
 													</Text>
-													{(myRole.role === ROLE.OWNER || myRole.role === ROLE.ADMIN) && (
+													{(role === ROLE.OWNER || role === ROLE.ADMIN) && (
 														<Menu position='bottom-end' shadow='sm' withinPortal>
 															<Menu.Target>
 																<ActionIcon variant='subtle' color='gray'>

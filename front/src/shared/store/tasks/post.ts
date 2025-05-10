@@ -1,17 +1,16 @@
-import dayjs from 'dayjs'
 import { createEvent, sample } from 'effector'
 
 import { createMutation } from '@farfetched/core'
 
 import { postTaskProject } from '@shared/api'
 import { $isAuth } from '@shared/auth'
-import type { PostTaskProjectConfig, TaskRequest } from '@shared/types'
+import type { PostTaskProjectConfig } from '@shared/types'
 
 import { $currentProject } from '../projects'
 
 import { getTasksProjectFx } from './get'
 
-export const createdTask = createEvent<TaskRequest>()
+export const createdTask = createEvent<FormData>()
 
 export const postTaskProjectFx = createMutation({
 	name: 'postTaskProject',
@@ -24,12 +23,7 @@ sample({
 	source: $currentProject,
 	fn: (source, clock) => ({
 		params: { projectId: source.project.id.toString() },
-		data: {
-			...clock,
-			project_id: source.project.id,
-			user_id: Number(clock.assignees[0]),
-			start_date: dayjs(new Date()).format('YYYY-MM-DD')
-		}
+		data: clock
 	}),
 	target: postTaskProjectFx.start
 })

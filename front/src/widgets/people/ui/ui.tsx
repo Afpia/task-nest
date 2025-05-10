@@ -81,7 +81,6 @@ export const People = () => {
 				{usersLoading && <Skeleton h={36} w={100} />}
 				{!usersLoading && (
 					<Title fw={600} size={20} order={2}>
-						{/* eslint-disable-next-line style/jsx-one-expression-per-line */}
 						Люди ({users.length})
 					</Title>
 				)}

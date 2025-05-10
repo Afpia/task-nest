@@ -18,7 +18,8 @@ export const getWorkspaceTasksFx = createQuery({
 sample({
 	clock: [$currentWorkspace, getUserWorkspacesFx.finished.success, postTaskProjectFx.finished.success],
 	source: $currentWorkspace,
-	fn: (source) => source.id,
+	filter: $isAuth,
+	fn: (source) => source.id.toString(),
 	target: getWorkspaceTasksFx.start
 })
 

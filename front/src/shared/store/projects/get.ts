@@ -1,10 +1,11 @@
+import { redirect } from 'atomic-router'
 import { sample } from 'effector'
 
 import { createQuery } from '@farfetched/core'
 
 import { getCurrentProject, getProjectsWorkspace, getUsersProject } from '@shared/api'
 import { $isAuth } from '@shared/auth'
-import { privateProjectRouteParams } from '@shared/config'
+import { privateProjectRouteParams, routes } from '@shared/config'
 import { notifyError } from '@shared/helpers'
 
 import { $currentWorkspace, changedWorkspace } from '../workspaces'
@@ -72,16 +73,17 @@ sample({
 })
 
 // MB: redirect на страницу несуществующего проекта
-// redirect({
-// 	clock: getCurrentProjectFx.finished.failure,
-// 	route: routes.private.home
-// })
+redirect({
+	clock: getCurrentProjectFx.finished.failure,
+	route: routes.private.home
+})
 
 // Получение всех проектов
 
 sample({
 	clock: [changedWorkspace, $currentWorkspace],
 	source: $currentWorkspace,
+	filter: $isAuth,
 	fn: (source) => source.id.toString(),
 	target: getProjectsWorkspaceFx.start
 })

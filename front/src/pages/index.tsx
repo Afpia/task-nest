@@ -11,6 +11,8 @@ import { ProjectRoute } from './project'
 import { SearchRoute } from './search'
 import { SignupRoute } from './signup'
 
+export * from './loading'
+
 export const Pages = createRoutesView({
 	routes: [
 		LoginRoute,

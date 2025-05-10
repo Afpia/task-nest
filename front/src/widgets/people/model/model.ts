@@ -25,6 +25,7 @@ export const getUsersWorkspaceFx = createQuery({
 sample({
 	clock: $currentWorkspace,
 	source: $currentWorkspace,
+	filter: $isAuth,
 	fn: (source) => ({
 		workspaceId: source.id.toString()
 	}),
