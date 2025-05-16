@@ -26,6 +26,7 @@ class AuthController extends Controller
     public function handleProviderCallback($provider)
     {
         $token = $this->authService->handleSocialCallback($provider);
+
         return redirect("http://localhost:5173/login?access_token=$token");
     }
 

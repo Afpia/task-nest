@@ -5,7 +5,7 @@ import { createMutation } from '@farfetched/core'
 import type { UseFormReturnType } from '@mantine/form'
 
 import { patchUserInfo, patchUserInfoBackground } from '@shared/api'
-import { $isAuth, $username } from '@shared/auth'
+import { $isAuth } from '@shared/auth'
 import { handleError, notifyError, notifySuccess } from '@shared/helpers'
 import type { UserFieldPartialData } from '@shared/types'
 
@@ -48,14 +48,6 @@ sample({
 		return result.data
 	},
 	target: $user
-})
-
-sample({
-	clock: patchUserFx.finished.success,
-	source: $username,
-	filter: (source, clock) => source !== clock.result.data.name,
-	fn: (_, clock) => clock.result.data.name,
-	target: $username
 })
 
 sample({

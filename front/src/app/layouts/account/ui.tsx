@@ -1,4 +1,3 @@
-// eslint-disable-next-line simple-import-sort/imports
 import type { ReactNode } from 'react'
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
@@ -6,13 +5,12 @@ import { useUnit } from 'effector-react'
 import { Anchor, Avatar, Box, Button, Container, Divider, Flex, NavLink, Skeleton, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
 
-import { $username } from '@shared/auth'
 import { routes } from '@shared/config'
 import { SrcImage } from '@shared/helpers'
 import { $user, getUserFx } from '@shared/store'
 
 export const AccountLayout = ({ children }: { children: ReactNode }) => {
-	const [username, user, loading] = useUnit([$username, $user, getUserFx.$pending])
+	const [user, loading] = useUnit([$user, getUserFx.$pending])
 
 	const openDeleteModal = () =>
 		modals.openConfirmModal({
@@ -42,7 +40,7 @@ export const AccountLayout = ({ children }: { children: ReactNode }) => {
 							component={Link}
 							to={routes.private.profile as unknown as string}
 						>
-							{username}
+							{user.name}
 						</Anchor>
 					</Flex>
 					<Button

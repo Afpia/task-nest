@@ -1,5 +1,5 @@
 import { redirect } from 'atomic-router'
-import { createEffect, createEvent, createStore, sample } from 'effector'
+import { createEvent, createStore, sample } from 'effector'
 import { persist } from 'effector-storage/local'
 
 import { routes } from '@shared/config'
@@ -9,22 +9,9 @@ import type { UserResponse } from '@shared/types'
 export const allUserReceived = createEvent<UserResponse>()
 export const allUserExpired = createEvent()
 
-export const $username = createStore<string>('').reset(allUserExpired)
 const $accessToken = createStore<string>('').reset(allUserExpired)
 
-const clearStorageFx = createEffect(() => {
-	localStorage.removeItem('token')
-	localStorage.removeItem('username')
-	localStorage.removeItem('workspace')
-})
-
 export const $isAuth = $accessToken.map((token) => !!token)
-
-sample({
-	clock: allUserReceived,
-	fn: (clock) => clock.user.name,
-	target: $username
-})
 
 sample({
 	clock: allUserReceived,
@@ -33,7 +20,7 @@ sample({
 })
 
 redirect({
-	clock: $accessToken,
+	clock: allUserReceived,
 	route: routes.private.home
 })
 
@@ -41,16 +28,13 @@ redirect({
 sample({
 	clock: allUserExpired,
 	fn: () => {
+		localStorage.removeItem('token')
+		localStorage.removeItem('workspace')
 		notifySuccess({
 			title: 'Поздравляю',
 			message: 'Вы успешно вышли из системы'
 		})
 	}
-})
-
-sample({
-	clock: allUserExpired,
-	target: clearStorageFx
 })
 
 redirect({
@@ -61,13 +45,7 @@ redirect({
 persist({
 	key: 'token',
 	store: $accessToken,
-	serialize: (state) => state,
-	deserialize: (state) => state
-})
-
-persist({
-	key: 'username',
-	store: $username,
+	// pickup: started,
 	serialize: (state) => state,
 	deserialize: (state) => state
 })

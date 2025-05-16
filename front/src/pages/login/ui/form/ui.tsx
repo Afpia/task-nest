@@ -5,11 +5,11 @@ import { Anchor, Button, Flex, PasswordInput, TextInput } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
 
 import type { UserRequest } from '@pages/login/api/types'
-import { loginFormed, loginFx, LoginScheme } from '@pages/login/model'
+import { $accessToken, loginFormed, loginFx, LoginScheme } from '@pages/login/model'
 import { routes } from '@shared/config'
 
 export const LoginForm = () => {
-	const [login, loading, loginError] = useUnit([loginFx, loginFx.pending, loginFormed])
+	const [login, loading, loginError, { accessToken }] = useUnit([loginFx, loginFx.pending, loginFormed, $accessToken])
 
 	const form = useForm({
 		mode: 'controlled',
@@ -32,14 +32,44 @@ export const LoginForm = () => {
 
 	return (
 		<form onSubmit={form.onSubmit((values) => onClickForm(values))}>
-			<TextInput {...form.getInputProps('email')} disabled={loading} label='Почта' mb={14} radius='md' size='lg' />
-			<PasswordInput {...form.getInputProps('password')} disabled={loading} label='Пароль' radius='md' size='lg' />
+			<TextInput
+				{...form.getInputProps('email')}
+				disabled={loading || !!accessToken}
+				label='Почта'
+				mb={14}
+				radius='md'
+				size='lg'
+			/>
+			<PasswordInput
+				{...form.getInputProps('password')}
+				disabled={loading || !!accessToken}
+				label='Пароль'
+				radius='md'
+				size='lg'
+			/>
 			<Flex justify='flex-end' mt={10}>
-				<Anchor component={Link} to={routes.auth.forgotPassword}>
+				<Anchor
+					style={{
+						pointerEvents: accessToken ? 'none' : undefined,
+						opacity: accessToken ? 0.5 : 1
+					}}
+					component={Link}
+					to={routes.auth.forgotPassword}
+				>
 					Забыли пароль?
 				</Anchor>
 			</Flex>
-			<Button h={50} mt={28} radius='xl' size='lg' type='submit' variant='filled' w={400} color='pink' loading={loading}>
+			<Button
+				h={50}
+				mt={28}
+				radius='xl'
+				size='lg'
+				type='submit'
+				variant='filled'
+				w={400}
+				color='pink'
+				loading={loading || !!accessToken}
+			>
 				Войти
 			</Button>
 		</form>

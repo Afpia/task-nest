@@ -66,7 +66,8 @@ export const Tasks = () => {
 										</Table.Th>
 										<Table.Th w={250}>Название задачи</Table.Th>
 										<Table.Th w={300}>Назначенные</Table.Th>
-										<Table.Th w={200}>Срок</Table.Th>
+										<Table.Th w={100}>Начало</Table.Th>
+										<Table.Th w={100}>Срок</Table.Th>
 										<Table.Th w={200}>Статус</Table.Th>
 										<Table.Th w={250}>Вложения</Table.Th>
 									</Table.Tr>

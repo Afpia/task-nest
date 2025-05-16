@@ -1,21 +1,14 @@
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 import { ChevronDown, Trash } from 'lucide-react'
+import dayjs from 'dayjs'
 
 import { ActionIcon, Anchor, Avatar, Badge, Checkbox, Flex, Menu, Table, Text, Tooltip } from '@mantine/core'
 
-import { routes } from '@shared/config'
+import { BADGE_COLOR, routes } from '@shared/config'
 import { ICON_MAP, SrcImage } from '@shared/helpers'
 import { $workspaceRole, deletedTaskProject } from '@shared/store'
 import type { TaskResponse } from '@shared/types'
-
-const BADGE_COLOR = {
-	Назначена: 'blue',
-	Завершена: 'lime',
-	Выполняется: 'violet',
-	Приостановлена: 'gray',
-	Просрочена: 'red'
-}
 
 export const Row = ({ tasks }: { tasks: TaskResponse[] }) => {
 	const [deleteTask, { role }] = useUnit([deletedTaskProject, $workspaceRole])
@@ -68,9 +61,10 @@ export const Row = ({ tasks }: { tasks: TaskResponse[] }) => {
 					)}
 				</Flex>
 			</Table.Td>
+			<Table.Td>{dayjs(element.start_date).format('DD.MM.YYYY')}</Table.Td>
 			<Table.Td>
 				{!element.end_date && <Text size='sm'>Нет срока</Text>}
-				{element.end_date}
+				{dayjs(element.end_date).format('DD.MM.YYYY')}
 			</Table.Td>
 			<Table.Td>
 				<Badge color={BADGE_COLOR[element.status as keyof typeof BADGE_COLOR]}>{element.status}</Badge>
@@ -81,7 +75,7 @@ export const Row = ({ tasks }: { tasks: TaskResponse[] }) => {
 						{element.files.length === 0 && <Text size='sm'>Нет вложений</Text>}
 						{element.files.map((file) => (
 							<Tooltip key={file.id} label={file.original_name} withArrow>
-								<Anchor href={SrcImage(file.path)} size='xs' download={file.original_name}>
+								<Anchor href={`${import.meta.env.VITE_BACKEND}/storage/${file.path}`} size='xs' download={file.original_name}>
 									{ICON_MAP[file.mime_type as keyof typeof ICON_MAP]}
 								</Anchor>
 							</Tooltip>
