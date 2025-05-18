@@ -7,12 +7,13 @@ import { redirects } from '@shared/config'
 
 interface LoginButtonProps {
 	disabledProp?: boolean
+	from: 'login' | 'signup'
 	loadingProp?: boolean
 	type: 'github' | 'google' | 'yandex'
 	variant: ButtonVariant
 }
 
-export const LoginButton = ({ type, variant, loadingProp, disabledProp }: LoginButtonProps) => {
+export const LoginButton = ({ type, variant, loadingProp, disabledProp, from }: LoginButtonProps) => {
 	const [loading, setLoading] = useState({
 		github: false,
 		yandex: false,
@@ -23,11 +24,11 @@ export const LoginButton = ({ type, variant, loadingProp, disabledProp }: LoginB
 		setLoading((prev) => ({ ...prev, [type]: true }))
 
 		if (type === 'github') {
-			window.location.assign(redirects.github)
+			window.location.assign(`${redirects.github}?from=${from}`)
 		} else if (type === 'yandex') {
-			window.location.assign(redirects.yandex)
+			window.location.assign(`${redirects.yandex}?from=${from}`)
 		} else {
-			window.location.assign(redirects.google)
+			window.location.assign(`${redirects.google}?from=${from}`)
 		}
 	}
 

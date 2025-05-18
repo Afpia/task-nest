@@ -58,11 +58,6 @@ sample({
 	target: allUserReceived
 })
 
-// redirect({
-// 	clock: loginFx.doneData,
-// 	route: routes.private.home
-// })
-
 sample({
 	clock: loginFx.failData,
 	source: loginFormed,
@@ -91,11 +86,6 @@ sample({
 	filter: ({ accessToken }) => !!accessToken,
 	target: loginSocialFx.prepend(({ accessToken }: UserSocialRequest) => ({ data: { accessToken } }))
 })
-
-// redirect({
-// 	clock: loginSocialFx.doneData,
-// 	route: routes.private.home
-// })
 
 sample({
 	clock: loginSocialFx.doneData,

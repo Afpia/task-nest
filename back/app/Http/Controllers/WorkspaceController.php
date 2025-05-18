@@ -6,6 +6,7 @@ use App\Models\Workspace;
 use App\Services\QueryService;
 use App\Services\WorkspaceService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 
@@ -49,12 +50,22 @@ class WorkspaceController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'title' => 'required|string|max:255'
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image_url' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $title = $validate['title'] ?? 'new Workspace';
+        $description = $validate['description'] ?? null;
+        $imageUrl = null;
 
-        $workspace = $this->workspaceService->createWorkspace($title);
+        if ($request->hasFile('image_url') && $request->file('image_url')->isValid()) {
+            $file = $request->file('image_url');
+            $path = $file->store('workspace', 'public');
+            $imageUrl = Storage::url($path);
+        }
+
+        $workspace = $this->workspaceService->createWorkspace($title, $description, $imageUrl);
 
         return response()->json([
             'message' => __('messages.add_success'),

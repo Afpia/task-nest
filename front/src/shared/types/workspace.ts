@@ -23,9 +23,7 @@ export interface WorkspaceRoleResponse {
 	role: (typeof ROLE)[keyof typeof ROLE]
 }
 
-export interface WorkspaceData {
-	title: string
-}
+export type WorkspaceData = FormData
 
 export interface WorkspaceAddUserData {
 	user_id: number

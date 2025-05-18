@@ -9,7 +9,8 @@ export const routes = {
 	auth: {
 		login: createRoute(),
 		signup: createRoute(),
-		forgotPassword: createRoute()
+		forgotPassword: createRoute(),
+		resetPassword: createRoute<{ token: string }>()
 	},
 	private: {
 		profile: createRoute<{ userLogin: string }>(),
@@ -34,6 +35,10 @@ export const mappedRoutes = [
 	{
 		route: routes.auth.signup,
 		path: path.SIGNUP
+	},
+	{
+		route: routes.auth.resetPassword,
+		path: path.RESET_PASSWORD
 	},
 	{
 		route: routes.auth.forgotPassword,

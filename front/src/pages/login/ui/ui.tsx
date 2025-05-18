@@ -20,9 +20,9 @@ export const Login = () => {
 					Войти в аккаунт
 				</Title>
 				<Flex justify='space-between'>
-					<LoginButton type='github' variant='outline' disabledProp={!!accessToken} />
-					<LoginButton type='yandex' variant='outline' disabledProp={!!accessToken} />
-					<LoginButton type='google' variant='outline' disabledProp={!!accessToken} />
+					<LoginButton type='github' variant='outline' disabledProp={!!accessToken} from='login' />
+					<LoginButton type='yandex' variant='outline' disabledProp={!!accessToken} from='login' />
+					<LoginButton type='google' variant='outline' disabledProp={!!accessToken} from='login' />
 				</Flex>
 				<Divider label='или войти с помощью почты' my='lg' labelPosition='center' />
 				<LoginForm />

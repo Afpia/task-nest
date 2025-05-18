@@ -5,6 +5,7 @@ import { Avatar, Flex, Select, Skeleton, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { ModalCreateWorkspace } from '@entities/create-workspace-modal'
+import { SrcImage } from '@shared/helpers'
 import { $currentWorkspace, $workspaces, changedWorkspace, getUserWorkspacesFx } from '@shared/store'
 
 export const SelectWorkspace = () => {
@@ -44,7 +45,7 @@ export const SelectWorkspace = () => {
 				allowDeselect={false}
 				checkIconPosition='right'
 				comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
-				leftSection={<Avatar radius={6} size={20} src={currentWorkspace.image_url} />}
+				leftSection={<Avatar radius={6} size={20} src={SrcImage(currentWorkspace.image_url)} />}
 				onChange={(current) => {
 					if (current === 'add') {
 						open()
@@ -59,7 +60,7 @@ export const SelectWorkspace = () => {
 								<Avatar
 									radius={6}
 									size={28}
-									src={workspaces.find((workspace) => workspace.id.toString() === item.option.value)?.image_url}
+									src={SrcImage(workspaces.find((workspace) => workspace.id.toString() === item.option.value)?.image_url)}
 								/>
 								<Text
 									size='sm'

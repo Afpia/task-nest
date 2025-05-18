@@ -5,7 +5,7 @@ import { routes } from '@shared/config'
 
 import { $isAuth } from './auth'
 
-export function privateAuth<Params extends RouteParams>(route: RouteInstance<Params>) {
+export function privateResetPassword<Params extends RouteParams>(route: RouteInstance<Params>) {
 	const checkSessionStarted = createEvent<RouteParamsAndQuery<Params>>()
 
 	const alreadyAuthorized = sample({
@@ -13,9 +13,33 @@ export function privateAuth<Params extends RouteParams>(route: RouteInstance<Par
 		filter: $isAuth.map((isAuth) => !isAuth)
 	})
 
+	const noToken = sample({
+		clock: checkSessionStarted,
+		source: route.$query,
+		filter: (source) => {
+			const token = source.token
+			return !token || token.trim() === ''
+		}
+	})
+
+	const hasToken = sample({
+		clock: checkSessionStarted,
+		source: route.$query,
+		filter: (source) => {
+			const token = source.token
+			return typeof token === 'string' && token.trim() !== ''
+		}
+	})
+
 	const forbidden = sample({
 		clock: checkSessionStarted,
 		filter: $isAuth
+	})
+
+	redirect({
+		clock: noToken,
+		replace: true,
+		route: routes.auth.login
 	})
 
 	redirect({
@@ -26,7 +50,7 @@ export function privateAuth<Params extends RouteParams>(route: RouteInstance<Par
 	return chainRoute({
 		route,
 		beforeOpen: checkSessionStarted,
-		openOn: [alreadyAuthorized],
-		cancelOn: [forbidden]
+		openOn: [alreadyAuthorized, hasToken],
+		cancelOn: [forbidden, noToken]
 	})
 }

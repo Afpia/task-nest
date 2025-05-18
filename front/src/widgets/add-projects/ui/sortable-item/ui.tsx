@@ -21,8 +21,6 @@ export const SortableItem = ({ id, title, image_url, tasks, open }: ProjectRespo
 		'--button-hover': 'none'
 	}
 
-	console.log(tasks)
-
 	if (isDragging) {
 		return (
 			<Button
