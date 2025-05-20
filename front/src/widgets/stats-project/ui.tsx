@@ -9,7 +9,7 @@ import { $tasks, getCurrentProjectFx, getTasksProjectFx } from '@shared/store'
 export const StatsProject = () => {
 	const theme = useMantineTheme()
 	const { isDark } = isDarkMode()
-	const [countTasks, tasksProjectLoading, currentProjectLoading] = useUnit([
+	const [tasks, tasksProjectLoading, currentProjectLoading] = useUnit([
 		$tasks,
 		getTasksProjectFx.$pending,
 		getCurrentProjectFx.$pending
@@ -30,8 +30,8 @@ export const StatsProject = () => {
 						</Title>
 						{(tasksProjectLoading || currentProjectLoading) && <Skeleton height={30} width={140} />}
 						{!(tasksProjectLoading || currentProjectLoading) && (
-							<Text c={countTasks.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
-								{countTasks.length}
+							<Text c={tasks.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
+								{tasks.length}
 							</Text>
 						)}
 					</Flex>
@@ -47,12 +47,15 @@ export const StatsProject = () => {
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Приост. задачи
 						</Title>
-						{/* {(tasksProjectLoadingSuspended || currentProjectLoading) && <Skeleton height={30} width={140} />}
-						{!(tasksProjectLoadingSuspended || currentProjectLoading) && (
-							<Text c={countTasksSuspended.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
-								{countTasksSuspended.length}
+						{(tasksProjectLoading || currentProjectLoading) && <Skeleton height={30} width={140} />}
+						{!(tasksProjectLoading || currentProjectLoading) && (
+							<Text
+								c={tasks.filter((item) => item.status === 'Приостановлена').length === 0 ? `${theme.colors.gray[6]}` : ''}
+								size='30px'
+							>
+								{tasks.filter((item) => item.status === 'Приостановлена').length}
 							</Text>
-						)} */}
+						)}
 					</Flex>
 					<Divider
 						size={2}
@@ -66,12 +69,15 @@ export const StatsProject = () => {
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Задачи в работе
 						</Title>
-						{/* {(tasksProjectLoadingInProgress || currentProjectLoading) && <Skeleton height={30} width={140} />}
-						{!(tasksProjectLoadingInProgress || currentProjectLoading) && (
-							<Text c={countTasksInProgress.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
-								{countTasksInProgress.length}
+						{(tasksProjectLoading || currentProjectLoading) && <Skeleton height={30} width={140} />}
+						{!(tasksProjectLoading || currentProjectLoading) && (
+							<Text
+								c={tasks.filter((item) => item.status === 'Выполняется').length === 0 ? `${theme.colors.gray[6]}` : ''}
+								size='30px'
+							>
+								{tasks.filter((item) => item.status === 'Выполняется').length}
 							</Text>
-						)} */}
+						)}
 					</Flex>
 					<Divider
 						size={2}
@@ -83,14 +89,17 @@ export const StatsProject = () => {
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
-							Выпол. задачи
+							Заверш. задачи
 						</Title>
-						{/* {(tasksProjectLoadingDone || currentProjectLoading) && <Skeleton height={30} width={140} />}
-						{!(tasksProjectLoadingDone || currentProjectLoading) && (
-							<Text c={countTasksDone.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
-								{countTasksDone.length}
+						{(tasksProjectLoading || currentProjectLoading) && <Skeleton height={30} width={140} />}
+						{!(tasksProjectLoading || currentProjectLoading) && (
+							<Text
+								c={tasks.filter((item) => item.status === 'Завершена').length === 0 ? `${theme.colors.gray[6]}` : ''}
+								size='30px'
+							>
+								{tasks.filter((item) => item.status === 'Завершена').length}
 							</Text>
-						)} */}
+						)}
 					</Flex>
 					<Divider
 						size={2}
@@ -104,12 +113,15 @@ export const StatsProject = () => {
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Просроч. задачи
 						</Title>
-						{/* {(tasksProjectLoadingOverdue || currentProjectLoading) && <Skeleton height={30} width={140} />}
-						{!(tasksProjectLoadingOverdue || currentProjectLoading) && (
-							<Text c={countTasksOverdue.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
-								{countTasksOverdue.length}
+						{(tasksProjectLoading || currentProjectLoading) && <Skeleton height={30} width={140} />}
+						{!(tasksProjectLoading || currentProjectLoading) && (
+							<Text
+								c={tasks.filter((item) => item.status === 'Просрочена').length === 0 ? `${theme.colors.gray[6]}` : ''}
+								size='30px'
+							>
+								{tasks.filter((item) => item.status === 'Просрочена').length}
 							</Text>
-						)} */}
+						)}
 					</Flex>
 				</Flex>
 			</Flex>

@@ -5,3 +5,4 @@ import type { TaskResponse } from '@shared/types'
 
 export const $tasks = createStore([] as TaskResponse[]).reset(allUserExpired)
 export const $tasksUser = createStore([] as TaskResponse[]).reset(allUserExpired)
+export const $currentTask = createStore<TaskResponse | null>(null).reset(allUserExpired)

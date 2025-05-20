@@ -51,7 +51,7 @@ export const AddProjects = () => {
 		<Box
 			bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
 			bg={isDark ? ThemeColors.dark : ThemeColors.light}
-			h='350px'
+			h='320px'
 			p={20}
 			style={{ borderRadius: '20px', overflow: 'hidden', position: 'relative' }}
 			w='50%'
@@ -65,7 +65,7 @@ export const AddProjects = () => {
 				</ActionIcon>
 			</Flex>
 			<Divider my='sm' variant='dashed' />
-			<ScrollArea h='270px' scrollbars='y'>
+			<ScrollArea h='220px' scrollbars='y'>
 				<DndContext
 					collisionDetection={closestCorners}
 					onDragEnd={handleDragEnd}

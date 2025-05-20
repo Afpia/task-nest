@@ -53,8 +53,8 @@ export const StatsWorkspace = () => {
 						</Title>
 						{(countTasksLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
 						{!(countTasksLoading || userWorkspacesLoading) && (
-							<Text c={tasks === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
-								{tasks}
+							<Text c={tasks.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
+								{tasks.length}
 							</Text>
 						)}
 					</Flex>
@@ -70,9 +70,15 @@ export const StatsWorkspace = () => {
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Приост. задачи
 						</Title>
-						<Text c={theme.colors.gray[6]} size='30px'>
-							0
-						</Text>
+						{(countTasksLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
+						{!(countTasksLoading || userWorkspacesLoading) && (
+							<Text
+								c={tasks.filter((item) => item.status === 'Приостановлена').length === 0 ? `${theme.colors.gray[6]}` : ''}
+								size='30px'
+							>
+								{tasks.filter((item) => item.status === 'Приостановлена').length}
+							</Text>
+						)}
 					</Flex>
 					<Divider
 						size={2}
@@ -84,11 +90,17 @@ export const StatsWorkspace = () => {
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
-							Выпол. задачи
+							Заверш. задачи
 						</Title>
-						<Text c={theme.colors.gray[6]} size='30px'>
-							0
-						</Text>
+						{(countTasksLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
+						{!(countTasksLoading || userWorkspacesLoading) && (
+							<Text
+								c={tasks.filter((item) => item.status === 'Завершена').length === 0 ? `${theme.colors.gray[6]}` : ''}
+								size='30px'
+							>
+								{tasks.filter((item) => item.status === 'Завершена').length}
+							</Text>
+						)}
 					</Flex>
 					<Divider
 						size={2}
@@ -102,9 +114,15 @@ export const StatsWorkspace = () => {
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Просроч. задачи
 						</Title>
-						<Text c={theme.colors.gray[6]} size='30px'>
-							0
-						</Text>
+						{(countTasksLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
+						{!(countTasksLoading || userWorkspacesLoading) && (
+							<Text
+								c={tasks.filter((item) => item.status === 'Просрочена').length === 0 ? `${theme.colors.gray[6]}` : ''}
+								size='30px'
+							>
+								{tasks.filter((item) => item.status === 'Просрочена').length}
+							</Text>
+						)}
 					</Flex>
 				</Flex>
 			</Flex>

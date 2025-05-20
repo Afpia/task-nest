@@ -6,19 +6,22 @@ import { useDisclosure } from '@mantine/hooks'
 
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
-import { $tasks, $workspaceRole, getCurrentProjectFx, getTasksProjectFx } from '@shared/store'
+import { $currentTask, $tasks, $workspaceRole, getCurrentProjectFx, getTasksProjectFx } from '@shared/store'
 import { CreateTaskDrawer } from '@widgets/create-task-drawer'
+import { UpdateTaskDrawer } from '@widgets/update-task-drawer'
 
 import { Row } from './row-table'
 
 export const Tasks = () => {
-	const [tasks, tasksProjectLoading, currentProjectLoading, { role }] = useUnit([
+	const [tasks, tasksProjectLoading, currentProjectLoading, { role }, task] = useUnit([
 		$tasks,
 		getTasksProjectFx.$pending,
 		getCurrentProjectFx.$pending,
-		$workspaceRole
+		$workspaceRole,
+		$currentTask
 	])
-	const [opened, { open, close }] = useDisclosure(false)
+	const createTask = useDisclosure(false)
+	const updateTask = useDisclosure(false)
 	const { isDark } = isDarkMode()
 
 	return (
@@ -42,7 +45,7 @@ export const Tasks = () => {
 					</Group>
 					{!(role === 'executor') && (
 						<Flex gap={10}>
-							<Button radius='md' size='xs' variant='filled' leftSection={<Plus />} onClick={open}>
+							<Button radius='md' size='xs' variant='filled' leftSection={<Plus />} onClick={createTask[1].open}>
 								Добавить задачу
 							</Button>
 						</Flex>
@@ -73,7 +76,7 @@ export const Tasks = () => {
 									</Table.Tr>
 								</Table.Thead>
 								<Table.Tbody mih={500}>
-									<Row tasks={tasks} />
+									<Row tasks={tasks} updateTask={updateTask} />
 								</Table.Tbody>
 							</Table>
 
@@ -91,7 +94,8 @@ export const Tasks = () => {
 					</Box>
 				)}
 			</Box>
-			<CreateTaskDrawer close={close} opened={opened} />
+			{task && <UpdateTaskDrawer task={task} close={updateTask[1].close} opened={updateTask[0]} />}
+			<CreateTaskDrawer close={createTask[1].close} opened={createTask[0]} />
 		</>
 	)
 }

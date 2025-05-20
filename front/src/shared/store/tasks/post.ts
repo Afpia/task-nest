@@ -9,14 +9,27 @@ import type { PostTaskProjectConfig } from '@shared/types'
 import { $currentProject } from '../projects'
 
 import { getTasksProjectFx } from './get'
+import { $currentTask, $tasks } from './store'
 
 export const createdTask = createEvent<FormData>()
+export const currentTaskSet = createEvent<number>()
 
 export const postTaskProjectFx = createMutation({
 	name: 'postTaskProject',
 	handler: ({ params, data }: PostTaskProjectConfig) => postTaskProject({ params, data }),
 	enabled: $isAuth
 })
+
+// Получение текущей задачи
+
+sample({
+	clock: currentTaskSet,
+	source: $tasks,
+	fn: (source, clock) => source.find((item) => item.id === clock) ?? null,
+	target: $currentTask
+})
+
+// Создание задачи
 
 sample({
 	clock: createdTask,

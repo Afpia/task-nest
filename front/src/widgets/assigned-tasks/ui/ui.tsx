@@ -1,13 +1,41 @@
-import { Settings2 } from 'lucide-react'
+import { useState } from 'react'
+import { useUnit } from 'effector-react'
+import { BringToFront, Settings2 } from 'lucide-react'
 
-import { closestCorners, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
-import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import { ActionIcon, Box, Divider, Flex, ScrollArea, Select, Title } from '@mantine/core'
+import {
+	closestCorners,
+	DndContext,
+	DragOverlay,
+	KeyboardSensor,
+	PointerSensor,
+	useSensor,
+	useSensors,
+	type DragEndEvent
+} from '@dnd-kit/core'
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { ActionIcon, Box, Divider, Flex, Menu, ScrollArea, Select, Skeleton, Title } from '@mantine/core'
 
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
+import { getUserWorkspacesFx } from '@shared/store'
+// FIXME: Исправить import вынести глобально данный запрос
+import { $tasks, getWorkspaceTasksFx } from '@widgets/stats-workspace/model'
+
+import { $activeTask, changedActiveTask, changedPositionItem } from '../model'
+
+import { SortableItem } from './sortable-item'
 
 export const AssignedTasks = () => {
+	const [workspaceLoading, tasksLoading, tasks, changeActive, activeTask, changePosition] = useUnit([
+		getUserWorkspacesFx.$pending,
+		getWorkspaceTasksFx.$pending,
+		$tasks,
+		changedActiveTask,
+		$activeTask,
+		changedPositionItem
+	])
+	const [dragEnabled, setDragEnabled] = useState(false)
+
 	const { isDark } = isDarkMode()
 	const sensors = useSensors(
 		useSensor(PointerSensor),
@@ -16,23 +44,23 @@ export const AssignedTasks = () => {
 		})
 	)
 
-	// const getTaskPos = (id: number | string) => projects.findIndex((item) => item.id === id)
+	const getTaskPos = (id: number | string) => tasks.findIndex((item) => item.id === id)
 
-	// function handleDragEnd(event: DragEndEvent) {
-	// 	const { active, over } = event
+	function handleDragEnd(event: DragEndEvent) {
+		const { active, over } = event
 
-	// 	if (over !== null && active.id !== over.id) {
-	// 		const oldIndex = getTaskPos(active.id)
-	// 		const newIndex = getTaskPos(over.id)
+		if (over !== null && active.id !== over.id) {
+			const oldIndex = getTaskPos(active.id)
+			const newIndex = getTaskPos(over.id)
 
-	// 		// changePosition(arrayMove(projects, oldIndex, newIndex))
-	// 	}
-	// }
+			changePosition(arrayMove(tasks, oldIndex, newIndex))
+		}
+	}
 
 	return (
 		<Box
 			bd={`1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}`}
-			h='350px'
+			h='320px'
 			p={20}
 			style={{ borderRadius: '20px' }}
 			w='50%'
@@ -43,45 +71,65 @@ export const AssignedTasks = () => {
 				</Title>
 				<Flex gap={10}>
 					<Select data={['По дате возрастания', 'По дате убывания']} defaultValue='По дате возрастания' allowDeselect={false} />
-					<ActionIcon aria-label='Settings' h='100%' variant='default' w='35px'>
-						<Settings2 style={{ width: '70%', height: '70%' }} />
-					</ActionIcon>
+					<Menu position='bottom-end' shadow='sm' withinPortal>
+						<Menu.Target>
+							<ActionIcon aria-label='Settings' h='100%' variant='default' w='35px'>
+								<Settings2 style={{ width: '70%', height: '70%' }} />
+							</ActionIcon>
+						</Menu.Target>
+
+						<Menu.Dropdown>
+							<Menu.Item leftSection={<BringToFront size={14} />} onClick={() => setDragEnabled((prev) => !prev)}>
+								{!dragEnabled && 'Изменить порядок задач'}
+								{dragEnabled && 'Вернуть обычный вид'}
+							</Menu.Item>
+						</Menu.Dropdown>
+					</Menu>
 				</Flex>
 			</Flex>
 			<Divider my='sm' variant='dashed' />
-			<ScrollArea h='270px' scrollbars='y'>
-				<DndContext
-					collisionDetection={closestCorners}
-					// onDragEnd={handleDragEnd}
-					// onDragStart={(event) => changeActive(event.active.id)}
-					sensors={sensors}
-				>
-					<Flex h='100%'>
-						{/* {projects && (
-							<SortableContext items={projects} strategy={verticalListSortingStrategy}>
-								{projects.map((item) => (
-									// eslint-disable-next-line no-inline-comments
-									<Flex key={item.id}>
-										<SortableItem {...item} />
+			<ScrollArea h='220px' scrollbars='y'>
+				{dragEnabled && (
+					<DndContext
+						collisionDetection={closestCorners}
+						onDragEnd={handleDragEnd}
+						onDragStart={(event) => changeActive(event.active.id)}
+						sensors={sensors}
+					>
+						<Flex gap={10} h='100%' direction='column'>
+							{!(workspaceLoading || tasksLoading) && (
+								<SortableContext items={tasks} strategy={verticalListSortingStrategy}>
+									{tasks.map((item) => (
+										<Flex key={item.id}>
+											<SortableItem {...item} dragging={true} />
+										</Flex>
+									))}
+									<DragOverlay>
+										{tasks
+											.filter((item) => item.id === activeTask)
+											.map((item) => (
+												<SortableItem key={item.id} {...item} dragging={true} />
+											))}
+									</DragOverlay>
+								</SortableContext>
+							)}
+							{(workspaceLoading || tasksLoading) &&
+								Array.from({ length: 3 }).map((_, index) => (
+									<Flex key={index}>
+										<Skeleton mih={70} radius='md' w='100%' />
 									</Flex>
 								))}
-								<DragOverlay>
-									{projects
-										.filter((item) => item.id === activeProject)
-										.map((item) => (
-											<SortableItem key={item.id} {...item} />
-										))}
-								</DragOverlay>
-							</SortableContext>
-						)} */}
-						{/* {loading &&
-							Array.from({ length: 3 }).map((_, index) => (
-								<Flex key={index}>
-									<Skeleton mih={70} radius='md' w='100%' />
-								</Flex>
-							))} */}
+						</Flex>
+					</DndContext>
+				)}
+				{!dragEnabled && (
+					<Flex gap={10} h='100%' direction='column'>
+						{!workspaceLoading && !tasksLoading && tasks.map((item) => <SortableItem key={item.id} {...item} dragging={false} />)}
+
+						{(workspaceLoading || tasksLoading) &&
+							Array.from({ length: 3 }).map((_, idx) => <Skeleton key={idx} mih={70} radius='md' w='100%' />)}
 					</Flex>
-				</DndContext>
+				)}
 			</ScrollArea>
 			<Box
 				bg={
