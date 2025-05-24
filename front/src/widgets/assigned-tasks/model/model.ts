@@ -7,31 +7,25 @@ export const $assignedTaskWidget = createStore<TaskResponse[]>([] as TaskRespons
 
 export const changedPositionItem = createEvent<TaskResponse[]>()
 export const changedActiveTask = createEvent<number | string | null>()
+export const changedOrder = createEvent<'asc' | 'desc'>()
 
 export const $activeTask = createStore<number | string | null>(null).on(changedActiveTask, (_, id) => id)
 
-// const currentRoute = routes.private.home
-
-// sample({
-// 	clock: [currentRoute.opened, getProjectsWorkspaceFx.finished.success, $projects, createdTask],
-// 	source: $projects,
-// 	fn(source) {
-// 		return [
-// 			{
-// 				id: -1,
-// 				title: 'Добавление проекта',
-// 				description: '',
-// 				start_date: '',
-// 				status: '',
-// 				remaining_days: 0,
-// 				image_url: '',
-// 				tasks: []
-// 			},
-// 			...source
-// 		]
-// 	},
-// 	target: $projectsWidget
-// })
+sample({
+	clock: changedOrder,
+	source: $tasks,
+	fn: (tasks, order) => {
+		if (!tasks || tasks.length === 0) return tasks
+		const copy = [...tasks]
+		copy.sort((a, b) => {
+			const da = new Date(a.end_date ?? '').getTime()
+			const db = new Date(b.end_date ?? '').getTime()
+			return order === 'asc' ? da - db : db - da
+		})
+		return copy
+	},
+	target: $tasks
+})
 
 sample({
 	clock: changedPositionItem,

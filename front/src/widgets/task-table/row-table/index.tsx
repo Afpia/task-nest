@@ -19,9 +19,10 @@ export const Row = ({ tasks, updateTask }: { tasks: TaskResponse[]; updateTask: 
 	}
 
 	return tasks.map((element) => {
-		const now = dayjs().startOf('day')
+		const now = dayjs(element.start_date).startOf('day')
 		const end = dayjs(element.end_date).startOf('day')
 		const daysLeft = end.diff(now, 'day')
+		const isOverdue = dayjs().startOf('day').isAfter(end)
 
 		return (
 			<Table.Tr h={50} key={element.id}>
@@ -77,7 +78,10 @@ export const Row = ({ tasks, updateTask }: { tasks: TaskResponse[]; updateTask: 
 				<Table.Td>
 					{!element.end_date && <Text size='sm'>Нет срока</Text>}
 					{element.end_date && (
-						<Text c={statusColor(daysLeft)} size='sm'>
+						<Text
+							c={element.status !== 'Завершена' && element.status !== 'Приостановлена' ? statusColor(daysLeft, isOverdue) : ''}
+							size='sm'
+						>
 							{dayjs(element.end_date).format('DD.MM.YYYY')}
 						</Text>
 					)}

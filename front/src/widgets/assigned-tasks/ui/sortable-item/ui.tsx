@@ -25,6 +25,7 @@ export const SortableItem = ({ id, title, end_date, dragging }: TaskResponse & {
 	const now = dayjs().startOf('day')
 	const deadline = dayjs(end_date).startOf('day')
 	const daysLeft = deadline.diff(now, 'day')
+	const isOverdue = dayjs().startOf('day').isAfter(deadline)
 
 	const deadlineText =
 		daysLeft < 0
@@ -52,7 +53,7 @@ export const SortableItem = ({ id, title, end_date, dragging }: TaskResponse & {
 				<Flex align='start' justify='center' direction='column'>
 					<Text fw={600}>{title}</Text>
 					<Flex gap={30}>
-						<Text c={statusColor(daysLeft)} fw={600} fz={14}>
+						<Text c={statusColor(daysLeft, isOverdue)} fw={600} fz={14}>
 							{deadlineText}
 						</Text>
 					</Flex>
@@ -80,7 +81,7 @@ export const SortableItem = ({ id, title, end_date, dragging }: TaskResponse & {
 			<Flex align='start' justify='center' direction='column'>
 				<Text fw={600}>{title}</Text>
 				<Flex gap={30}>
-					<Text c={statusColor(daysLeft)} fw={600} fz={14}>
+					<Text c={statusColor(daysLeft, isOverdue)} fw={600} fz={14}>
 						{deadlineText}
 					</Text>
 				</Flex>

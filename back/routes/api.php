@@ -86,7 +86,7 @@ Route::middleware('auth:sanctum')->group(function () {
         //task routes
         Route::post('/task/{project}/add', [TaskController::class, 'store']);
         Route::post('/task/{task}/add-user', [TaskController::class, 'addUserToTask']);
-        Route::put('/task/{task}/update', [TaskController::class, 'update']);
+        Route::post('/task/{task}/update', [TaskController::class, 'update']);
         Route::delete('/task/{task}/delete', [TaskController::class, 'destroy']);
     });
 

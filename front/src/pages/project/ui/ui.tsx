@@ -66,7 +66,10 @@ export const Project = () => {
 					{!currentProjectLoading && (
 						<>
 							<Avatar radius='md' src={project.image_url} />
-							<Title order={3}>{project.title}</Title>
+							<Flex direction='column'>
+								<Title order={3}>{project.title}</Title>
+								<Text>{project.status}</Text>
+							</Flex>
 						</>
 					)}
 					{currentProjectLoading && <Skeleton height={38} width={250} />}

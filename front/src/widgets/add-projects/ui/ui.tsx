@@ -1,10 +1,11 @@
+import { useState } from 'react'
 import { useUnit } from 'effector-react'
-import { Settings2 } from 'lucide-react'
+import { BringToFront, Settings2 } from 'lucide-react'
 
 import type { DragEndEvent } from '@dnd-kit/core'
 import { closestCorners, DndContext, DragOverlay, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, rectSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import { ActionIcon, Box, Divider, Flex, Grid, ScrollArea, Skeleton, Title } from '@mantine/core'
+import { ActionIcon, Box, Divider, Flex, Grid, Menu, ScrollArea, Skeleton, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { ModalCreateProject } from '@entities/create-project-modal'
@@ -24,6 +25,7 @@ export const AddProjects = () => {
 		$activeProject,
 		changedActiveProject
 	])
+	const [dragEnabled, setDragEnabled] = useState(false)
 	const { isDark } = isDarkMode()
 	const [opened, { open, close }] = useDisclosure(false)
 
@@ -60,35 +62,65 @@ export const AddProjects = () => {
 				<Title fw={600} size={20} order={2}>
 					Проекты
 				</Title>
-				<ActionIcon aria-label='Settings' h='100%' variant='default' w='35px'>
-					<Settings2 style={{ width: '70%', height: '70%' }} />
-				</ActionIcon>
+				<Menu position='bottom-end' shadow='sm' withinPortal>
+					<Menu.Target>
+						<ActionIcon aria-label='Settings' h='100%' variant='default' w='35px'>
+							<Settings2 style={{ width: '70%', height: '70%' }} />
+						</ActionIcon>
+					</Menu.Target>
+
+					<Menu.Dropdown>
+						<Menu.Item leftSection={<BringToFront size={14} />} onClick={() => setDragEnabled((prev) => !prev)}>
+							{!dragEnabled && 'Изменить порядок проектов'}
+							{dragEnabled && 'Вернуть обычный вид'}
+						</Menu.Item>
+					</Menu.Dropdown>
+				</Menu>
 			</Flex>
 			<Divider my='sm' variant='dashed' />
 			<ScrollArea h='220px' scrollbars='y'>
-				<DndContext
-					collisionDetection={closestCorners}
-					onDragEnd={handleDragEnd}
-					onDragStart={(event) => changeActive(event.active.id)}
-					sensors={sensors}
-				>
-					<Grid h='100%' styles={{ inner: { maxWidth: '100%', margin: '0 auto' } }}>
-						{projects && (
-							<SortableContext items={projects} strategy={rectSortingStrategy}>
-								{projects.map((item) => (
-									<Grid.Col key={item.id} p={5} span={4}>
-										<SortableItem {...item} open={open} />
+				{dragEnabled && (
+					<DndContext
+						collisionDetection={closestCorners}
+						onDragEnd={handleDragEnd}
+						onDragStart={(event) => changeActive(event.active.id)}
+						sensors={sensors}
+					>
+						<Grid h='100%' styles={{ inner: { maxWidth: '100%', margin: '0 auto' } }}>
+							{projects && (
+								<SortableContext items={projects} strategy={rectSortingStrategy}>
+									{projects.map((item) => (
+										<Grid.Col key={item.id} p={5} span={4}>
+											<SortableItem {...item} open={open} />
+										</Grid.Col>
+									))}
+									<DragOverlay>
+										{projects
+											.filter((item) => item.id === activeProject)
+											.map((item) => (
+												<SortableItem key={item.id} {...item} />
+											))}
+									</DragOverlay>
+								</SortableContext>
+							)}
+							{loading &&
+								Array.from({ length: 8 }).map((_, index) => (
+									<Grid.Col key={index} p={5} span={4}>
+										<Skeleton mih={70} radius='md' w='100%' />
 									</Grid.Col>
 								))}
-								<DragOverlay>
-									{projects
-										.filter((item) => item.id === activeProject)
-										.map((item) => (
-											<SortableItem key={item.id} {...item} />
-										))}
-								</DragOverlay>
-							</SortableContext>
-						)}
+						</Grid>
+					</DndContext>
+				)}
+				{!dragEnabled && (
+					<Grid h='100%' styles={{ inner: { maxWidth: '100%', margin: '0 auto' } }}>
+						{!loading &&
+							projects.map((item) => (
+								<Grid.Col key={item.id} p={5} span={4}>
+									<SortableItem {...item} />
+								</Grid.Col>
+							))}
+
 						{loading &&
 							Array.from({ length: 8 }).map((_, index) => (
 								<Grid.Col key={index} p={5} span={4}>
@@ -96,7 +128,7 @@ export const AddProjects = () => {
 								</Grid.Col>
 							))}
 					</Grid>
-				</DndContext>
+				)}
 			</ScrollArea>
 			<ModalCreateProject close={close} opened={opened} />
 			<Box

@@ -38,10 +38,6 @@ export const Tasks = () => {
 						<Button radius='md' size='xs' variant='default'>
 							Таблица
 						</Button>
-
-						{/* <Button radius='md' size='xs' variant='default'>
-							Канбан доска
-						</Button> */}
 					</Group>
 					{!(role === 'executor') && (
 						<Flex gap={10}>

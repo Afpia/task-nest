@@ -13,8 +13,6 @@ import { changedWorkspace } from '@shared/store'
 import type { EntitiesResponse } from './api'
 import { $allEntities, clearedAllEntities, sendedQueryAllEntities } from './model'
 
-import styles from './ui.module.css'
-
 interface ActionData {
 	breadcrumbs: string[]
 	group: string
@@ -67,8 +65,13 @@ const buildActions = (entities: EntitiesResponse[], query: string, changeWorkspa
 					group: 'Задачи',
 					status: tk.status,
 					breadcrumbs: [ws.title, pr.title, tk.title],
-					href: `/workspaces/${ws.id}/projects/${pr.id}/tasks/${tk.id}`
-					// onTrigger: () => navigate(`/workspaces/${ws.id}/projects/${pr.id}/tasks/${tk.id}`)
+					href: `/workspaces/${ws.id}/projects/${pr.id}/tasks/${tk.id}`,
+					onTrigger: () => {
+						changeWorkspace(ws.id.toString())
+						routes.private.project.open({
+							projectId: pr.id.toString()
+						})
+					}
 				})
 			})
 		})
@@ -97,7 +100,6 @@ export const SidebarSearch = () => {
 	return (
 		<>
 			<Button
-				className={styles.search__input}
 				justify='left'
 				radius='md'
 				variant='outline'
@@ -111,7 +113,7 @@ export const SidebarSearch = () => {
 					</Kbd>
 				}
 			>
-				<Text className={styles.search} w={156}>
+				<Text style={{ textAlign: 'left' }} w={156}>
 					Поиск
 				</Text>
 			</Button>

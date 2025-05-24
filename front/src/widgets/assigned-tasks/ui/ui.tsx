@@ -21,18 +21,19 @@ import { getUserWorkspacesFx } from '@shared/store'
 // FIXME: Исправить import вынести глобально данный запрос
 import { $tasks, getWorkspaceTasksFx } from '@widgets/stats-workspace/model'
 
-import { $activeTask, changedActiveTask, changedPositionItem } from '../model'
+import { $activeTask, changedActiveTask, changedOrder, changedPositionItem } from '../model'
 
 import { SortableItem } from './sortable-item'
 
 export const AssignedTasks = () => {
-	const [workspaceLoading, tasksLoading, tasks, changeActive, activeTask, changePosition] = useUnit([
+	const [workspaceLoading, tasksLoading, tasks, changeActive, activeTask, changePosition, changeOrder] = useUnit([
 		getUserWorkspacesFx.$pending,
 		getWorkspaceTasksFx.$pending,
 		$tasks,
 		changedActiveTask,
 		$activeTask,
-		changedPositionItem
+		changedPositionItem,
+		changedOrder
 	])
 	const [dragEnabled, setDragEnabled] = useState(false)
 
@@ -70,7 +71,15 @@ export const AssignedTasks = () => {
 					Назначенные задачи
 				</Title>
 				<Flex gap={10}>
-					<Select data={['По дате возрастания', 'По дате убывания']} defaultValue='По дате возрастания' allowDeselect={false} />
+					<Select
+						defaultValue='asc'
+						data={[
+							{ value: 'asc', label: 'По дате возрастания' },
+							{ value: 'desc', label: 'По дате убывания' }
+						]}
+						allowDeselect={false}
+						onChange={(value) => changeOrder(value as 'asc' | 'desc')}
+					/>
 					<Menu position='bottom-end' shadow='sm' withinPortal>
 						<Menu.Target>
 							<ActionIcon aria-label='Settings' h='100%' variant='default' w='35px'>
@@ -99,13 +108,16 @@ export const AssignedTasks = () => {
 						<Flex gap={10} h='100%' direction='column'>
 							{!(workspaceLoading || tasksLoading) && (
 								<SortableContext items={tasks} strategy={verticalListSortingStrategy}>
-									{tasks.map((item) => (
-										<Flex key={item.id}>
-											<SortableItem {...item} dragging={true} />
-										</Flex>
-									))}
+									{tasks
+										.filter((item) => item.status === 'Назначена')
+										.map((item) => (
+											<Flex key={item.id}>
+												<SortableItem {...item} dragging={true} />
+											</Flex>
+										))}
 									<DragOverlay>
 										{tasks
+											.filter((item) => item.status === 'Назначена')
 											.filter((item) => item.id === activeTask)
 											.map((item) => (
 												<SortableItem key={item.id} {...item} dragging={true} />
@@ -124,7 +136,11 @@ export const AssignedTasks = () => {
 				)}
 				{!dragEnabled && (
 					<Flex gap={10} h='100%' direction='column'>
-						{!workspaceLoading && !tasksLoading && tasks.map((item) => <SortableItem key={item.id} {...item} dragging={false} />)}
+						{!workspaceLoading &&
+							!tasksLoading &&
+							tasks
+								.filter((item) => item.status === 'Назначена')
+								.map((item) => <SortableItem key={item.id} {...item} dragging={false} />)}
 
 						{(workspaceLoading || tasksLoading) &&
 							Array.from({ length: 3 }).map((_, idx) => <Skeleton key={idx} mih={70} radius='md' w='100%' />)}

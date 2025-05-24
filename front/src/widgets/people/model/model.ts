@@ -4,6 +4,7 @@ import { createQuery } from '@farfetched/core'
 
 import { getUsersWorkspace } from '@shared/api'
 import { $isAuth } from '@shared/auth'
+import { ROLE } from '@shared/config'
 import {
 	$currentWorkspace,
 	postAddUserToWorkspaceFx,
@@ -40,18 +41,34 @@ sample({
 
 // Обновление вывода
 
+const roleOrder: Record<string, number> = {
+	[ROLE.EXECUTOR]: 0,
+	[ROLE.PROJECT_MANAGER]: 1,
+	[ROLE.ADMIN]: 2,
+	[ROLE.OWNER]: 3
+}
+
 sample({
 	clock: changedOrder,
-	source: $currentWorkspace,
-	fn: (source, clock) => ({
-		workspaceId: source.id.toString(),
-		config: {
-			params: {
-				order: clock
+	source: $usersWorkspace,
+	fn: (source, clock) => {
+		if (!source || source.length === 0) return source
+
+		const copy = [...source]
+
+		copy.sort((a, b) => {
+			const ra = roleOrder[a.pivot.role] ?? 0
+			const rb = roleOrder[b.pivot.role] ?? 0
+			if (clock === 'asc') {
+				return ra - rb
+			} else {
+				return rb - ra
 			}
-		}
-	}),
-	target: getUsersWorkspaceFx.refresh
+		})
+
+		return copy
+	},
+	target: $usersWorkspace
 })
 
 // Обновление после манипуляций с юзерами

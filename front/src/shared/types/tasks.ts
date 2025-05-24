@@ -22,10 +22,16 @@ export interface Files {
 	size: string
 }
 
+export interface PutTaskProjectData {
+	status: 'Выполняется' | 'Завершена' | 'Приостановлена'
+}
+
 export type GetTasksProjectConfig = AxiosRequestConfig<ProjectIdParams>
 
 export type PostTaskProjectConfig = AxiosRequestConfig<ProjectIdParams, FormData>
 
-export type PutTaskProjectConfig = AxiosRequestConfig<TaskIdParams>
+export type PutTaskStatusProjectConfig = AxiosRequestConfig<TaskIdParams, PutTaskProjectData>
+
+export type PutTaskProjectConfig = AxiosRequestConfig<TaskIdParams, FormData>
 
 export type DeleteTaskProjectConfig = AxiosRequestConfig<TaskIdParams>
