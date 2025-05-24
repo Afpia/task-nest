@@ -21,8 +21,6 @@ export const SortableItem = ({ id, title, image_url, tasks, open }: ProjectRespo
 		'--button-hover': 'none'
 	}
 
-	console.log(tasks)
-
 	if (isDragging) {
 		return (
 			<Button
@@ -64,12 +62,12 @@ export const SortableItem = ({ id, title, image_url, tasks, open }: ProjectRespo
 				key={id}
 				mih={70}
 				radius='md'
-				ref={setNodeRef}
+				// ref={setNodeRef}
 				style={style}
 				title={title}
 				type='button'
 				variant='default'
-				{...attributes}
+				// {...attributes}
 				w='100%'
 				leftSection={
 					<ActionIcon radius='xl' size='xl' variant='light' component='div'>

@@ -7,17 +7,17 @@ import { notifications } from '@mantine/notifications'
 import { postAddUserToWorkspace, postKickUserFromWorkspace, postUserWorkspace } from '@shared/api'
 import { $isAuth } from '@shared/auth'
 import { notifyError, notifySuccess } from '@shared/helpers'
-import type { PostAddUserToWorkspaceConfig, PostKickUserFromWorkspaceConfig, PostUserWorkspaceConfig } from '@shared/types'
+import type { PostAddUserToWorkspaceConfig, PostKickUserFromWorkspaceConfig } from '@shared/types'
 
 import { $currentWorkspace, $workspaces } from './store'
 
-export const createdWorkspace = createEvent<string>()
+export const createdWorkspace = createEvent<FormData>()
 export const addedUserToWorkspace = createEvent<{ user_id: number; workspaceId: string }>()
 export const kickedUserFromWorkspace = createEvent<{ user_id: number }>()
 
 const postUserWorkspaceFx = createMutation({
 	name: 'postWorkspaceWorkspaceFx',
-	handler: ({ data }: PostUserWorkspaceConfig) => postUserWorkspace({ data }),
+	handler: (data: FormData) => postUserWorkspace({ data }),
 	enabled: $isAuth
 })
 
@@ -38,9 +38,7 @@ export const postKickUserFromWorkspaceFx = createMutation({
 
 sample({
 	clock: createdWorkspace,
-	fn: (clock) => ({
-		data: { title: clock }
-	}),
+	fn: (clock) => clock,
 	target: postUserWorkspaceFx.start
 })
 
@@ -133,8 +131,7 @@ sample({
 
 sample({
 	clock: postKickUserFromWorkspaceFx.finished.success,
-	source: kickedUserFromWorkspace,
-	fn: (_, clock) => {
+	fn: (clock) => {
 		notifySuccess({
 			title: 'Успешно',
 			message: `Вы успешно удалили ${clock.result.data.user.login} с workspace`

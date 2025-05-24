@@ -1,5 +1,3 @@
-import config from '@afpia/prettier'
+import { prettier } from '@afpia/prettier'
 
-export default {
-	...config
-}
+export default prettier({ sortImports: true })

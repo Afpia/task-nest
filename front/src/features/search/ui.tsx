@@ -5,13 +5,13 @@ import { Search, SearchIcon } from 'lucide-react'
 import { Avatar, Badge, Breadcrumbs, Button, Flex, Group, Kbd, Text } from '@mantine/core'
 import { Spotlight, spotlight } from '@mantine/spotlight'
 
-import type { EntitiesResponse } from '@shared/api'
 import { routes } from '@shared/config'
 import { SrcImage } from '@shared/helpers'
 import { useDebounce } from '@shared/hooks'
-import { $allEntities, changedWorkspace, clearedAllEntities, sendedQueryAllEntities } from '@shared/store'
+import { changedWorkspace } from '@shared/store'
 
-import styles from './ui.module.css'
+import type { EntitiesResponse } from './api'
+import { $allEntities, clearedAllEntities, sendedQueryAllEntities } from './model'
 
 interface ActionData {
 	breadcrumbs: string[]
@@ -24,7 +24,7 @@ interface ActionData {
 	onTrigger?: () => void
 }
 
-function buildActions(entities: EntitiesResponse[], query: string, changeWorkspace: (payload: string) => string) {
+const buildActions = (entities: EntitiesResponse[], query: string, changeWorkspace: (payload: string) => string) => {
 	const q = query.toLowerCase()
 
 	const actions = [] as ActionData[]
@@ -59,15 +59,19 @@ function buildActions(entities: EntitiesResponse[], query: string, changeWorkspa
 			})
 
 			pr.tasks.forEach((tk) => {
-				// действие для задачи
 				actions.push({
 					id: `tk-${tk.id}`,
 					title: tk.title,
 					group: 'Задачи',
 					status: tk.status,
 					breadcrumbs: [ws.title, pr.title, tk.title],
-					href: `/workspaces/${ws.id}/projects/${pr.id}/tasks/${tk.id}`
-					// onTrigger: () => navigate(`/workspaces/${ws.id}/projects/${pr.id}/tasks/${tk.id}`)
+					href: `/workspaces/${ws.id}/projects/${pr.id}/tasks/${tk.id}`,
+					onTrigger: () => {
+						changeWorkspace(ws.id.toString())
+						routes.private.project.open({
+							projectId: pr.id.toString()
+						})
+					}
 				})
 			})
 		})
@@ -96,7 +100,6 @@ export const SidebarSearch = () => {
 	return (
 		<>
 			<Button
-				className={styles.search__input}
 				justify='left'
 				radius='md'
 				variant='outline'
@@ -110,7 +113,7 @@ export const SidebarSearch = () => {
 					</Kbd>
 				}
 			>
-				<Text className={styles.search} w={156}>
+				<Text style={{ textAlign: 'left' }} w={156}>
 					Поиск
 				</Text>
 			</Button>
@@ -131,7 +134,9 @@ export const SidebarSearch = () => {
 												{item.status}
 											</Badge>
 										)}
-										{item.image && <Avatar alt={item.title} mah={28} maw={28} miw={28} radius='sm' src={item.image} w={28} />}
+										{item.image && (
+											<Avatar alt={item.title} mah={28} maw={28} miw={28} radius='sm' src={SrcImage(item.image)} w={28} />
+										)}
 
 										<Flex gap={4} justify='center' direction='column'>
 											<Text size='md' style={{ lineHeight: 1 }}>

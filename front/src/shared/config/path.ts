@@ -6,6 +6,7 @@ export const path = {
 	SEARCH: '/search',
 	NOTICES: '/notices',
 	FORGOT_PASSWORD: '/forgot-password',
+	RESET_PASSWORD: '/reset-password',
 	HOME: '/',
 	PROJECT: '/project/:projectId',
 	ACCOUNT: '/account',

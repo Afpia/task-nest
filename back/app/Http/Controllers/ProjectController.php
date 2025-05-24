@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\Workspace;
 use App\Services\ProjectService;
+use App\Services\WorkspaceService;
+use App\Models\User;
 use App\Services\QueryService;
 use Illuminate\Http\Request;
 
@@ -17,21 +19,34 @@ class ProjectController extends Controller
     ];
 
     protected $projectService;
+    protected $workspaceService;
     protected $queryService;
 
-    public function __construct(ProjectService $projectService, QueryService $queryService)
+    public function __construct(ProjectService $projectService, WorkspaceService $workspaceService, QueryService $queryService)
     {
+        $this->workspaceService = $workspaceService;
         $this->projectService = $projectService;
         $this->queryService = $queryService;
     }
 
     public function index(Request $request, Workspace $workspace)
     {
+        $query = Project::query()->where('workspace_id', $workspace->id);
+
+        $currentUser = $request->user();
+        $currentUserId = $currentUser->id;
+        $currentUserRole = $this->workspaceService->getUserRoleInWorkspace($workspace, $currentUserId);
+
+        if (!in_array($currentUserRole, ['owner','admin'], true)) {
+            $query->whereHas('users', function($q) use ($currentUserId) {
+                $q->where('user_id', $currentUserId);
+            });
+        }
+
         $filters = $request->input('filters', '');
         $columns = $request->input('columns', '*');
         $perPage = $request->input('per_page', false);
 
-        $query = Project::query()->where('workspace_id', $workspace->id);
 
         $query = $this->queryService->applyFilters($query, $filters);
         $query = $this->queryService->selectColumns($query, $columns);
@@ -58,9 +73,17 @@ class ProjectController extends Controller
 
     public function projectUsers(Project $project)
     {
-        // return response()->json($project->users);
+        $users = $project->users()->get();
+
+        $users->transform(function($user) use($project) {
+            $user->pivot->role = $this->workspaceService->getUserRoleInWorkspace($project->workspace, $user->id);
+            return $user;
+        });
+
+        return response()->json($users);
     }
 
+    // Глобальный поиск по проекту
     public function projectsTasks(Request $request)
     {
         $q = $request->input('query', null);
@@ -71,10 +94,12 @@ class ProjectController extends Controller
 
         $userId = $request->user()->id;
 
-        $workspaces = Workspace::whereHas('users', fn($u) => 
-            $u->where('user_id', $userId)
+        // $role = $this->workspaceService->getUserRoleInWorkspace($workspace, $userId);
+
+        $workspaces = Workspace::whereHas('users', fn($u) =>
+                $u->where('user_id', $userId)
             )->where(function ($wsQuery) use ($q) {
-            $wsQuery->where('title', 'like', "%{$q}%")->orWhereHas('projects', function ($prQuery) use ($q) {
+                $wsQuery->where('title', 'like', "%{$q}%")->orWhereHas('projects', function ($prQuery) use ($q) {
                 $prQuery->where('title', 'like', "%{$q}%")->orWhereHas('tasks', function ($tkQuery) use ($q) {
                         $tkQuery->where('title', 'like', "%{$q}%");
                 });
@@ -82,23 +107,47 @@ class ProjectController extends Controller
                     $tkQuery->where('title', 'like', "%{$q}%");
                 });
         })->with([
-            'projects' => function ($prQuery) use ($q) {
+            // 'users',
+            // 'projects.users',
+            'projects' => function ($prQuery) use ($q, $userId) {
                 $prQuery->where('title', 'like', "%{$q}%")->orWhereHas('tasks', function ($tkQuery) use ($q) {
                     $tkQuery->where('title', 'like', "%{$q}%");
                 });
+                // if (!in_array($role, ['owner','admin'], true)) {
+                //     $pr->whereHas('users', fn($u)=>
+                //         $u->where('user_id', $userId)
+                //     );
+                // }
             },
             'projects.tasks' => function ($tkQuery) use ($q) {
                 $tkQuery->where('title', 'like', "%{$q}%");
             },
-        ])
-        ->get();   
-        
+        ])->get();
+
         if ($workspaces->isEmpty()) {
             return response()->noContent();
         }
 
+        // $workspaces->transform(fn($ws)=> tap($ws, function($w) use($userId) {
+        //     // dd($w->users);
+        //     $role = $this->workspaceService->getUserRoleInWorkspace($w, $userId);
+
+        //     if (!in_array($role, ['owner','admin'], true)) {
+        //         $w->projects = $w->projects->filter(fn($pr) =>
+        //             $pr->users->contains(fn($u) => $u->id === $userId)
+        //         )->values();
+        //     }
+        // }));
+        // $workspaces->each(function($ws) use($userId) {
+        //     $role = $this->workspaceService->getUserRoleInWorkspace($ws, $userId);
+        //     if (! in_array($role, ['owner','admin'], true)) {
+        //         $ws->projects = $ws->projects->whereUser($userId)->values();
+        //     }
+        // });
+
         return response()->json($workspaces);
     }
+
 
     public function store(Request $request, Workspace $workspace)
     {
@@ -122,34 +171,64 @@ class ProjectController extends Controller
     {
         $this->projectService->deleteProject($project);
 
-        return response()->json( $project, 200);
+        return response()->json($project, 200);
     }
 
-    public function assignProjectManager(Request $request, Project $project)
+    public function assignUserToProject(Request $request, Project $project)
     {
-        $request->validate([
+        $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $this->projectService->assignManager($project, $request->user_id);
+        $userId = $validated['user_id'];
 
-        return response()->json(['message' => 'Менеджер проекта успешно назначен'], 200);
+        if ($project->users()->where('user_id', $userId)->exists()) {
+            return response()->json([
+                'message' => 'Пользователь уже назначен на этот проект'
+            ], 409);
+        }
+
+        $workspaceRole = $this->workspaceService->getUserRoleInWorkspace($project->workspace, $userId);
+
+        if (!in_array($workspaceRole, ['executor','project_manager'], true)) {
+            return response()->json([
+                'message' => 'Вы не можете назначить этого пользователя в проект'
+            ], 403);
+        }
+
+        $this->projectService->assignUser($project, $request->user_id);
+
+        $user = $project->users()->where('user_id', $userId)->firstOrFail();
+
+        $user->pivot->role = $workspaceRole;
+
+        return response()->json([
+            'message' => 'Пользователь успешно назначен на проект',
+            'user' => $user,
+        ], 200);
     }
 
-    public function kickProjectManager(Request $request, Project $project)
+    public function kickUserFromProject(Request $request, Project $project)
     {
-        $request->validate([
+        $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
         ]);
+        $userId = $validated['user_id'];
 
-        $this->projectService->DeleteManagerFromProject($project, $request->user_id);
+        $user = User::findOrFail($userId);
 
-        return response()->json(['message' => 'Менеджер проекта успешно отстранен'], 200);
+        $this->projectService->deleteUserFromProject($project, $request->user_id);
+
+
+        return response()->json([
+            'message' => 'Пользователь успешно отстранен',
+            'user' => $user,
+        ], 200);
     }
 
     public function LeaveProject(Request $request, Project $project)
     {
-        $this->projectService->DeleteManagerFromProject($project, $request->user()->id);
+        $this->projectService->deleteUserFromProject($project, $request->user()->id);
 
         return response()->json(['message' => 'Вы вышли из проекта'], 200);
     }

@@ -6,18 +6,22 @@ import { useDisclosure } from '@mantine/hooks'
 
 import { ThemeColors } from '@shared/config'
 import { isDarkMode } from '@shared/helpers'
-import { $tasks, getCurrentProjectFx, getTasksProjectFx } from '@shared/store'
+import { $currentTask, $tasks, $workspaceRole, getCurrentProjectFx, getTasksProjectFx } from '@shared/store'
 import { CreateTaskDrawer } from '@widgets/create-task-drawer'
+import { UpdateTaskDrawer } from '@widgets/update-task-drawer'
 
 import { Row } from './row-table'
 
 export const Tasks = () => {
-	const [tasks, tasksProjectLoading, currentProjectLoading] = useUnit([
+	const [tasks, tasksProjectLoading, currentProjectLoading, { role }, task] = useUnit([
 		$tasks,
 		getTasksProjectFx.$pending,
-		getCurrentProjectFx.$pending
+		getCurrentProjectFx.$pending,
+		$workspaceRole,
+		$currentTask
 	])
-	const [opened, { open, close }] = useDisclosure(false)
+	const createTask = useDisclosure(false)
+	const updateTask = useDisclosure(false)
 	const { isDark } = isDarkMode()
 
 	return (
@@ -34,16 +38,14 @@ export const Tasks = () => {
 						<Button radius='md' size='xs' variant='default'>
 							Таблица
 						</Button>
-
-						{/* <Button radius='md' size='xs' variant='default'>
-							Канбан доска
-						</Button> */}
 					</Group>
-					<Flex gap={10}>
-						<Button radius='md' size='xs' variant='filled' leftSection={<Plus />} onClick={open}>
-							Добавить задачу
-						</Button>
-					</Flex>
+					{!(role === 'executor') && (
+						<Flex gap={10}>
+							<Button radius='md' size='xs' variant='filled' leftSection={<Plus />} onClick={createTask[1].open}>
+								Добавить задачу
+							</Button>
+						</Flex>
+					)}
 				</Flex>
 				<Divider my='lg' variant='dashed' />
 				{(tasksProjectLoading || currentProjectLoading) && (
@@ -62,14 +64,15 @@ export const Tasks = () => {
 											<Checkbox aria-label='Select row' />
 										</Table.Th>
 										<Table.Th w={250}>Название задачи</Table.Th>
-										<Table.Th w={300}>Назначенный</Table.Th>
-										<Table.Th w={200}>Срок</Table.Th>
+										<Table.Th w={300}>Назначенные</Table.Th>
+										<Table.Th w={100}>Начало</Table.Th>
+										<Table.Th w={100}>Срок</Table.Th>
 										<Table.Th w={200}>Статус</Table.Th>
-										<Table.Th w={250}>Прогресс</Table.Th>
+										<Table.Th w={250}>Вложения</Table.Th>
 									</Table.Tr>
 								</Table.Thead>
 								<Table.Tbody mih={500}>
-									<Row tasks={tasks} />
+									<Row tasks={tasks} updateTask={updateTask} />
 								</Table.Tbody>
 							</Table>
 
@@ -80,7 +83,6 @@ export const Tasks = () => {
 									pl={10}
 									style={{ borderTop: `1px solid ${isDark ? ThemeColors.accentDarkBorder : ThemeColors.accentLightBorder}` }}
 								>
-									{/*  eslint-disable-next-line style/jsx-one-expression-per-line */}
 									<Text>{tasks.length} всего</Text>
 								</Flex>
 							)}
@@ -88,7 +90,8 @@ export const Tasks = () => {
 					</Box>
 				)}
 			</Box>
-			<CreateTaskDrawer close={close} opened={opened} />
+			{task && <UpdateTaskDrawer task={task} close={updateTask[1].close} opened={updateTask[0]} />}
+			<CreateTaskDrawer close={createTask[1].close} opened={createTask[0]} />
 		</>
 	)
 }

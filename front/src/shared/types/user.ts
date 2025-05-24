@@ -1,4 +1,4 @@
-import type { role } from '@shared/config'
+import type { ROLE } from '@shared/config'
 
 import type { UserLoginParams } from './params'
 
@@ -19,7 +19,7 @@ export interface UserFieldResponse {
 	name: string
 	updated_at: string
 	pivot: {
-		role: (typeof role)[keyof typeof role]
+		role: (typeof ROLE)[keyof typeof ROLE]
 	}
 }
 

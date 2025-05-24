@@ -5,7 +5,7 @@ import { LogOut, Settings, UserRoundPlus } from 'lucide-react'
 import { Avatar, Divider, Flex, Menu, Skeleton, Text, Title } from '@mantine/core'
 
 import { SidebarSearch } from '@features/search'
-import { $username, allUserExpired } from '@shared/auth'
+import { allUserExpired } from '@shared/auth'
 import { router, routes } from '@shared/config'
 import { SrcImage } from '@shared/helpers'
 import { $user, getUserFx } from '@shared/store'
@@ -13,7 +13,7 @@ import { $user, getUserFx } from '@shared/store'
 import { resolveHeader } from './model'
 
 export const Header = () => {
-	const [user, username, onExit, userLoading] = useUnit([$user, $username, allUserExpired, getUserFx.$pending])
+	const [user, onExit, userLoading] = useUnit([$user, allUserExpired, getUserFx.$pending])
 	const [currentPath] = useUnit([router.$path])
 	const [{ userLogin }] = useUnit([routes.private.profile.$params])
 
@@ -59,7 +59,7 @@ export const Header = () => {
 						<Flex align='center' justify='center' pt={10} direction='column'>
 							<Avatar mb={10} radius='xl' size='46' src={SrcImage(user.avatar_url)} variant='default' />
 							<Title fw={600} mb={10} size={14} order={3}>
-								{username}
+								{user.name}
 							</Title>
 						</Flex>
 						<Menu.Item component={Link} leftSection={<Settings />} to={routes.private.account}>

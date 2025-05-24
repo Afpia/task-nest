@@ -6,7 +6,9 @@ use App\Models\Workspace;
 use App\Services\QueryService;
 use App\Services\WorkspaceService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class WorkspaceController extends Controller
 {
@@ -48,12 +50,22 @@ class WorkspaceController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'title' => 'required|string|max:255'
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image_url' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $title = $validate['title'] ?? 'new Workspace';
+        $description = $validate['description'] ?? null;
+        $imageUrl = null;
 
-        $workspace = $this->workspaceService->createWorkspace($title);
+        if ($request->hasFile('image_url') && $request->file('image_url')->isValid()) {
+            $file = $request->file('image_url');
+            $path = $file->store('workspace', 'public');
+            $imageUrl = Storage::url($path);
+        }
+
+        $workspace = $this->workspaceService->createWorkspace($title, $description, $imageUrl);
 
         return response()->json([
             'message' => __('messages.add_success'),
@@ -80,23 +92,24 @@ class WorkspaceController extends Controller
         return response()->json(['message' => __('messages.delete_success')], 202);
     }
 
-    public function workspaceUsers(Workspace $workspace)
+    public function workspaceUsers(Request $request, Workspace $workspace)
     {
-        $workspaceWithUsers = $workspace->load('users');
-        $sanitizedUsers = $workspaceWithUsers->users->map(function ($user) use ($workspace) {
+        $validated = $request->validate([
+            'order' => ['sometimes', Rule::in(['asc','desc'])],
+        ]);
+
+        $order = $validated['order'] ?? 'asc';
+
+        $rolesDesc  = "'owner','admin','project_manager','executor'";
+        $rolesAsc = "'executor','project_manager','admin','owner'";
+        $rolesList = $order === 'asc' ? $rolesAsc : $rolesDesc;
+
+        $workspaceWithUsers = $workspace->users()->withPivot('role')->orderByRaw("FIELD(role, {$rolesList})")->get();
+
+        $sanitizedUsers = $workspaceWithUsers->map(function ($user) {
             $data = $user->toArray();
-            // $role = $this->workspaceService->getUserRoleInWorkspace($workspace, $user->id);
-            // $data['role'] = $this->workspaceService
-            //                  ->getUserRoleInWorkspace($workspace, $user->id);
-            // return [
-            //     'id' => $user->id,
-            //     'name' => $user->name,
-            //     'email' => $user->email,
-            //     'avatar_url' => $user->avatar_url,
-            //     'role' => $role,
-            // ];
             return $data;
-        });
+        })->values();
         return response()->json($sanitizedUsers);
     }
 
@@ -132,7 +145,7 @@ class WorkspaceController extends Controller
         if (!$targetUserRole = $this->workspaceService->getUserRoleInWorkspace($workspace, $userId)) {
             return response()->json(['message' => __('messages.user_not_found')], 404);
         }
-        ;
+
 
         if ($currentUserRole === 'admin' && ($targetUserRole === 'admin' || $targetUserRole === 'owner')) {
             return response()->json(['message' => __('messages.cannot_change_admin_or_owner_role')], 403);
@@ -144,7 +157,12 @@ class WorkspaceController extends Controller
 
         $this->workspaceService->manageUserInWorkspace($workspace, $userId, $role);
 
-        return response()->json(['message' => __('messages.success')], 201);
+        $user = $workspace->users()->where('user_id', $userId)->firstOrFail();
+
+        return response()->json([
+            'message' => __('messages.success'),
+            'user' => $user,
+        ], 201);
     }
 
     public function addUserToWorkspace(Request $request, Workspace $workspace)

@@ -20,13 +20,24 @@ class AuthController extends Controller
 
     public function redirectToProvider($provider)
     {
-        return Socialite::driver($provider)->stateless()->redirect();
+        $from = request()->get('from', 'login');
+
+        return Socialite::driver($provider)->with(['state' => $from])->stateless()->redirect();
     }
 
     public function handleProviderCallback($provider)
     {
         $token = $this->authService->handleSocialCallback($provider);
-        return redirect("http://localhost:5173/login?access_token=$token");
+
+        $from = request()->get('state');
+
+        if ($from) {
+            if ($from === 'signup') {
+                return redirect("http://localhost:5173/signup?access_token=$token");
+            }
+            return redirect("http://localhost:5173/login?access_token=$token");
+        }
+
     }
 
     public function login(Request $request)

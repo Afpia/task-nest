@@ -1,8 +1,9 @@
-// eslint-disable-next-line simple-import-sort/imports
 import { useUnit } from 'effector-react'
 import { Maximize2, Minimize2, Plus } from 'lucide-react'
 
 import 'dayjs/locale/ru'
+
+import dayjs from 'dayjs'
 
 import {
 	Button,
@@ -22,13 +23,14 @@ import { DateInput } from '@mantine/dates'
 import { useForm, zodResolver } from '@mantine/form'
 import { useFullscreen } from '@mantine/hooks'
 
-import { isDarkMode } from '@shared/helpers'
-import { createdTask } from '@shared/store'
+import { ROLE } from '@shared/config'
+import { ACCEPT, formatFileSize, ICON_MAP, isDarkMode, MAX_FILES, MIME_TO_READABLE_TYPE } from '@shared/helpers'
+import { $usersProject, createdTask } from '@shared/store'
 
-import { ACCEPT, CreateTaskSchema, formatFileSize, iconMap, MAX_FILES, mimeToReadableType } from './model'
+import { CreateTaskSchema } from './model'
 
 export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened: boolean }) => {
-	const [createTask] = useUnit([createdTask])
+	const [createTask, usersProject] = useUnit([createdTask, $usersProject])
 	const { toggle, fullscreen } = useFullscreen()
 
 	const isDark = isDarkMode()
@@ -36,23 +38,24 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 
 	const form = useForm({
 		mode: 'controlled',
-		initialValues: { title: '', description: '', end_date: '', assignees: [], files: [] as File[] },
+		initialValues: { title: '', description: '', end_date: new Date(), assignees: [], files: [] as File[] },
 		validate: zodResolver(CreateTaskSchema)
 	})
 
 	const onClickForm = (values: { title: string; description?: string; end_date: any; assignees: string[]; files: File[] }) => {
 		const formData = new FormData()
-		form.values.files.forEach((f) => {
-			formData.append(`file`, f)
+		form.values.files.forEach((file) => {
+			formData.append(`files[]`, file, file.name)
 		})
-		console.log(values, formData)
-		const formattedDate = values?.end_date?.toISOString().split('T')[0]
-		createTask({
-			title: values.title,
-			description: values.description,
-			end_date: formattedDate,
-			files: formData
+		values.assignees.forEach((id) => {
+			formData.append('assignees[]', id)
 		})
+		formData.append('title', values.title)
+		formData.append('description', values.description || '')
+		if (values.end_date) formData.append('end_date', dayjs(values?.end_date).format('YYYY-MM-DD'))
+		formData.append('start_date', dayjs(new Date()).format('YYYY-MM-DD'))
+
+		createTask(formData)
 		close()
 		form.reset()
 	}
@@ -74,7 +77,6 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 		>
 			<Flex mb={10}>
 				<Flex align='center' gap={10}>
-					{/*  eslint-disable-next-line style/multiline-ternary */}
 					{fullscreen ? (
 						<Minimize2 color={isDark ? theme.colors.dark[3] : theme.colors.gray[7]} cursor='pointer' onClick={toggle} />
 					) : (
@@ -107,11 +109,13 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 							</Text>
 						</Flex>
 						<MultiSelect
-							data={[{ label: 'Я', value: 'i am' }]}
 							variant='unstyled'
 							w='calc(100% - 160px)'
 							clearable
 							searchable
+							data={usersProject
+								.filter((item) => item.pivot.role !== ROLE.PROJECT_MANAGER)
+								.map((item) => ({ label: item.name, value: item.id.toString() }))}
 							comboboxProps={{ shadow: 'md' }}
 							{...form.getInputProps('assignees')}
 							hidePickedOptions
@@ -128,7 +132,7 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 						<DateInput
 							w='calc(100% - 160px)'
 							{...form.getInputProps('end_date')}
-							defaultDate={new Date()}
+							// defaultDate={new Date()}
 							minDate={new Date()}
 							variant='unstyled'
 							clearable
@@ -137,21 +141,6 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 							valueFormat='YYYY-MM-DD'
 						/>
 					</Flex>
-					{/* <Flex>
-						<Flex align='center' gap={8} w={160}>
-							<Text c={theme.colors.gray[6]} fz={16}>
-								Тэги
-							</Text>
-						</Flex>
-						<TagsInput
-							{...form.getInputProps('tags')}
-							maxTags={3}
-							variant='unstyled'
-							w='calc(100% - 160px)'
-							clearable
-							placeholder='Введите максимум 3 тэга'
-						/>
-					</Flex> */}
 					<Flex gap={10} direction='column'>
 						<Flex align='center'>
 							<Text c={theme.colors.gray[6]} fz={16} w={160}>
@@ -168,13 +157,12 @@ export const CreateTaskDrawer = ({ close, opened }: { close: () => void; opened:
 									key={item.name}
 									maw={250}
 									variant='default'
-									leftSection={iconMap[item.type as keyof typeof iconMap]}
+									leftSection={ICON_MAP[item.type as keyof typeof ICON_MAP]}
 								>
 									<Flex align='flex-start' direction='column'>
 										<Text>{item.name}</Text>
 										<Text c={theme.colors.gray[6]} fz={14}>
-											{/*  eslint-disable-next-line style/jsx-one-expression-per-line */}
-											{mimeToReadableType[item.type as keyof typeof mimeToReadableType]} {formatFileSize(item.size)}
+											{MIME_TO_READABLE_TYPE[item.type as keyof typeof MIME_TO_READABLE_TYPE]} {formatFileSize(item.size)}
 										</Text>
 									</Flex>
 								</Button>

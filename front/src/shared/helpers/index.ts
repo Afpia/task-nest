@@ -1,4 +1,6 @@
-export * from './avatar.src'
+export * from './files'
 export * from './handle.error'
 export * from './is.dark.mode'
 export * from './notification'
+export * from './src.image'
+export * from './status.color'

@@ -15,7 +15,7 @@ class ImageService
     public function saveAvatarFromUrl($url)
     {
         $imageContents = file_get_contents($url);
-        $avatarPath = 'avatars/' . Str::random(10) . '.jpg';
+        $avatarPath = 'avatar/' . Str::random(10) . '.jpg';
         Storage::disk('public')->put($avatarPath, $imageContents);
 
         return 'http://127.0.0.1:8000' . Storage::url($avatarPath);

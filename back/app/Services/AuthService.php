@@ -31,7 +31,7 @@ class AuthService
 
     public function handleSocialCallback($provider)
     {
-        $socialUser = Socialite::driver($provider)->stateless()->user();
+        $socialUser = Socialite::driver($provider)->stateless()->setHttpClient(new \GuzzleHttp\Client(['verify' => false]))->user();
 
         $user = User::where('email', $socialUser->getEmail())->first();
 

@@ -44,12 +44,11 @@ class Project extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_projects')
-            ->withPivot('role');
+        return $this->belongsToMany(User::class, 'user_projects');
     }
 
-    public function managers()
+    public function managersAndExecutors()
     {
-        return $this->belongsToMany(ProjectManagers::class, 'user_id');
+        return $this->belongsToMany(UserProject::class, 'user_id');
     }
 }

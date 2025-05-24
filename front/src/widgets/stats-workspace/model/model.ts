@@ -4,10 +4,11 @@ import { createQuery } from '@farfetched/core'
 
 import { $isAuth } from '@shared/auth'
 import { $currentWorkspace, getUserWorkspacesFx, postTaskProjectFx } from '@shared/store'
+import type { TaskResponse } from '@shared/types'
 
 import { getWorkspaceTasks } from '../api'
 
-export const $tasks = createStore<number>(0)
+export const $tasks = createStore<TaskResponse[]>([] as TaskResponse[])
 
 export const getWorkspaceTasksFx = createQuery({
 	name: 'getWorkspaceTasks',
@@ -18,12 +19,13 @@ export const getWorkspaceTasksFx = createQuery({
 sample({
 	clock: [$currentWorkspace, getUserWorkspacesFx.finished.success, postTaskProjectFx.finished.success],
 	source: $currentWorkspace,
-	fn: (source) => source.id,
+	filter: $isAuth,
+	fn: (source) => source.id.toString(),
 	target: getWorkspaceTasksFx.start
 })
 
 sample({
 	clock: getWorkspaceTasksFx.finished.success,
-	fn: ({ result }) => result.data.length,
+	fn: ({ result }) => result.data,
 	target: $tasks
 })

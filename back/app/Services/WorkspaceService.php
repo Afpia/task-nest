@@ -23,11 +23,16 @@ class WorkspaceService
         $this->imageService = $imageService;
     }
 
-    public function createWorkspace(string $title, $userId = false)
+    public function createWorkspace(string $title, ?string $description, ?string $imageUrl, $userId = false)
     {
-        $workspace = Workspace::create(['title' => $title]);
+        $workspace = Workspace::create(['title' => $title, 'description' => $description]);
 
-        $workspace->image_url = $this->imageService->generateDefaultImage('workspace', $workspace->id);
+        if ($imageUrl) {
+            $workspace->image_url = $imageUrl;
+        } else {
+            $workspace->image_url = $this->imageService->generateDefaultImage('workspace', $workspace->id);
+        }
+
         $workspace->save();
 
         $userId = $userId ?: Auth::id();

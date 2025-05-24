@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\userTask;
 use App\Models\Workspace;
+use Illuminate\Support\Facades\Storage;
 
 class TaskService
 {
@@ -15,25 +16,76 @@ class TaskService
         $data['project_id'] = $project->id;
         $data['status'] = 'Назначена';
 
-        $task = Task::create([
+        $task = $project->tasks()->create([
             'title' => $data['title'],
-            'description' => $data['description'],
+            'description' => $data['description'] ?? null,
             'start_date' => $data['start_date'],
-            'end_date' => $data['end_date'],
-            'status' => $data['status'],
-            'project_id' => $data['project_id']
+            'end_date' => $data['end_date'] ?? null,
+            'status' => 'Назначена',
         ]);
 
-        $this->addUserToTask($task, $data['user_id'], 'respectively');
+        foreach ($data['assignees'] as $userId) {
+            // $role = $this->workspaceService->getUserRoleInWorkspace($project->workspace, $userId);
+
+            $task->users()->attach($userId, ['role' => 'respectively']);
+        }
+
+        if (!empty($data['files'] ?? [])) {
+            foreach ($data['files'] as $file) {
+                $path = $file->store("tasks/{$task->id}", 'public');
+                $task->files()->create([
+                    'path'          => $path,
+                    'mime_type'     => $file->getMimeType(),
+                    'size'          => $file->getSize(),
+                    'original_name' => $file->getClientOriginalName(),
+                ]);
+            }
+        }
+
         return $task;
     }
 
     public function updateTask(array $data, Task $task)
     {
         $task->update($data);
+
+        if (!empty($data['assignees'])) {
+            $syncData = [];
+            foreach ($data['assignees'] as $userId) {
+                $syncData[$userId] = ['role' => 'respectively'];
+            }
+            $task->users()->sync($syncData);
+        }
+
+        if (!empty($data['remove_files'])) {
+            foreach ($data['remove_files'] as $fileId) {
+                $fileRecord = $task->files()->where('id', $fileId)->first();
+
+                if ($fileRecord) {
+                    Storage::disk('public')->delete($fileRecord->path);
+                    $fileRecord->delete();
+                }
+            }
+        }
+
+
+        if (!empty($data['files'] ?? [])) {
+            foreach ($data['files'] as $file) {
+                $path = $file->store("tasks/{$task->id}", 'public');
+                    $task->files()->create([
+                    'path'          => $path,
+                    'mime_type'     => $file->getMimeType(),
+                    'size'          => $file->getSize(),
+                    'original_name' => $file->getClientOriginalName(),
+                ]);
+            }
+        }
+
         $task->save();
+
         return $task;
     }
+
     public function addUserToTask(Task $task, $user_id, $role = 'co-executor')
     {
         userTask::create(['user_id' => $user_id, 'task_id' => $task->id, 'role' => $role]);

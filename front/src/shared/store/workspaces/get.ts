@@ -1,13 +1,11 @@
 import { redirect } from 'atomic-router'
 import { createEvent, sample } from 'effector'
-import { persist } from 'effector-storage/local'
 
 import { createQuery } from '@farfetched/core'
 
 import { getUserWorkspaces, getWorkspaceRole } from '@shared/api'
 import { $isAuth } from '@shared/auth'
-import { privateRouteOpened, routes, started } from '@shared/config'
-import type { WorkspaceResponse } from '@shared/types'
+import { privateRouteOpened, routes } from '@shared/config'
 
 import { $currentWorkspace, $workspaceRole, $workspaces } from './store'
 
@@ -48,19 +46,11 @@ sample({
 		if (source.id) {
 			return source
 		} else {
-			return result.data[0]
+			const workspace = localStorage.getItem('workspace')
+			return JSON.parse(workspace!) ?? result.data[0]
 		}
 	},
 	target: $currentWorkspace
-})
-
-persist({
-	key: 'workspace',
-	clock: changedWorkspace,
-	store: $currentWorkspace,
-	serialize: (state: WorkspaceResponse) => JSON.stringify({ id: state.id, title: state.title, image_url: state.image_url }),
-	deserialize: JSON.parse,
-	pickup: started
 })
 
 // Изменение workspace
@@ -78,12 +68,25 @@ redirect({
 	route: routes.private.home
 })
 
+$currentWorkspace.watch((workspace) => {
+	if (!(Object.keys(workspace).length === 0)) {
+		try {
+			const serialized = JSON.stringify(workspace)
+			localStorage.setItem('workspace', serialized)
+		} catch (e) {
+			console.error('Не могу сохранить workspace', e)
+		}
+	}
+})
+
 // Получение роли workspace
 
 sample({
 	clock: $currentWorkspace,
+	filter: $isAuth,
 	// clock: [changedWorkspace, getUserWorkspacesFx.finished.success],
 	// source: $currentWorkspace,
+	// filter: $currentWorkspace.map((item) => item.id),
 	fn: (source) => source.id.toString(),
 	target: getWorkspaceRoleFx.start
 })

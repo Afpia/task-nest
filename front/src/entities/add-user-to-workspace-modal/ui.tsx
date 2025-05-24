@@ -4,7 +4,7 @@ import { CircleCheck } from 'lucide-react'
 
 import { Button, Flex, Modal, Select, Text } from '@mantine/core'
 
-import { role } from '@shared/config'
+import { ROLE } from '@shared/config'
 import { addedUserToWorkspace } from '@shared/store'
 import type { UserFieldResponse, WorkspaceResponse } from '@shared/types'
 
@@ -38,7 +38,7 @@ export const ModalAddUserToWorkspace = ({
 				value={workspaceId}
 				data={[
 					...workspaces
-						.filter((item) => item.pivot.role === role.OWNER || item.pivot.role === role.ADMIN)
+						.filter((item) => item.pivot.role === ROLE.OWNER || item.pivot.role === ROLE.ADMIN)
 						.map((workspace) => ({ value: workspace?.id.toString(), label: workspace.title }))
 				]}
 				styles={{

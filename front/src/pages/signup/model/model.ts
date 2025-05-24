@@ -1,4 +1,3 @@
-import { redirect } from 'atomic-router'
 import { AxiosError } from 'axios'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 
@@ -42,7 +41,7 @@ sample({
 		const queryHash = window.location.search
 		const params = new URLSearchParams(queryHash.substring(1))
 		const accessToken = params.get('access_token')
-		window.history.replaceState({}, document.title, window.location.pathname)
+
 		if (accessToken) {
 			return { accessToken } as UserSocialRequest
 		}
@@ -55,11 +54,6 @@ sample({
 	clock: $accessToken,
 	filter: ({ accessToken }) => !!accessToken,
 	target: signupSocialFx.prepend(({ accessToken }: UserSocialRequest) => ({ data: { accessToken } }))
-})
-
-redirect({
-	clock: signupSocialFx.doneData,
-	route: routes.private.home
 })
 
 sample({
@@ -94,11 +88,6 @@ sample({
 		return data
 	},
 	target: allUserReceived
-})
-
-redirect({
-	clock: signupFx.doneData,
-	route: routes.private.home
 })
 
 sample({

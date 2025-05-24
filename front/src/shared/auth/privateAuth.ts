@@ -23,8 +23,6 @@ export function privateAuth<Params extends RouteParams>(route: RouteInstance<Par
 		route: routes.private.home
 	})
 
-	// TODO: сделать редирект где был пользователь
-
 	return chainRoute({
 		route,
 		beforeOpen: checkSessionStarted,

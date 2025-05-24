@@ -2,16 +2,18 @@ import { createEvent, sample } from 'effector'
 
 import { createMutation } from '@farfetched/core'
 
-import { postProjectWorkspace } from '@shared/api'
+import { postAssignUserToProject, postKickUserFromProject, postProjectWorkspace } from '@shared/api'
 import { $isAuth } from '@shared/auth'
 import { notifyError, notifySuccess } from '@shared/helpers'
-import type { PostProjectWorkspaceConfig } from '@shared/types'
+import type { PostAssignUserToProjectConfig, PostKickUserFromProjectConfig, PostProjectWorkspaceConfig } from '@shared/types'
 
 import { $currentWorkspace } from '../workspaces'
 
-import { $projects } from './store'
+import { $currentProject, $projects, $usersProject } from './store'
 
 export const createdProject = createEvent<string>()
+export const assignedUserToProject = createEvent<number>()
+export const kickedUserFromProject = createEvent<number>()
 
 const postProjectWorkspaceFx = createMutation({
 	name: 'postProjectWorkspace',
@@ -19,6 +21,97 @@ const postProjectWorkspaceFx = createMutation({
 	enabled: $isAuth
 })
 
+const postAssignUserToProjectFx = createMutation({
+	name: 'postAssignUserToProject',
+	handler: ({ params, data }: PostAssignUserToProjectConfig) => postAssignUserToProject({ params, data }),
+	enabled: $isAuth
+})
+
+const postKickUserFromProjectFx = createMutation({
+	name: 'postKickUserFromProject',
+	handler: ({ params, data }: PostKickUserFromProjectConfig) => postKickUserFromProject({ params, data }),
+	enabled: $isAuth
+})
+
+// Исключение пользователя из проекта
+
+sample({
+	clock: kickedUserFromProject,
+	source: $currentProject,
+	fn: (source, clock) => ({
+		params: {
+			projectId: source.project.id.toString()
+		},
+		data: {
+			user_id: clock
+		}
+	}),
+	target: postKickUserFromProjectFx.start
+})
+
+sample({
+	clock: postKickUserFromProjectFx.finished.success,
+	source: $usersProject,
+	fn: (source, clock) => {
+		notifySuccess({
+			title: 'Успешно',
+			message: 'Пользователь успешно исключен из проекта'
+		})
+		return [...source.filter((user) => user.id !== Number(clock.result.data.user.id))]
+	},
+	target: $usersProject
+})
+
+sample({
+	clock: postKickUserFromProjectFx.finished.failure,
+	fn: () => {
+		notifyError({
+			title: 'Ошибка',
+			message: 'Пользователь не исключен из проекта'
+		})
+	}
+})
+
+// Приглашение пользователя в проект
+
+sample({
+	clock: assignedUserToProject,
+	source: $currentProject,
+	fn: (source, clock) => ({
+		params: {
+			projectId: source.project.id.toString()
+		},
+		data: {
+			user_id: clock
+		}
+	}),
+	target: postAssignUserToProjectFx.start
+})
+
+sample({
+	clock: postAssignUserToProjectFx.finished.success,
+	source: $usersProject,
+	fn: (source, clock) => {
+		notifySuccess({
+			title: 'Успешно',
+			message: 'Пользователь успешно приглашен в проект'
+		})
+		return [...source, clock.result.data.user]
+	},
+	target: $usersProject
+})
+
+sample({
+	clock: postAssignUserToProjectFx.finished.failure,
+	fn: () => {
+		notifyError({
+			title: 'Ошибка',
+			message: 'Пользователь не приглашен в проект'
+		})
+	}
+})
+
+// Создание проекта
 sample({
 	clock: createdProject,
 	source: $currentWorkspace,

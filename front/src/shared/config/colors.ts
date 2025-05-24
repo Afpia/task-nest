@@ -36,3 +36,11 @@ export const ThemeColors = {
 	thirdDark: 'rgba(255, 255, 255, 0)',
 	thirdLight: 'rgba(255, 255, 255, 0)'
 }
+
+export const BADGE_COLOR = {
+	Назначена: 'blue',
+	Завершена: 'lime',
+	Выполняется: 'violet',
+	Приостановлена: 'gray',
+	Просрочена: 'red'
+}
