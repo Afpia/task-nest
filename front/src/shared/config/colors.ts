@@ -44,3 +44,10 @@ export const BADGE_COLOR = {
 	Приостановлена: 'gray',
 	Просрочена: 'red'
 }
+
+export const BADGE_COLOR_ROLE = {
+	owner: 'blue',
+	admin: 'lime',
+	executor: 'yellow',
+	project_manager: 'gray'
+}

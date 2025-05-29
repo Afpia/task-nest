@@ -2,11 +2,12 @@ import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 import { LogOut, Settings, UserRoundPlus } from 'lucide-react'
 
-import { Avatar, Divider, Flex, Menu, Skeleton, Text, Title } from '@mantine/core'
+import { Avatar, Divider, Flex, Image, Menu, Skeleton, Text, Title } from '@mantine/core'
 
+import image from '@assets/image/logo.png'
 import { SidebarSearch } from '@features/search'
 import { allUserExpired } from '@shared/auth'
-import { router, routes } from '@shared/config'
+import { path, router, routes } from '@shared/config'
 import { SrcImage } from '@shared/helpers'
 import { $user, getUserFx } from '@shared/store'
 
@@ -21,6 +22,16 @@ export const Header = () => {
 
 	return (
 		<Flex align='center' h={80} justify='space-between' mt={10} px={20} py={10} w='100%'>
+			{currentPath === path.WORKSPACES && (
+				<Link style={{ textDecoration: 'none', color: 'inherit' }} to={routes.private.home}>
+					<Flex align='center' gap={10}>
+						<Image alt='logo' h={70} src={image} w={70} />
+						<Title ff='Pacifico' size={34} style={{ textAlign: 'center' }} order={1}>
+							TaskNest
+						</Title>
+					</Flex>
+				</Link>
+			)}
 			<Flex direction='column'>
 				<Title size={28} order={1}>
 					{title}

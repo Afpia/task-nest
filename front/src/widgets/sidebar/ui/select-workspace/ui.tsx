@@ -5,6 +5,7 @@ import { Avatar, Flex, Select, Skeleton, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { ModalCreateWorkspace } from '@entities/create-workspace-modal'
+import { routes } from '@shared/config'
 import { SrcImage } from '@shared/helpers'
 import { $currentWorkspace, $workspaces, changedWorkspace, getUserWorkspacesFx } from '@shared/store'
 
@@ -49,6 +50,8 @@ export const SelectWorkspace = () => {
 				onChange={(current) => {
 					if (current === 'add') {
 						open()
+					} else if (current === 'change') {
+						routes.private.workspaces.open()
 					} else {
 						change(current!)
 					}
