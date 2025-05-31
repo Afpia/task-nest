@@ -230,7 +230,7 @@ class WorkspaceController extends Controller
 
     public function getTasks(Workspace $workspace)
     {
-        $tasks = $workspace->projects()->with('tasks')->get()->pluck('tasks')->flatten();
+        $tasks = $workspace->projects()->where('status', '!=', 'Удален')->with('tasks')->get()->pluck('tasks')->flatten();
 
         return response()->json($tasks);
     }

@@ -8,9 +8,10 @@ import { modals } from '@mantine/modals'
 import { routes } from '@shared/config'
 import { SrcImage } from '@shared/helpers'
 import { $user, getUserFx } from '@shared/store'
+import { deletedUser } from '@shared/store/user/delete'
 
 export const AccountLayout = ({ children }: { children: ReactNode }) => {
-	const [user, loading] = useUnit([$user, getUserFx.$pending])
+	const [user, loading, deleteUser] = useUnit([$user, getUserFx.$pending, deletedUser])
 
 	const openDeleteModal = () =>
 		modals.openConfirmModal({
@@ -23,7 +24,7 @@ export const AccountLayout = ({ children }: { children: ReactNode }) => {
 			),
 			labels: { confirm: 'Удалить аккаунт', cancel: 'Отмена' },
 			confirmProps: { color: 'red' },
-			onConfirm: () => console.log('Confirmed')
+			onConfirm: () => deleteUser(user.email)
 		})
 
 	return (
@@ -68,12 +69,6 @@ export const AccountLayout = ({ children }: { children: ReactNode }) => {
 						component={Link}
 						to={routes.private.account_personal}
 					/>
-					{/* <NavLink
-						active={routes.private.customization.$isOpened.getState()}
-						label='Кастомизация'
-						component={Link}
-						to={routes.private.customization}
-					/> */}
 					<NavLink
 						active={routes.private.account_password.$isOpened.getState()}
 						label='Пароль'

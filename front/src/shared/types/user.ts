@@ -1,6 +1,6 @@
 import type { ROLE } from '@shared/config'
 
-import type { UserLoginParams } from './params'
+import type { UserDeleteParams, UserLoginParams } from './params'
 
 export interface UserResponse {
 	access_token: string
@@ -38,3 +38,4 @@ export type GetUserSearchConfig = AxiosRequestConfig
 export type GetUserLoginConfig = AxiosRequestConfig<UserLoginParams>
 
 export type PatchUserInfoConfig = AxiosRequestConfig<undefined, UserFieldPartialData>
+export type DeleteUserConfig = AxiosRequestConfig<UserDeleteParams>

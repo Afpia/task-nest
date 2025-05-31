@@ -9,7 +9,7 @@ import type { PutProjectConfig } from '@shared/types'
 
 import { $projects } from './store'
 
-export const putProjected = createEvent<{ id: number; title: string }>()
+export const putProjected = createEvent<{ id: number; title?: string; status?: string }>()
 
 const patchProjectFx = createMutation({
 	name: 'patchProject',
@@ -17,11 +17,13 @@ const patchProjectFx = createMutation({
 	enabled: $isAuth
 })
 
+// Обновление проекта
+
 sample({
 	clock: putProjected,
 	fn: (clock) => ({
 		params: { projectId: String(clock.id) },
-		data: { title: clock.title }
+		data: { title: clock?.title, status: clock?.status }
 	}),
 	target: patchProjectFx.start
 })

@@ -4,6 +4,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { ActionIcon, Avatar, Button, Flex, Text } from '@mantine/core'
 
+import { routes } from '@shared/config'
 import type { ProjectResponse } from '@shared/types'
 
 export const SortableItem = ({ id, title, image_url, tasks, open }: ProjectResponse & { open?: () => void }) => {
@@ -63,7 +64,7 @@ export const SortableItem = ({ id, title, image_url, tasks, open }: ProjectRespo
 				mih={70}
 				radius='md'
 				// ref={setNodeRef}
-				style={style}
+				// style={style}
 				title={title}
 				type='button'
 				variant='default'
@@ -96,7 +97,11 @@ export const SortableItem = ({ id, title, image_url, tasks, open }: ProjectRespo
 			variant='default'
 			w='100%'
 			leftSection={<Avatar radius={10} size={40} src={image_url} />}
-			onContextMenu={() => console.log('first')}
+			onClick={() =>
+				routes.private.project.open({
+					projectId: id.toString()
+				})
+			}
 			{...attributes}
 			{...listeners}
 		>

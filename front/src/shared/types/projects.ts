@@ -20,7 +20,8 @@ export interface ProjectResponseWithUser {
 }
 
 export interface ProjectData {
-	title: string
+	status?: string
+	title?: string
 }
 export interface UserProjectData {
 	user_id: number

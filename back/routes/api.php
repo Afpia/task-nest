@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //user
     Route::get('/users', [UserController::class, 'index']);
+    Route::delete('/user/{email}', [AuthController::class, 'deleteByEmail']);
     Route::get('/user/info', [UserController::class, 'profile']);
     Route::get('/user/info/avatar', [UserController::class, 'avatar']);
     Route::get('/user/workspaces', [UserController::class, 'workspaces']);

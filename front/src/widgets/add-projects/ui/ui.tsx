@@ -104,7 +104,7 @@ export const AddProjects = () => {
 								</SortableContext>
 							)}
 							{loading &&
-								Array.from({ length: 8 }).map((_, index) => (
+								Array.from({ length: 9 }).map((_, index) => (
 									<Grid.Col key={index} p={5} span={4}>
 										<Skeleton mih={70} radius='md' w='100%' />
 									</Grid.Col>
@@ -117,12 +117,12 @@ export const AddProjects = () => {
 						{!loading &&
 							projects.map((item) => (
 								<Grid.Col key={item.id} p={5} span={4}>
-									<SortableItem {...item} />
+									<SortableItem {...item} open={open} />
 								</Grid.Col>
 							))}
 
 						{loading &&
-							Array.from({ length: 8 }).map((_, index) => (
+							Array.from({ length: 9 }).map((_, index) => (
 								<Grid.Col key={index} p={5} span={4}>
 									<Skeleton mih={70} radius='md' w='100%' />
 								</Grid.Col>

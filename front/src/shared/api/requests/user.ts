@@ -1,5 +1,6 @@
 import { api } from '@shared/api'
 import type {
+	DeleteUserConfig,
 	GetUserInfoConfig,
 	GetUserLoginConfig,
 	GetUserSearchConfig,
@@ -21,3 +22,5 @@ export const getUserSearch = async ({ config }: GetUserSearchConfig) => api.get<
 // NOTE: Сделано post для обоев, иначе не работает обновление
 export const patchUserInfoBackground = async ({ config, data }: PatchUserInfoConfig) =>
 	api.post<UserFieldResponse>(`user/info/background`, data, config)
+
+export const deleteUser = async ({ params, config }: DeleteUserConfig) => api.delete(`user/${params.email}`, config)

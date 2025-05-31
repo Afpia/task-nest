@@ -39,7 +39,14 @@ class ProjectService
 
     public function deleteProject(Project $project): void
     {
-        $project->delete();
+        $project->status = 'Удален';
+        $project->save();
+
+        foreach ($project->tasks as $task) {
+            $task->status = 'Удалена';
+            $task->save();
+        }
+
     }
 
 

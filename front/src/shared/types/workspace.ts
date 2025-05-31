@@ -28,6 +28,11 @@ export type WorkspaceData = FormData
 export interface WorkspaceAddUserData {
 	user_id: number
 }
+
+export interface WorkspaceUpdateData {
+	description: string
+	title: string
+}
 export interface WorkspaceManageUserData {
 	role: Exclude<(typeof ROLE)[keyof typeof ROLE], 'owner'>
 	user_id: number
@@ -44,3 +49,5 @@ export type PostKickUserFromWorkspaceConfig = AxiosRequestConfig<WorkspaceIdPara
 export type PutManageUserInWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams, WorkspaceManageUserData>
 
 export type GetUsersWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams>
+
+export type PutWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams, WorkspaceUpdateData>

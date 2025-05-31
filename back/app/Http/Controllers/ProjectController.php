@@ -12,10 +12,11 @@ use Illuminate\Http\Request;
 class ProjectController extends Controller
 {
     private const PROJECT_VALIDATOR = [
-        'title' => 'required|string|max:255',
+        'title' => 'string|max:255',
         'description' => 'nullable|string',
         'start_date' => 'date',
         'end_date' => 'date|after_or_equal:start_date',
+        'status'   => 'in:Завершён'
     ];
 
     protected $projectService;
@@ -31,7 +32,7 @@ class ProjectController extends Controller
 
     public function index(Request $request, Workspace $workspace)
     {
-        $query = Project::query()->where('workspace_id', $workspace->id);
+        $query = Project::query()->where('workspace_id', $workspace->id)->where('status', '!=', 'Удалён');
 
         $currentUser = $request->user();
         $currentUserId = $currentUser->id;
@@ -43,15 +44,15 @@ class ProjectController extends Controller
             });
         }
 
-        $filters = $request->input('filters', '');
-        $columns = $request->input('columns', '*');
-        $perPage = $request->input('per_page', false);
+        // $filters = $request->input('filters', '');
+        // $columns = $request->input('columns', '*');
+        // $perPage = $request->input('per_page', false);
 
+        $projects = $query->get();
+        // $query = $this->queryService->applyFilters($query, $filters);
+        // $query = $this->queryService->selectColumns($query, $columns);
 
-        $query = $this->queryService->applyFilters($query, $filters);
-        $query = $this->queryService->selectColumns($query, $columns);
-
-        $projects = $this->queryService->paginateResults($query, $perPage);
+        // $projects = $this->queryService->paginateResults($query, $perPage);
 
         foreach($projects as $project){
             $project->tasks = $project->tasks;
@@ -99,18 +100,34 @@ class ProjectController extends Controller
         $workspaces = Workspace::whereHas('users', fn($u) =>
                 $u->where('user_id', $userId)
             )->where(function ($wsQuery) use ($q) {
-                $wsQuery->where('title', 'like', "%{$q}%")->orWhereHas('projects', function ($prQuery) use ($q) {
-                $prQuery->where('title', 'like', "%{$q}%")->orWhereHas('tasks', function ($tkQuery) use ($q) {
-                        $tkQuery->where('title', 'like', "%{$q}%");
-                });
-                })->orWhereHas('projects.tasks', function ($tkQuery) use ($q) {
-                    $tkQuery->where('title', 'like', "%{$q}%");
-                });
+                // $wsQuery->where('title', 'like', "%{$q}%")->orWhereHas('projects', function ($prQuery) use ($q) {
+                // $prQuery->where('title', 'like', "%{$q}%")->orWhereHas('tasks', function ($tkQuery) use ($q) {
+                //         $tkQuery->where('title', 'like', "%{$q}%");
+                // });
+                // })->orWhereHas('projects.tasks', function ($tkQuery) use ($q) {
+                //     $tkQuery->where('title', 'like', "%{$q}%");
+                // });
+                $wsQuery->where('title', 'like', "%{$q}%")
+                ->orWhereHas('projects', function ($prQuery) use ($q) {
+                    $prQuery->where('status', '!=', 'Удален')
+                            ->where(function ($sub) use ($q) {
+                                $sub->where('title', 'like', "%{$q}%")
+                                    ->orWhereHas('tasks', fn($tkQuery) =>
+                                        $tkQuery->where('title', 'like', "%{$q}%")
+                                    );
+                            });
+                })
+                ->orWhereHas('projects.tasks', fn($tkQuery) =>
+                    $tkQuery->where('title', 'like', "%{$q}%")
+                            ->whereHas('project', fn($p) =>
+                                $p->where('status', '!=', 'Удалён')
+                            )
+                    );
         })->with([
             // 'users',
             // 'projects.users',
             'projects' => function ($prQuery) use ($q, $userId) {
-                $prQuery->where('title', 'like', "%{$q}%")->orWhereHas('tasks', function ($tkQuery) use ($q) {
+                $prQuery->where('status', '!=', 'Удалён')->where('title', 'like', "%{$q}%")->orWhereHas('tasks', function ($tkQuery) use ($q) {
                     $tkQuery->where('title', 'like', "%{$q}%");
                 });
                 // if (!in_array($role, ['owner','admin'], true)) {
@@ -120,7 +137,10 @@ class ProjectController extends Controller
                 // }
             },
             'projects.tasks' => function ($tkQuery) use ($q) {
-                $tkQuery->where('title', 'like', "%{$q}%");
+                $tkQuery->where('title', 'like', "%{$q}%")
+                        ->whereHas('project', fn($p) =>
+                            $p->where('status', '!=', 'Удалён')
+                        );
             },
         ])->get();
 

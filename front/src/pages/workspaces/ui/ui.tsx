@@ -1,18 +1,10 @@
+import { useState } from 'react'
 import { useUnit } from 'effector-react'
 
-import {
-	Accordion,
-	Avatar,
-	Badge,
-	Button,
-	Container,
-	Flex,
-	Group,
-	Skeleton,
-	Text,
-	Title
-} from '@mantine/core'
+import { Accordion, Avatar, Badge, Button, Container, Flex, Group, Skeleton, Text, Title } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 
+import { ModalUpdateWorkspace } from '@entities/update-workspace-modal'
 import { BADGE_COLOR_ROLE, ROLE, ROLE_NAMING, ThemeColors } from '@shared/config'
 import { isDarkMode, SrcImage } from '@shared/helpers'
 import { $workspaces, changedWorkspace, getUserWorkspacesFx } from '@shared/store'
@@ -20,6 +12,9 @@ import { $workspaces, changedWorkspace, getUserWorkspacesFx } from '@shared/stor
 export const Workspaces = () => {
 	const [workspaces, loadingWorkspace, change] = useUnit([$workspaces, getUserWorkspacesFx.$pending, changedWorkspace])
 	const { isDark } = isDarkMode()
+	const [currentWorkspace, setCurrentWorkspace] = useState({ title: '', description: '', workspaceId: '' })
+	const [opened, { open, close }] = useDisclosure(false)
+
 	const color = isDark ? ThemeColors.secondDark : ThemeColors.secondLight
 
 	return (
@@ -34,7 +29,7 @@ export const Workspaces = () => {
 				<Accordion radius={10} variant='contained'>
 					{workspaces.map((item) => (
 						<Accordion.Item key={item.id} py={10} value={item.id.toString()}>
-							<Accordion.Control chevron={!item.description}>
+							<Accordion.Control>
 								<Group wrap='nowrap'>
 									<Avatar radius='lg' size='lg' src={SrcImage(item.image_url)} />
 									<div>
@@ -50,10 +45,19 @@ export const Workspaces = () => {
 									</Text>
 									<Flex gap={10} justify='right'>
 										<Button onClick={() => change(item.id.toString())}>Перейти</Button>
-										<Button variant='gradient'>Изменить</Button>
-										<Button disabled={item.pivot.role !== ROLE.OWNER} variant='light'>
-											Удалить
+										<Button
+											disabled={item.pivot.role !== ROLE.OWNER}
+											variant='gradient'
+											onClick={() => {
+												setCurrentWorkspace({ title: item.title, description: item.description, workspaceId: item.id.toString() })
+												open()
+											}}
+										>
+											Изменить
 										</Button>
+										{/* <Button disabled={item.pivot.role !== ROLE.OWNER} variant='light'>
+											Удалить
+										</Button> */}
 									</Flex>
 								</Flex>
 							</Accordion.Panel>
@@ -61,6 +65,13 @@ export const Workspaces = () => {
 					))}
 				</Accordion>
 			)}
+			<ModalUpdateWorkspace
+				id={currentWorkspace.workspaceId}
+				title={currentWorkspace.title}
+				close={close}
+				description={currentWorkspace.description}
+				opened={opened}
+			/>
 		</Container>
 	)
 }

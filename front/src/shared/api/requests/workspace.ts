@@ -6,6 +6,7 @@ import type {
 	PostKickUserFromWorkspaceConfig,
 	PostUserWorkspaceConfig,
 	PutManageUserInWorkspaceConfig,
+	PutWorkspaceConfig,
 	UserFieldResponse,
 	WorkspaceResponse,
 	WorkspaceResponseWithUser,
@@ -34,3 +35,6 @@ export const postKickUserFromWorkspace = async ({ config, data, params }: PostKi
 
 export const putManageUserInWorkspace = async ({ config, data, params }: PutManageUserInWorkspaceConfig) =>
 	api.put<WorkspaceResponseWithUser>(`workspace/${params.workspaceId}/manage-user`, data, config)
+
+export const putWorkspace = async ({ config, data, params }: PutWorkspaceConfig) =>
+	api.put<WorkspaceResponse>(`workspace/${params.workspaceId}/update`, data, config)
