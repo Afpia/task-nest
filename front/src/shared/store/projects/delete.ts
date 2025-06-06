@@ -9,6 +9,7 @@ import type { DeleteProjectConfig } from '@shared/types'
 
 import { $projects } from './store'
 
+// TODO: Не используется
 export const deletedProject = createEvent<{ id: number }>()
 
 const deleteProjectFx = createMutation({

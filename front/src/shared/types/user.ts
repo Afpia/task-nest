@@ -1,6 +1,7 @@
 import type { ROLE } from '@shared/config'
 
 import type { UserDeleteParams, UserLoginParams } from './params'
+import type { TaskResponse } from './tasks'
 
 export interface UserResponse {
 	access_token: string
@@ -17,6 +18,7 @@ export interface UserFieldResponse {
 	id: number
 	login: string
 	name: string
+	tasks: TaskResponse[]
 	updated_at: string
 	pivot: {
 		role: (typeof ROLE)[keyof typeof ROLE]
@@ -27,6 +29,7 @@ export interface UserFieldData {
 	avatar_url: string
 	current_password: string
 	email: string
+	login: string
 	name: string
 	password: string
 }

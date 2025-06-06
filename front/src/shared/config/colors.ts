@@ -35,19 +35,19 @@ export const ThemeColors = {
 	accentDarkBorder: '#423d47',
 	thirdDark: 'rgba(255, 255, 255, 0)',
 	thirdLight: 'rgba(255, 255, 255, 0)'
-}
+} as const
 
-export const BADGE_COLOR = {
+export const BADGE_COLOR_STATUS_TASK = {
 	Назначена: 'blue',
 	Завершена: 'lime',
 	Выполняется: 'violet',
 	Приостановлена: 'gray',
 	Просрочена: 'red'
-}
+} as const
 
 export const BADGE_COLOR_ROLE = {
 	owner: 'blue',
 	admin: 'lime',
 	executor: 'yellow',
 	project_manager: 'gray'
-}
+} as const

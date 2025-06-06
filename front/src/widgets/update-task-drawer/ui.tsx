@@ -26,7 +26,7 @@ import {
 import { DateInput } from '@mantine/dates'
 import { useForm } from '@mantine/form'
 
-import { BADGE_COLOR, ROLE } from '@shared/config'
+import { BADGE_COLOR_STATUS_TASK, ROLE } from '@shared/config'
 import { ACCEPT, formatFileSize, ICON_MAP, isDarkMode, MAX_FILES, MIME_TO_READABLE_TYPE } from '@shared/helpers'
 import { $user, $usersProject, $workspaceRole, updatedStatusTask, updatedTask } from '@shared/store'
 import type { Files, TaskResponse } from '@shared/types'
@@ -165,7 +165,7 @@ export const UpdateTaskDrawer = ({ close, opened, task }: { close: () => void; o
 								Текущий статус
 							</Text>
 						</Flex>
-						<Badge color={BADGE_COLOR[task.status as keyof typeof BADGE_COLOR]}>{task.status}</Badge>
+						<Badge color={BADGE_COLOR_STATUS_TASK[task.status as keyof typeof BADGE_COLOR_STATUS_TASK]}>{task.status}</Badge>
 					</Flex>
 
 					<Flex>
@@ -310,7 +310,7 @@ export const UpdateTaskDrawer = ({ close, opened, task }: { close: () => void; o
 								Текущий статус
 							</Text>
 						</Flex>
-						<Badge color={BADGE_COLOR[task.status as keyof typeof BADGE_COLOR]}>{task.status}</Badge>
+						<Badge color={BADGE_COLOR_STATUS_TASK[task.status as keyof typeof BADGE_COLOR_STATUS_TASK]}>{task.status}</Badge>
 					</Flex>
 					<Flex>
 						<Flex align='center' w={160}>

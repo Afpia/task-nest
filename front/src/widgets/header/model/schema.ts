@@ -16,7 +16,7 @@ export const headerSchema = {
 		subtitle: 'Настройте свои персональные данные'
 	},
 	[path.SEARCH]: { title: 'Поиск', subtitle: 'Найдите друзей для своего проекта' },
-	[path.ANALYTICS]: { title: 'Аналитика', subtitle: '' },
+	[path.ANALYTICS]: { title: 'Аналитика', subtitle: 'Просматривайте ключевые показатели и статистику' },
 	[path.PROJECT.replace(/\/:projectId$/, '')]: {
 		title: 'Подробности проекта',
 		subtitle: 'Управляйте проектом и задачами здесь'

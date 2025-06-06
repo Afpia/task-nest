@@ -34,6 +34,12 @@ class ProjectService
     {
         $project->update($data);
         $project->save();
+
+        foreach ($project->tasks as $task) {
+            $task->status = 'Завершена';
+            $task->save();
+        }
+
         return $project;
     }
 

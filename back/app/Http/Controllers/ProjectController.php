@@ -8,6 +8,7 @@ use App\Services\WorkspaceService;
 use App\Models\User;
 use App\Services\QueryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class ProjectController extends Controller
 {
@@ -76,8 +77,15 @@ class ProjectController extends Controller
     {
         $users = $project->users()->get();
 
+
         $users->transform(function($user) use($project) {
             $user->pivot->role = $this->workspaceService->getUserRoleInWorkspace($project->workspace, $user->id);
+
+            $user->tasks = $user->tasks()
+            ->where('project_id', $project->id)
+            ->select(['tasks.id', 'tasks.title', 'tasks.status', 'tasks.project_id', 'tasks.start_date', 'tasks.end_date'])
+            ->get();
+
             return $user;
         });
 
@@ -251,5 +259,34 @@ class ProjectController extends Controller
         $this->projectService->deleteUserFromProject($project, $request->user()->id);
 
         return response()->json(['message' => 'Вы вышли из проекта'], 200);
+    }
+
+    public function projectsStats(Workspace $workspace)
+    {
+        $startDate = Carbon::now()->subDays(6)->startOfDay();
+
+        $projects = $workspace
+            ->projects()
+            ->where('created_at', '>=', $startDate)
+            ->get();
+
+        $byDate = $projects->groupBy(function (Project $project) {
+            return $project->created_at->format('Y-m-d');
+        });
+
+        $stats = collect();
+
+        foreach ($byDate as $date => $projectsOnDate) {
+            $stats->push([
+                'date'         => $date,
+                'Созданные'    => $projectsOnDate->where('status', 'Создан')->count(),
+                'В процессе'   => $projectsOnDate->where('status', 'В процессе')->count(),
+                'Завершенные'  => $projectsOnDate->where('status', 'Завершён')->count(),
+            ]);
+        }
+
+        $stats = $stats->sortBy('date')->values();
+
+        return response()->json($stats);
     }
 }

@@ -50,6 +50,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // глобальный поиск
     Route::get('/projects/tasks', [ProjectController::class, 'projectsTasks']);
 
+    Route::get('/projects/{workspace}/stats', [ProjectController::class, 'projectsStats']);
+
     //executor
     Route::middleware('role:executor')->group(function () {
         //workspaces routes

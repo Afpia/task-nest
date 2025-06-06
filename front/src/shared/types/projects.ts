@@ -14,6 +14,13 @@ export interface ProjectResponse {
 	title: string
 }
 
+export interface ProjectStatsResponse {
+	date: string
+	'В процессе': string
+	Завершенные: string
+	Созданные: string
+}
+
 export interface ProjectResponseWithUser {
 	message: string
 	user: UserFieldResponse
@@ -28,6 +35,7 @@ export interface UserProjectData {
 }
 
 export type GetProjectsWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams>
+export type GetProjectsStatsConfig = AxiosRequestConfig<WorkspaceIdParams>
 export type PostProjectWorkspaceConfig = AxiosRequestConfig<WorkspaceIdParams, ProjectData>
 export type PutProjectConfig = AxiosRequestConfig<ProjectIdParams, ProjectData>
 export type DeleteProjectConfig = AxiosRequestConfig<ProjectIdParams>

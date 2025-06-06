@@ -28,7 +28,7 @@ class TaskController extends Controller
         // $perPage = $request->input('per_page', false);
         Task::where('project_id', $project->id)
         ->whereDate('end_date', '<', Carbon::now())
-        ->whereNotIn('status', ['Просрочена', 'Выполнена', 'Приостановлена'])
+        ->whereNotIn('status', ['Просрочена', 'Завершена', 'Приостановлена'])
         ->update(['status' => 'Просрочена']);
 
         $tasks = Task::where('project_id', $project->id)->where('status', '!=', 'Удалена')->with(['users','files'])->get();
