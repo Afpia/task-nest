@@ -72,6 +72,11 @@ sample({
 					email: 'Такого пользователя не существует',
 					password: true
 				})
+			} else if (errorMessage === 'Этот аккаунт удалён') {
+				handleError(form, 'Этот аккаунт удалён', 'Мы не смогли войти в систему', {
+					email: 'Этот аккаунт удалён',
+					password: true
+				})
 			} else {
 				handleError(form, 'Что-то пошло не так AxiosError', 'Мы не смогли войти в систему', { email: true, password: true })
 			}

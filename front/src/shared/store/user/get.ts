@@ -42,7 +42,7 @@ sample({
 		return {
 			config: {
 				params: {
-					email: clock
+					login: clock
 				}
 			}
 		}

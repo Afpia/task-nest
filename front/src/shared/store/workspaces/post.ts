@@ -1,3 +1,4 @@
+import { redirect } from 'atomic-router'
 import { isAxiosError } from 'axios'
 import { createEvent, sample } from 'effector'
 
@@ -6,6 +7,7 @@ import { notifications } from '@mantine/notifications'
 
 import { postAddUserToWorkspace, postKickUserFromWorkspace, postUserWorkspace } from '@shared/api'
 import { $isAuth } from '@shared/auth'
+import { routes } from '@shared/config'
 import { notifyError, notifySuccess } from '@shared/helpers'
 import type { PostAddUserToWorkspaceConfig, PostKickUserFromWorkspaceConfig } from '@shared/types'
 
@@ -55,6 +57,12 @@ sample({
 	target: $workspaces
 })
 
+redirect({
+	clock: postUserWorkspaceFx.finished.success,
+	replace: true,
+	route: routes.private.home
+})
+
 sample({
 	clock: postUserWorkspaceFx.finished.success,
 	fn: (clock) => clock.result.data.workspace,
@@ -71,7 +79,7 @@ sample({
 	}
 })
 
-// Добавление юзера на проект
+// Добавление юзера на workspace
 
 sample({
 	clock: addedUserToWorkspace,
@@ -115,7 +123,7 @@ sample({
 	}
 })
 
-// Удаление юзера с проекта
+// Удаление юзера с workspace
 
 sample({
 	clock: kickedUserFromWorkspace,

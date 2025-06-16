@@ -1,6 +1,7 @@
 import type {
 	DeleteProjectConfig,
 	GetProjectConfig,
+	GetProjectsStatsConfig,
 	GetProjectsWorkspaceConfig,
 	GetUsersProjectConfig,
 	PostAssignUserToProjectConfig,
@@ -8,6 +9,7 @@ import type {
 	PostProjectWorkspaceConfig,
 	ProjectResponse,
 	ProjectResponseWithUser,
+	ProjectStatsResponse,
 	PutProjectConfig,
 	UserFieldResponse
 } from '@shared/types'
@@ -22,6 +24,9 @@ export const getCurrentProject = async ({ config, params }: GetProjectConfig) =>
 
 export const getUsersProject = async ({ config, params }: GetUsersProjectConfig) =>
 	api.get<UserFieldResponse[]>(`project/${params.projectId}/users`, config)
+
+export const getProjectsStats = async ({ config, params }: GetProjectsStatsConfig) =>
+	api.get<ProjectStatsResponse[]>(`projects/${params.workspaceId}/stats`, config)
 
 export const postProjectWorkspace = async ({ params, data, config }: PostProjectWorkspaceConfig) =>
 	api.post<ProjectResponse>(`project/${params.workspaceId}/add`, data, config)

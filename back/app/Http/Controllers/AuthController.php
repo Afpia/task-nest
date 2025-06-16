@@ -27,17 +27,26 @@ class AuthController extends Controller
 
     public function handleProviderCallback($provider)
     {
-        $token = $this->authService->handleSocialCallback($provider);
-
         $from = request()->get('state');
 
-        if ($from) {
-            if ($from === 'signup') {
-                return redirect("http://localhost:5173/signup?access_token=$token");
-            }
-            return redirect("http://localhost:5173/login?access_token=$token");
-        }
+        try {
+            $token = $this->authService->handleSocialCallback($provider);
 
+            if ($from) {
+                if ($from === 'signup') {
+                    return redirect("http://localhost:5173/signup?access_token=$token");
+                }
+                return redirect("http://localhost:5173/login?access_token=$token");
+            }
+
+        } catch (\Exception $e) {
+            if ($from) {
+                if ($from === 'signup') {
+                    return redirect("http://localhost:5173/signup");
+                }
+                return redirect("http://localhost:5173/login");
+            }
+        }
     }
 
     public function login(Request $request)
@@ -46,6 +55,10 @@ class AuthController extends Controller
 
         if (!$this->authService->userExists($credentials['email'])) {
             return response()->json(['message' => 'Email не найден'], 404);
+        }
+
+        if ($this->authService->isDeleted($credentials['email'])) {
+            return response()->json(['message' => 'Этот аккаунт удалён'], 403);
         }
 
         if (!$this->authService->validatePassword($credentials['email'], $credentials['password'])) {
@@ -81,6 +94,19 @@ class AuthController extends Controller
         $token = $request->input('accessToken');
 
         return $this->tokenService->checkDisposableToken($token);
+    }
+
+    public function deleteByEmail(string $email)
+    {
+        $deleted = $this->authService->deleteCurrentUser($email);
+
+        if (!$deleted) {
+            return response()->json(['message' => 'Не удалось удалить пользователя'], 500);
+        }
+
+        return response()->json([
+            'message' => 'Ваш аккаунт помечен как удалён',
+        ], 200);
     }
 }
 

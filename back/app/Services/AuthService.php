@@ -35,19 +35,26 @@ class AuthService
 
         $user = User::where('email', $socialUser->getEmail())->first();
 
-        if (!$user) {
-            $user = User::create([
-                'name' => $socialUser->getName() ?? $socialUser->getNickname(),
-                'email' => $socialUser->getEmail(),
-            ]);
 
-            $user->avatar_url = $socialUser->getAvatar()
-                ? $this->avatarService->saveAvatarFromUrl($socialUser->getAvatar())
-                : $this->avatarService->generateDefaultImage('avatar', $user->name);
-            $user->save();
+        if ($user) {
+            if ($user->is_deleted) {
+                throw new \Exception('This account has been deleted.');
+            }
 
-            $this->workspaceService->createWorkspace("$user->name`s Workspace", $user->id);
+            return $this->tokenService->generateDisposableToken($user->id);
         }
+
+        $user = User::create([
+            'name' => $socialUser->getName() ?? $socialUser->getNickname(),
+            'email' => $socialUser->getEmail(),
+        ]);
+
+        $user->avatar_url = $socialUser->getAvatar()
+            ? $this->avatarService->saveAvatarFromUrl($socialUser->getAvatar())
+            : $this->avatarService->generateDefaultImage('avatar', $user->name);
+        $user->save();
+
+        $this->workspaceService->createWorkspace("$user->name`s Workspace", null, null, $user->id);
 
         return $this->tokenService->generateDisposableToken($user->id);
     }
@@ -63,7 +70,7 @@ class AuthService
                 $this->avatarService->generateDefaultImage('avatar', $validated['name']),
         ]);
 
-        $this->workspaceService->createWorkspace("$user->name`s Workspace", $user->id);
+        $this->workspaceService->createWorkspace("$user->name`s Workspace", null, null, $user->id);
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return [
@@ -86,6 +93,13 @@ class AuthService
         return User::where('email', $email)->exists();
     }
 
+    public function isDeleted(string $email): bool
+    {
+        return User::where('email', $email)
+                ->where('is_deleted', true)
+                ->exists();
+    }
+
     public function validatePassword(string $email, string $password): bool
     {
         $user = User::where('email', $email)->first();
@@ -95,5 +109,15 @@ class AuthService
         }
 
         return Hash::check($password, $user->password);
+    }
+
+    public function deleteCurrentUser(string $email): bool
+    {
+        $user = User::where('email', $email)->first();
+        
+        $user->is_deleted = true;
+        $user->save();
+
+        return true;
     }
 }

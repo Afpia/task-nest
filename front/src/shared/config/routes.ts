@@ -14,6 +14,7 @@ export const routes = {
 	},
 	private: {
 		profile: createRoute<{ userLogin: string }>(),
+		workspaces: createRoute(),
 		account: createRoute(),
 		search: createRoute(),
 		account_personal: createRoute(),
@@ -35,6 +36,10 @@ export const mappedRoutes = [
 	{
 		route: routes.auth.signup,
 		path: path.SIGNUP
+	},
+	{
+		route: routes.private.workspaces,
+		path: path.WORKSPACES
 	},
 	{
 		route: routes.auth.resetPassword,

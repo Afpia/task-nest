@@ -3,14 +3,14 @@ import { sample } from 'effector'
 
 import { createQuery } from '@farfetched/core'
 
-import { getCurrentProject, getProjectsWorkspace, getUsersProject } from '@shared/api'
+import { getCurrentProject, getProjectsStats, getProjectsWorkspace, getUsersProject } from '@shared/api'
 import { $isAuth } from '@shared/auth'
 import { privateProjectRouteParams, routes } from '@shared/config'
 import { notifyError } from '@shared/helpers'
 
 import { $currentWorkspace, changedWorkspace } from '../workspaces'
 
-import { $currentProject, $projects, $usersProject } from './store'
+import { $currentProject, $projects, $projectsStats, $usersProject } from './store'
 
 export const getProjectsWorkspaceFx = createQuery({
 	name: 'getProjectsWorkspace',
@@ -30,6 +30,12 @@ export const getUsersProjectFx = createQuery({
 	enabled: $isAuth
 })
 
+export const getProjectsStatsFx = createQuery({
+	name: 'getProjectsStats',
+	handler: (workspaceId: string) => getProjectsStats({ params: { workspaceId } }),
+	enabled: $isAuth
+})
+
 // Получение пользователей проекта
 
 sample({
@@ -44,6 +50,22 @@ sample({
 	clock: getUsersProjectFx.finished.success,
 	fn: (clock) => clock.result.data,
 	target: $usersProject
+})
+
+// Получение статистики проектов
+
+sample({
+	clock: [changedWorkspace, $currentWorkspace],
+	source: $currentWorkspace,
+	filter: $isAuth,
+	fn: (source) => source.id.toString(),
+	target: getProjectsStatsFx.start
+})
+
+sample({
+	clock: getProjectsStatsFx.finished.success,
+	fn: ({ result }) => result.data,
+	target: $projectsStats
 })
 
 // Получение проекта

@@ -11,6 +11,7 @@ import { ProjectRoute } from './project'
 import { ResetPasswordRoute } from './reset-password'
 import { SearchRoute } from './search'
 import { SignupRoute } from './signup'
+import { WorkspacesRoute } from './workspaces'
 
 export * from './loading'
 
@@ -20,6 +21,7 @@ export const Pages = createRoutesView({
 		SignupRoute,
 		ForgotPasswordRoute,
 		ResetPasswordRoute,
+		WorkspacesRoute,
 		HomeRoute,
 		ProfileRoute,
 		ProjectRoute,

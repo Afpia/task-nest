@@ -13,7 +13,7 @@ import { useDebounce } from '@shared/hooks'
 import { $userSearch, clearedUserSearch, queriedUser } from '@shared/store'
 import type { UserFieldResponse } from '@shared/types'
 
-const AccordionLabel = ({ avatar_url, name, email, login }: UserFieldResponse) => (
+const AccordionLabel = ({ avatar_url, name, login }: UserFieldResponse) => (
 	<Group wrap='nowrap'>
 		<Flex p={2}>
 			<Link params={{ userLogin: login }} to={routes.private.profile}>
@@ -25,7 +25,7 @@ const AccordionLabel = ({ avatar_url, name, email, login }: UserFieldResponse) =
 				<Text>{name}</Text>
 			</Link>
 			<Text c='dimmed' fw={400} size='sm'>
-				{email}
+				{login}
 			</Text>
 		</div>
 	</Group>
@@ -33,17 +33,17 @@ const AccordionLabel = ({ avatar_url, name, email, login }: UserFieldResponse) =
 
 export const Search = () => {
 	const [queryUser, users, clearUserSearch] = useUnit([queriedUser, $userSearch, clearedUserSearch])
-	const [email, setEmail] = useState('')
+	const [login, setLogin] = useState('')
 
-	const debouncedEmail = useDebounce(email, 500)
+	const debouncedLogin = useDebounce(login, 500)
 
 	useEffect(() => {
-		if (!debouncedEmail) return clearUserSearch()
-		queryUser(debouncedEmail)
-	}, [debouncedEmail])
+		if (!debouncedLogin) return clearUserSearch()
+		queryUser(debouncedLogin)
+	}, [debouncedLogin])
 
 	const items = users?.map((item) => (
-		<Accordion.Item key={item.email} value={String(item.id)}>
+		<Accordion.Item key={item.login} value={String(item.id)}>
 			<Accordion.Control chevron={!item.about}>
 				<AccordionLabel {...item} />
 			</Accordion.Control>
@@ -62,11 +62,11 @@ export const Search = () => {
 					miw={600}
 					radius='md'
 					size='lg'
-					value={email}
+					value={login}
 					variant='filled'
 					leftSection={<SearchIcon size={20} />}
-					onChange={(e) => setEmail(e.target.value)}
-					placeholder='Поиск по почте'
+					onChange={(e) => setLogin(e.target.value)}
+					placeholder='Поиск по логину'
 				/>
 				{!(users.length > 0 && 'message' in users[0]) && (
 					<Accordion miw={600} variant='contained' chevronPosition='right'>

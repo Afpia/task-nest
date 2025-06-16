@@ -1,7 +1,7 @@
 import { Link } from 'atomic-router-react'
 import { useUnit } from 'effector-react'
 
-import { Avatar, Menu, NavLink } from '@mantine/core'
+import { Avatar, Menu, NavLink, Tooltip } from '@mantine/core'
 
 import { routes } from '@shared/config'
 import type { ProjectResponse } from '@shared/types'
@@ -24,17 +24,19 @@ export const Target = ({ item }: { item: ProjectResponse }) => {
 
 	return (
 		<Menu.Target>
-			<NavLink
-				active={item.id.toString() === currentPath.projectId && openPath}
-				label={item.title}
-				params={{ projectId: item.id.toString() }}
-				style={{ borderRadius: '10px' }}
-				variant='filled'
-				component={Link}
-				leftSection={<Avatar alt={item.title} radius='sm' size={25} src={item.image_url} />}
-				onContextMenu={(event) => handleContextMenu(event, item)}
-				to={routes.private.project as unknown as string}
-			/>
+			<Tooltip label={item.status} position='top' withArrow>
+				<NavLink
+					active={item.id.toString() === currentPath.projectId && openPath}
+					label={item.title}
+					params={{ projectId: item.id.toString() }}
+					style={{ borderRadius: '10px' }}
+					variant='filled'
+					component={Link}
+					leftSection={<Avatar alt={item.title} radius='sm' size={25} src={item.image_url} />}
+					onContextMenu={(event) => handleContextMenu(event, item)}
+					to={routes.private.project as unknown as string}
+				/>
+			</Tooltip>
 		</Menu.Target>
 	)
 }

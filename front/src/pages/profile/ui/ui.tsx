@@ -1,4 +1,3 @@
-/* eslint-disable simple-import-sort/imports */
 import { useUnit } from 'effector-react'
 import { Check, Mail, MapPin, Pencil, X } from 'lucide-react'
 
@@ -101,8 +100,10 @@ export const Profile = () => {
 									<Title size={30} order={1}>
 										{user.name}
 									</Title>
+									<Text c='gray.5' m={0} size='md'>
+										{user.login}
+									</Text>
 									<Text lh={2} m={0} size='sm'>
-										{/* eslint-disable-next-line style/jsx-one-expression-per-line */}
 										Дата создания: {dayjs.utc(user.created_at).format('DD.MM.YYYY')}
 									</Text>
 								</Flex>

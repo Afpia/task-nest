@@ -1,5 +1,5 @@
 import { Link } from 'atomic-router-react'
-import { House } from 'lucide-react'
+import { ChartNoAxesCombined, House } from 'lucide-react'
 
 import { Divider, Flex, NavLink, Title } from '@mantine/core'
 
@@ -48,7 +48,7 @@ export const Sidebar = () => (
 					component={Link}
 					leftSection={<CircleCheck />}
 					to={routes.private.tasks}
-				/>
+				/> */}
 				<NavLink
 					active={routes.private.analytics.$isOpened.getState()}
 					label='Аналитика'
@@ -57,7 +57,7 @@ export const Sidebar = () => (
 					component={Link}
 					leftSection={<ChartNoAxesCombined />}
 					to={routes.private.analytics}
-				/> */}
+				/>
 			</Flex>
 			<Divider my='sm' variant='dashed' />
 			<CreateProject />

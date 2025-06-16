@@ -28,10 +28,10 @@ class TaskController extends Controller
         // $perPage = $request->input('per_page', false);
         Task::where('project_id', $project->id)
         ->whereDate('end_date', '<', Carbon::now())
-        ->whereNotIn('status', ['Просрочена', 'Выполнена', 'Приостановлена'])
+        ->whereNotIn('status', ['Просрочена', 'Завершена', 'Приостановлена'])
         ->update(['status' => 'Просрочена']);
 
-        $tasks = Task::where('project_id', $project->id)->with(['users','files'])->get();
+        $tasks = Task::where('project_id', $project->id)->where('status', '!=', 'Удалена')->with(['users','files'])->get();
         // $query = $this->queryService->applyFilters($query, $filters);
         // $query = $this->queryService->selectColumns($query, $columns);
         // $tasks = $this->queryService->paginateResults($query, $perPage);
@@ -93,7 +93,7 @@ class TaskController extends Controller
 
         $newEnd = Carbon::parse($validate['end_date']);
 
-        if ($newEnd->greaterThanOrEqualTo(Carbon::now())) {
+        if ($newEnd->greaterThanOrEqualTo(Carbon::now()) && $task->status === 'Просрочена') {
             $validate['status'] = 'Выполняется';
         }
 

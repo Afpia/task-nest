@@ -11,7 +11,7 @@ import { $tasks, getWorkspaceTasksFx } from './model'
 export const StatsWorkspace = () => {
 	const theme = useMantineTheme()
 	const { isDark } = isDarkMode()
-	const [countProjects, countProjectsLoading, userWorkspacesLoading, countTasksLoading, tasks] = useUnit([
+	const [projects, projectsLoading, userWorkspacesLoading, countTasksLoading, tasks] = useUnit([
 		$projects,
 		getProjectsWorkspaceFx.$pending,
 		getUserWorkspacesFx.$pending,
@@ -32,10 +32,10 @@ export const StatsWorkspace = () => {
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
 							Всего проектов
 						</Title>
-						{(countProjectsLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
-						{!(countProjectsLoading || userWorkspacesLoading) && (
-							<Text c={countProjects.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
-								{countProjects.length}
+						{(projectsLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
+						{!(projectsLoading || userWorkspacesLoading) && (
+							<Text c={projects.length === 0 ? `${theme.colors.gray[6]}` : ''} size='30px'>
+								{projects.length}
 							</Text>
 						)}
 					</Flex>
@@ -68,15 +68,15 @@ export const StatsWorkspace = () => {
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
-							Приост. задачи
+							Созданные проекты
 						</Title>
-						{(countTasksLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
-						{!(countTasksLoading || userWorkspacesLoading) && (
+						{(projectsLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
+						{!(projectsLoading || userWorkspacesLoading) && (
 							<Text
-								c={tasks.filter((item) => item.status === 'Приостановлена').length === 0 ? `${theme.colors.gray[6]}` : ''}
+								c={projects.filter((item) => item.status === 'Создан').length === 0 ? `${theme.colors.gray[6]}` : ''}
 								size='30px'
 							>
-								{tasks.filter((item) => item.status === 'Приостановлена').length}
+								{projects.filter((item) => item.status === 'Создан').length}
 							</Text>
 						)}
 					</Flex>
@@ -90,15 +90,15 @@ export const StatsWorkspace = () => {
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
-							Заверш. задачи
+							Заверш. проекты
 						</Title>
-						{(countTasksLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
-						{!(countTasksLoading || userWorkspacesLoading) && (
+						{(projectsLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
+						{!(projectsLoading || userWorkspacesLoading) && (
 							<Text
-								c={tasks.filter((item) => item.status === 'Завершена').length === 0 ? `${theme.colors.gray[6]}` : ''}
+								c={projects.filter((item) => item.status === 'Завершён').length === 0 ? `${theme.colors.gray[6]}` : ''}
 								size='30px'
 							>
-								{tasks.filter((item) => item.status === 'Завершена').length}
+								{projects.filter((item) => item.status === 'Завершён').length}
 							</Text>
 						)}
 					</Flex>
@@ -112,15 +112,15 @@ export const StatsWorkspace = () => {
 				<Flex justify='space-between' w='20%'>
 					<Flex align='start' gap={8} h='100%' justify='space-between' mih={67} direction='column'>
 						<Title c={theme.colors.gray[6]} fw={600} size={18} order={2}>
-							Просроч. задачи
+							Проекты в работе
 						</Title>
-						{(countTasksLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
-						{!(countTasksLoading || userWorkspacesLoading) && (
+						{(projectsLoading || userWorkspacesLoading) && <Skeleton height={30} width={140} />}
+						{!(projectsLoading || userWorkspacesLoading) && (
 							<Text
-								c={tasks.filter((item) => item.status === 'Просрочена').length === 0 ? `${theme.colors.gray[6]}` : ''}
+								c={projects.filter((item) => item.status === 'В процессе').length === 0 ? `${theme.colors.gray[6]}` : ''}
 								size='30px'
 							>
-								{tasks.filter((item) => item.status === 'Просрочена').length}
+								{projects.filter((item) => item.status === 'В процессе').length}
 							</Text>
 						)}
 					</Flex>

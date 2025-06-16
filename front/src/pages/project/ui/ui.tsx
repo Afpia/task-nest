@@ -102,7 +102,7 @@ export const Project = () => {
 						</Flex>
 					)}
 					{users.length > 0 && !loadingUsers && !myRoleLoading && (
-						<ScrollArea h='320px' scrollbars='y'>
+						<ScrollArea h='350px' scrollbars='y'>
 							<Grid h='100%' styles={{ inner: { maxWidth: '100%', margin: '0 auto' } }}>
 								{users.map((item) => (
 									<Grid.Col key={item.id} p={5} span={2}>
@@ -138,8 +138,7 @@ export const Project = () => {
 													<Link params={{ userLogin: item.login }} to={routes.private.profile}>
 														<Avatar mb={5} radius='100%' size='82' src={SrcImage(item.avatar_url)} variant='default' />
 													</Link>
-
-													<Text>{item.name}</Text>
+													<Text mb={15}>{item.name}</Text>
 												</Flex>
 											</Card.Section>
 										</Card>

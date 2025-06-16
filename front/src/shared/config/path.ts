@@ -4,6 +4,7 @@ export const path = {
 	PROFILE: '/profile/:userLogin',
 	ANALYTICS: '/analytics',
 	SEARCH: '/search',
+	WORKSPACES: '/workspaces',
 	NOTICES: '/notices',
 	FORGOT_PASSWORD: '/forgot-password',
 	RESET_PASSWORD: '/reset-password',

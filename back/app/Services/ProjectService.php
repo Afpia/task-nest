@@ -34,12 +34,25 @@ class ProjectService
     {
         $project->update($data);
         $project->save();
+
+        foreach ($project->tasks as $task) {
+            $task->status = 'Завершена';
+            $task->save();
+        }
+
         return $project;
     }
 
     public function deleteProject(Project $project): void
     {
-        $project->delete();
+        $project->status = 'Удален';
+        $project->save();
+
+        foreach ($project->tasks as $task) {
+            $task->status = 'Удалена';
+            $task->save();
+        }
+
     }
 
 

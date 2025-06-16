@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 
 import { ActionIcon, Anchor, Avatar, Badge, Checkbox, Flex, Menu, Table, Text, Tooltip } from '@mantine/core'
 
-import { BADGE_COLOR, routes } from '@shared/config'
+import { BADGE_COLOR_STATUS_TASK, routes } from '@shared/config'
 import { ICON_MAP, SrcImage, statusColor } from '@shared/helpers'
 import { $workspaceRole, currentTaskSet, deletedTaskProject } from '@shared/store'
 import type { TaskResponse } from '@shared/types'
@@ -87,7 +87,7 @@ export const Row = ({ tasks, updateTask }: { tasks: TaskResponse[]; updateTask: 
 					)}
 				</Table.Td>
 				<Table.Td>
-					<Badge color={BADGE_COLOR[element.status as keyof typeof BADGE_COLOR]}>{element.status}</Badge>
+					<Badge color={BADGE_COLOR_STATUS_TASK[element.status as keyof typeof BADGE_COLOR_STATUS_TASK]}>{element.status}</Badge>
 				</Table.Td>
 				<Table.Td>
 					<Flex gap={20} justify='space-between'>

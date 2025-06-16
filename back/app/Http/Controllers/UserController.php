@@ -101,14 +101,14 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
-        $term = $request->email ?? '';
+        $term = $request->login ?? '';
         $currentUserId = $request->user()->id;
 
         if ($term === '') {
             return response()->noContent();
         }
 
-        $users = User::where('email', 'LIKE', "%{$term}%")->where('id', '!=', $currentUserId)->get();
+        $users = User::where('login', 'LIKE', "%{$term}%")->where('id', '!=', $currentUserId)->get();
 
         if ($users->isEmpty()) {
             return response()->noContent();

@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->enum('status', ['Создан', 'В процессе', 'Завершён']);
+            $table->enum('status', ['Создан', 'В процессе', 'Завершён', 'Удален']);
             $table->foreignId('workspace_id')->constrained('workspaces')->onDelete('cascade');
             $table->string('image_url')->nullable();
             $table->timestamps();

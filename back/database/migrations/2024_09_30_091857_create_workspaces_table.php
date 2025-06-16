@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('image_url')->nullable();
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }

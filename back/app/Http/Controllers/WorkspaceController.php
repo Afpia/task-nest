@@ -94,23 +94,43 @@ class WorkspaceController extends Controller
 
     public function workspaceUsers(Request $request, Workspace $workspace)
     {
-        $validated = $request->validate([
-            'order' => ['sometimes', Rule::in(['asc','desc'])],
-        ]);
+        // $validated = $request->validate([
+        //     'order' => ['sometimes', Rule::in(['asc','desc'])],
+        // ]);
 
-        $order = $validated['order'] ?? 'asc';
+        // $order = $validated['order'] ?? 'asc';
 
-        $rolesDesc  = "'owner','admin','project_manager','executor'";
+        // $rolesDesc  = "'owner','admin','project_manager','executor'";
         $rolesAsc = "'executor','project_manager','admin','owner'";
-        $rolesList = $order === 'asc' ? $rolesAsc : $rolesDesc;
+        // $rolesList = $order === 'asc' ? $rolesAsc : $rolesDesc;
 
-        $workspaceWithUsers = $workspace->users()->withPivot('role')->orderByRaw("FIELD(role, {$rolesList})")->get();
+        $users = $workspace->users()->withPivot('role')->orderByRaw("FIELD(user_workspaces.role,{$rolesAsc})");
 
-        $sanitizedUsers = $workspaceWithUsers->map(function ($user) {
-            $data = $user->toArray();
-            return $data;
-        })->values();
-        return response()->json($sanitizedUsers);
+        $projectIds = $workspace->projects()->pluck('id');
+
+        $users = $users
+            ->with([
+                'tasks' => function ($query) use ($projectIds) {
+                    $query->whereIn('project_id', $projectIds)
+                        ->select(
+                            'tasks.id',
+                            'tasks.title',
+                            'tasks.status',
+                            'tasks.project_id',
+                            'tasks.start_date',
+                            'tasks.end_date'
+                        );
+                }
+            ])
+            ->get();
+
+        // $workspaceWithUsers = $workspace->users()->withPivot('role')->orderByRaw("FIELD(role, {$rolesList})")->get();
+
+        // $sanitizedUsers = $workspaceWithUsers->map(function ($user) {
+        //     $data = $user->toArray();
+        //     return $data;
+        // })->values();
+        return response()->json($users);
     }
 
     public function getUserRole(Request $request, Workspace $workspace)
@@ -230,7 +250,7 @@ class WorkspaceController extends Controller
 
     public function getTasks(Workspace $workspace)
     {
-        $tasks = $workspace->projects()->with('tasks')->get()->pluck('tasks')->flatten();
+        $tasks = $workspace->projects()->where('status', '!=', 'Удален')->with('tasks')->get()->pluck('tasks')->flatten();
 
         return response()->json($tasks);
     }

@@ -13,3 +13,7 @@ export interface TaskIdParams {
 export interface UserLoginParams {
 	userLogin: string
 }
+
+export interface UserDeleteParams {
+	email: string
+}
